@@ -13,12 +13,14 @@ class WorkSection extends StatelessWidget {
   static const _workList = [
     {
       'title': 'Roni Paschoal (V1)',
+      'tag': 'Web · AngularJS',
       'description': 'Site anterior desenvolvido em AngularJS.',
       'url': 'https://angular.ronipaschoal.com.br/',
       'image': 'assets/images/photos/site-roni-paschoal-angularjs.png',
     },
     {
       'title': 'O Eremita do Iceberg, Flutter',
+      'tag': 'Web · Flutter',
       'description':
           'Estudo de animações nativas e gerenciamento de estados Bloc/Cubit, em Flutter.',
       'url': 'https://eremitaflutter.ronipaschoal.com.br/',
@@ -26,6 +28,7 @@ class WorkSection extends StatelessWidget {
     },
     {
       'title': 'Reali Plásticos',
+      'tag': 'Web · PHP',
       'description':
           'Desenvolvimento em PHP, criação das imagens em 3d, UX e SEO do site institucional da empresa.',
       'url': 'https://www.realiplasticos.com.br/',
@@ -33,6 +36,7 @@ class WorkSection extends StatelessWidget {
     },
     {
       'title': 'Minha Comanda Eletrônica, App Flutter',
+      'tag': 'App · Flutter',
       'description':
           'Participação na concepção e desenvolvimento em Flutter (Android, IOS, Cielo, Rede e PagSeguro), MVVM e Bloc/Cubit.',
       'url':
@@ -61,45 +65,129 @@ class WorkSection extends StatelessWidget {
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             itemCount: _workList.length,
-            itemBuilder: (ctx, index) {
-              final work = _workList[index];
-              return Center(
-                child: Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    IconButton(
-                      onPressed: () => (isIOS || isMacOS) &&
-                              work['urlApple']?.isNotEmpty != null
-                          ? HyperlinkHelper.targetBlank(work['urlApple']!)
-                          : HyperlinkHelper.targetBlank(work['url']!),
-                      icon: RpImageWidget(
-                        asset: work['image']!,
-                        width: 700.0,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 16.0,
-                      right: 16.0,
-                      child: Container(
-                        width: 320.0,
-                        padding: const EdgeInsets.all(16.0),
-                        color: RpTheme.backgroundColor.withAlpha(140),
-                        child: Text(
-                          '${work['title']!}\n\n${work['description']!}',
-                          style: const TextStyle(
-                            color: RpTheme.textHighlightColor,
-                            fontSize: 14.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (_, __) => RpTheme.spacerLarge,
+            itemBuilder: (ctx, index) => _WorkCard(
+              work: _workList[index],
+              isIOS: isIOS,
+              isMacOS: isMacOS,
+            ),
+            separatorBuilder: (_, __) => RpTheme.spacerLargeX,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _WorkCard extends StatefulWidget {
+  final Map<String, String> work;
+  final bool isIOS;
+  final bool isMacOS;
+
+  const _WorkCard({
+    required this.work,
+    required this.isIOS,
+    required this.isMacOS,
+  });
+
+  @override
+  State<_WorkCard> createState() => _WorkCardState();
+}
+
+class _WorkCardState extends State<_WorkCard> {
+  bool _hovering = false;
+
+  void _open() {
+    final work = widget.work;
+    final hasAppleUrl = work['urlApple']?.isNotEmpty ?? false;
+    final url = (widget.isIOS || widget.isMacOS) && hasAppleUrl
+        ? work['urlApple']!
+        : work['url']!;
+    HyperlinkHelper.targetBlank(url);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final work = widget.work;
+    final reduceMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final duration =
+        reduceMotion ? Duration.zero : const Duration(milliseconds: 220);
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 700.0),
+        child: MouseRegion(
+          onEnter: (_) => setState(() => _hovering = true),
+          onExit: (_) => setState(() => _hovering = false),
+          child: AnimatedContainer(
+            duration: duration,
+            curve: Curves.easeOut,
+            transform: Matrix4.translationValues(
+              0.0,
+              _hovering ? -6.0 : 0.0,
+              0.0,
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: _hovering ? RpTheme.brandColor : RpTheme.hairlineColor,
+                width: 1.0,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ClipRect(
+                  child: InkWell(
+                    onTap: _open,
+                    focusColor: RpTheme.brandColor.withAlpha(40),
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    child: AnimatedScale(
+                      duration: duration,
+                      curve: Curves.easeOut,
+                      scale: _hovering ? 1.03 : 1.0,
+                      child: RpImageWidget(asset: work['image']!),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SelectableText(
+                        work['tag']!.toUpperCase(),
+                        semanticsLabel: work['tag'],
+                        style: RpTheme.labelStyle,
+                      ),
+                      RpTheme.spacerSmall,
+                      SelectableText(
+                        work['title']!,
+                        semanticsLabel: work['title'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18.0,
+                          color: RpTheme.textHighlightColor,
+                        ),
+                      ),
+                      RpTheme.spacerSmallX,
+                      SelectableText(
+                        work['description']!,
+                        semanticsLabel: work['description'],
+                        style: const TextStyle(
+                          color: RpTheme.textColor,
+                          fontSize: 14.0,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

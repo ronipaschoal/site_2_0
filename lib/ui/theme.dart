@@ -11,10 +11,24 @@ sealed class RpTheme {
   static const Color menuColor = Color(0xCC0B0B18);
   static const Color backgroundColor = Color(0xFF0B0B18);
   static const Color backgroundColorDark = Color(0xFF0B0B18);
+  static const Color hairlineColor = Color(0x40B9B3B3);
+
+  static const String fontFamilyDisplay = 'Inkburrow';
+  static const String fontFamilyBody = 'Inter';
+  static const String fontFamilyMono = 'IBM Plex Mono';
 
   static const double fontSizeLarge = 44.0;
   static const double fontSizeMedium = 24.0;
   static const double fontSizeRegular = 16.0;
+  static const double fontSizeLabel = 13.0;
+
+  static const TextStyle labelStyle = TextStyle(
+    fontFamily: fontFamilyMono,
+    fontSize: fontSizeLabel,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 2.0,
+    color: textColor,
+  );
 
   static const double spacingSmallX = 4.0;
   static const double spacingSmall = 8.0;
@@ -39,10 +53,12 @@ sealed class RpTheme {
   static final theme = ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: RpTheme.brandColor),
     scaffoldBackgroundColor: RpTheme.backgroundColor,
+    fontFamily: fontFamilyBody,
     textTheme: const TextTheme(
       bodyMedium: TextStyle(
         color: RpTheme.textColor,
         fontSize: RpTheme.fontSizeRegular,
+        height: 1.6,
       ),
     ),
   );

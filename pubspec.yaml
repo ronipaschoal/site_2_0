@@ -1,11 +1,11 @@
 name: ronip
 description: Personal website.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -16,7 +16,7 @@ dependencies:
   go_router: ^13.0.0
   flutter_svg: ^2.0.9
   url_launcher: ^6.2.2
-  intl: ^0.19.0
+  intl: ^0.20.2
   flutter_bloc: ^8.1.6
 
 dev_dependencies:
@@ -31,8 +31,8 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/images/icon/icon.png"
   min_sdk_android: 21
-  adaptive_icon_background: "assets/images/icon/background.png" 
-  adaptive_icon_foreground: "assets/images/icon/icon.png" 
+  adaptive_icon_background: "assets/images/icon/background.png"
+  adaptive_icon_foreground: "assets/images/icon/icon.png"
   web:
     generate: true
     image_path: "assets/images/logos/logo-shadow.png"
@@ -58,3 +58,19 @@ flutter:
     - family: Inkburrow
       fonts:
         - asset: assets/fonts/inkburrow.ttf
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
+        - asset: assets/fonts/Inter.ttf
+          weight: 500
+        - asset: assets/fonts/Inter.ttf
+          weight: 600
+        - asset: assets/fonts/Inter.ttf
+          weight: 700
+    - family: IBM Plex Mono
+      fonts:
+        - asset: assets/fonts/IBMPlexMono-Regular.ttf
+        - asset: assets/fonts/IBMPlexMono-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexMono-SemiBold.ttf
+          weight: 600

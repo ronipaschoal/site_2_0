@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ronip/config/routes.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
+import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/ui/theme.dart';
 
 void main() {

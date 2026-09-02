@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ronip/helpers/hyperlink_helper.dart';
 import 'package:ronip/helpers/media_query_helper.dart';
+import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/model/home_menu_model.dart';
 import 'package:ronip/pages/home/widgets/home_contact_item_widget.dart';
 import 'package:ronip/pages/home/widgets/home_section_title_widget.dart';
