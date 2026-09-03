@@ -5,6 +5,7 @@ class RpImageWidget extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? color;
+  final BoxFit? fit;
 
   const RpImageWidget({
     super.key,
@@ -12,6 +13,7 @@ class RpImageWidget extends StatelessWidget {
     this.width,
     this.height,
     this.color,
+    this.fit,
   });
 
   @override
@@ -21,6 +23,7 @@ class RpImageWidget extends StatelessWidget {
       width: width,
       height: height,
       color: color,
+      fit: fit,
     );
   }
 }

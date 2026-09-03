@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/config/navigate.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/home/widgets/home_section_widget.dart';
 import 'package:ronip/ui/theme.dart';
 import 'package:ronip/ui/widgets/logo_widget.dart';
+import 'package:ronip/ui/widgets/parallax_widget.dart';
 
 class HomeSection extends StatefulWidget {
-  const HomeSection({super.key});
+  final ScrollController scrollController;
+
+  const HomeSection({super.key, required this.scrollController});
 
   @override
   State<HomeSection> createState() => _HomeSectionState();
@@ -47,68 +49,58 @@ class _HomeSectionState extends State<HomeSection>
     final roleStage = _stage(0.55, 1.0);
 
     return HomeSectionWidget(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _RiseIn(animation: logoStage, child: const RpLogoWidget()),
-          RpTheme.spacerLarge,
-          _RiseIn(
-            animation: introStage,
-            child: Text(
-              AppLocalizations.of(context)!.wellcome.toUpperCase(),
-              semanticsLabel: AppLocalizations.of(context)!.wellcome,
-              textAlign: TextAlign.center,
-              style: RpTheme.labelStyle,
-            ),
-          ),
-          RpTheme.spacerSmall,
-          _RiseIn(
-            animation: nameStage,
-            child: const SelectableText(
-              'Roni Paschoal',
-              semanticsLabel: 'Roni Paschoal',
-              style: TextStyle(
-                fontFamily: RpTheme.fontFamilyDisplay,
-                fontSize: RpTheme.fontSizeLarge,
-                color: RpTheme.textHighlightColor,
+      child: RpParallaxWidget(
+        // Single speed for the whole hero block: every element inside keeps
+        // its relative spacing, so nothing can drift into an overlap. The
+        // depth comes from this block moving against the (slower) glow
+        // behind it and the (normal-speed) sections below it.
+        scrollController: widget.scrollController,
+        speed: 0.30,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _RiseIn(animation: logoStage, child: const RpLogoWidget()),
+            RpTheme.spacerLarge,
+            _RiseIn(
+              animation: introStage,
+              child: Text(
+                AppLocalizations.of(context)!.wellcome.toUpperCase(),
+                semanticsLabel: AppLocalizations.of(context)!.wellcome,
+                textAlign: TextAlign.center,
+                style: RpTheme.labelStyle,
               ),
             ),
-          ),
-          RpTheme.spacerSmallX,
-          _RiseIn(
-            animation: roleStage,
-            child: Column(
-              children: [
-                SelectableText(
-                  AppLocalizations.of(context)!.flutterSpecialist,
-                  semanticsLabel:
-                      AppLocalizations.of(context)!.flutterSpecialist,
-                  style: const TextStyle(fontSize: RpTheme.fontSizeMedium),
+            RpTheme.spacerSmall,
+            _RiseIn(
+              animation: nameStage,
+              child: const SelectableText(
+                'Roni Paschoal',
+                semanticsLabel: 'Roni Paschoal',
+                style: TextStyle(
+                  fontFamily: RpTheme.fontFamilyDisplay,
+                  fontSize: RpTheme.fontSizeLarge,
+                  color: RpTheme.textHighlightColor,
                 ),
-                RpTheme.spacerLarge,
-                OutlinedButton(
-                  onPressed: () => RpNavigate.to(context, '/cv'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: RpTheme.textHighlightColor,
-                    side: const BorderSide(color: RpTheme.brandColor),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0,
-                      vertical: 12.0,
-                    ),
-                    textStyle: const TextStyle(
-                      fontFamily: RpTheme.fontFamilyMono,
-                      fontSize: RpTheme.fontSizeLabel,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 2.0,
-                    ),
-                  ),
-                  child: const Text('VIEW CV'),
-                ),
-              ],
+              ),
             ),
-          ),
-          RpTheme.spacerLargeX2,
-        ],
+            RpTheme.spacerSmallX,
+            _RiseIn(
+              animation: roleStage,
+              child: Column(
+                children: [
+                  SelectableText(
+                    AppLocalizations.of(context)!.flutterSpecialist,
+                    semanticsLabel:
+                        AppLocalizations.of(context)!.flutterSpecialist,
+                    style: const TextStyle(fontSize: RpTheme.fontSizeMedium),
+                  ),
+                ],
+              ),
+            ),
+            RpTheme.spacerLargeX2,
+          ],
+        ),
       ),
     );
   }

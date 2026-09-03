@@ -16,21 +16,16 @@ class HomeSectionWidget extends StatefulWidget {
 class _HomeSectionWidgetState extends State<HomeSectionWidget> {
   @override
   Widget build(BuildContext context) {
+    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+
     return Container(
       constraints: BoxConstraints(
         minHeight: MediaQuery.sizeOf(context).height,
       ),
-      padding: MediaQueryHelper(context).isSmallScreen()
+      padding: isSmallScreen
           ? const EdgeInsets.symmetric(horizontal: 16.0)
           : const EdgeInsets.symmetric(horizontal: 48.0),
-      child: MediaQueryHelper(context).isSmallScreen()
-          ? SafeArea(child: widget.child)
-          : Center(
-              child: SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.8,
-                child: SafeArea(child: widget.child),
-              ),
-            ),
+      child: SafeArea(child: widget.child),
     );
   }
 }

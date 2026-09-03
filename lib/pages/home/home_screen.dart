@@ -9,7 +9,7 @@ import 'package:ronip/pages/home/widgets/home_drawer_widget.dart';
 import 'package:ronip/pages/home/widgets/home_menu_widget.dart';
 import 'package:ronip/pages/home/sections/about_section.dart';
 import 'package:ronip/pages/home/sections/contact_section.dart';
-import 'package:ronip/pages/home/sections/work_section.dart';
+import 'package:ronip/pages/home/sections/work_gallery_section.dart';
 import 'package:ronip/ui/theme.dart';
 import 'package:ronip/ui/widgets/flutter_banner_widget.dart';
 import 'package:ronip/ui/widgets/locale_button_widget.dart';
@@ -126,16 +126,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 : null,
             appBar: MediaQueryHelper(context).isSmallScreen()
                 ? AppBar(
-                    title: BlocBuilder<HomeCubit, HomeState>(
-                      builder: (context, state) {
-                        return Text(
-                          state.activeMenu.title(context),
-                          style: const TextStyle(
-                            color: RpTheme.textHighlightColor,
-                          ),
-                        );
-                      },
-                    ),
                     surfaceTintColor: RpTheme.menuColor,
                     backgroundColor: RpTheme.menuColor,
                     leading: IconButton(
@@ -160,19 +150,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       RpTheme.spacerLarge,
                     ],
                   ),
-            body: SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                children: [
-                  HomeSection(key: _getKeyByTitle(HomeSectionEnum.home)),
-                  AboutSection(key: _getKeyByTitle(HomeSectionEnum.about)),
-                  WorkSection(key: _getKeyByTitle(HomeSectionEnum.programs)),
-                  ContactSection(
-                    key: _getKeyByTitle(HomeSectionEnum.contact),
-                    externalMenuList: _externalMenuList,
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    children: [
+                      HomeSection(
+                        key: _getKeyByTitle(HomeSectionEnum.home),
+                        scrollController: _scrollController,
+                      ),
+                      AboutSection(
+                        key: _getKeyByTitle(HomeSectionEnum.about),
+                        scrollController: _scrollController,
+                      ),
+                      WorkGallerySection(
+                        key: _getKeyByTitle(HomeSectionEnum.programs),
+                        scrollController: _scrollController,
+                      ),
+                      ContactSection(
+                        key: _getKeyByTitle(HomeSectionEnum.contact),
+                        externalMenuList: _externalMenuList,
+                        scrollController: _scrollController,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
