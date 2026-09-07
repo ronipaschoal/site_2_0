@@ -14,6 +14,7 @@ import 'package:ronip/ui/theme.dart';
 import 'package:ronip/ui/widgets/flutter_banner_widget.dart';
 import 'package:ronip/ui/widgets/locale_button_widget.dart';
 import 'package:ronip/ui/widgets/logo_widget.dart';
+import 'package:ronip/ui/widgets/scroll_progress_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppCubit appCubit;
@@ -111,73 +112,86 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         constraints: const BoxConstraints(maxWidth: 1200.0),
         child: SizedBox(
           width: double.infinity,
-          child: Scaffold(
-            key: _drawerKey,
-            extendBody: true,
-            extendBodyBehindAppBar: true,
-            drawer: MediaQueryHelper(context).isSmallScreen()
-                ? HomeDrawerWidget(
-                    drawerKey: _drawerKey,
-                    scrollController: _scrollController,
-                    menuList: _menuList,
-                    externalMenuList: _externalMenuList,
-                    actionList: _actionList,
-                  )
-                : null,
-            appBar: MediaQueryHelper(context).isSmallScreen()
-                ? AppBar(
-                    surfaceTintColor: RpTheme.menuColor,
-                    backgroundColor: RpTheme.menuColor,
-                    leading: IconButton(
-                      icon: const RpLogoWidget.menu(),
-                      onPressed: () => _drawerKey.currentState?.openDrawer(),
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
-                    ),
-                  )
-                : AppBar(
-                    surfaceTintColor: RpTheme.menuColor,
-                    backgroundColor: RpTheme.menuColor,
-                    title: const RpLogoWidget(size: Size(36.0, 36.0)),
-                    actions: [
-                      HomeMenuWidget(
+          child: Stack(
+            children: [
+              Scaffold(
+                key: _drawerKey,
+                extendBody: true,
+                extendBodyBehindAppBar: true,
+                drawer: MediaQueryHelper(context).isSmallScreen()
+                    ? HomeDrawerWidget(
                         drawerKey: _drawerKey,
                         scrollController: _scrollController,
                         menuList: _menuList,
                         externalMenuList: _externalMenuList,
                         actionList: _actionList,
+                      )
+                    : null,
+                appBar: MediaQueryHelper(context).isSmallScreen()
+                    ? AppBar(
+                        surfaceTintColor: RpTheme.menuColor,
+                        backgroundColor: RpTheme.menuColor,
+                        leading: IconButton(
+                          icon: const RpLogoWidget.menu(),
+                          onPressed: () =>
+                              _drawerKey.currentState?.openDrawer(),
+                          tooltip: MaterialLocalizations.of(context)
+                              .openAppDrawerTooltip,
+                        ),
+                      )
+                    : AppBar(
+                        surfaceTintColor: RpTheme.menuColor,
+                        backgroundColor: RpTheme.menuColor,
+                        title: const RpLogoWidget(size: Size(36.0, 36.0)),
+                        actions: [
+                          HomeMenuWidget(
+                            drawerKey: _drawerKey,
+                            scrollController: _scrollController,
+                            menuList: _menuList,
+                            externalMenuList: _externalMenuList,
+                            actionList: _actionList,
+                          ),
+                          RpTheme.spacerLarge,
+                        ],
                       ),
-                      RpTheme.spacerLarge,
-                    ],
-                  ),
-            body: Stack(
-              children: [
-                SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                    children: [
-                      HomeSection(
-                        key: _getKeyByTitle(HomeSectionEnum.home),
-                        scrollController: _scrollController,
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      controller: _scrollController,
+                      child: Column(
+                        children: [
+                          HomeSection(
+                            key: _getKeyByTitle(HomeSectionEnum.home),
+                            scrollController: _scrollController,
+                          ),
+                          AboutSection(
+                            key: _getKeyByTitle(HomeSectionEnum.about),
+                            scrollController: _scrollController,
+                          ),
+                          WorkGallerySection(
+                            key: _getKeyByTitle(HomeSectionEnum.programs),
+                            scrollController: _scrollController,
+                          ),
+                          ContactSection(
+                            key: _getKeyByTitle(HomeSectionEnum.contact),
+                            externalMenuList: _externalMenuList,
+                            scrollController: _scrollController,
+                          ),
+                        ],
                       ),
-                      AboutSection(
-                        key: _getKeyByTitle(HomeSectionEnum.about),
-                        scrollController: _scrollController,
-                      ),
-                      WorkGallerySection(
-                        key: _getKeyByTitle(HomeSectionEnum.programs),
-                        scrollController: _scrollController,
-                      ),
-                      ContactSection(
-                        key: _getKeyByTitle(HomeSectionEnum.contact),
-                        externalMenuList: _externalMenuList,
-                        scrollController: _scrollController,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                top: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: RpScrollProgressWidget(
+                  scrollController: _scrollController,
+                ),
+              ),
+            ],
           ),
         ),
       ),
