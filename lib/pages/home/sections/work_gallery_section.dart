@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ronip/helpers/hyperlink_helper.dart';
 import 'package:ronip/helpers/media_query_helper.dart';
 import 'package:ronip/model/home_menu_model.dart';
+import 'package:ronip/model/work_item_model.dart';
 import 'package:ronip/pages/home/widgets/home_section_title_widget.dart';
 import 'package:ronip/ui/theme.dart';
 import 'package:ronip/ui/widgets/image_widget.dart';
@@ -19,41 +20,64 @@ class WorkGallerySection extends StatefulWidget {
 
   const WorkGallerySection({super.key, required this.scrollController});
 
+  // Stand-in for what would come from a real content source (CMS/database):
+  // each item already carries its own per-language title/description.
   static const _workList = [
-    {
-      'title': 'Roni Paschoal (V1)',
-      'tag': 'Web · AngularJS',
-      'description': 'Site anterior desenvolvido em AngularJS.',
-      'url': 'https://angular.ronipaschoal.com.br/',
-      'image': 'assets/images/photos/site-roni-paschoal-angularjs.png',
-    },
-    {
-      'title': 'O Eremita do Iceberg, Flutter',
-      'tag': 'Web · Flutter',
-      'description':
-          'Estudo de animações nativas e gerenciamento de estados Bloc/Cubit, em Flutter.',
-      'url': 'https://eremitaflutter.ronipaschoal.com.br/',
-      'image': 'assets/images/photos/flutter-o-eremita-do-iceberg.png',
-    },
-    {
-      'title': 'Reali Plásticos',
-      'tag': 'Web · PHP',
-      'description':
-          'Desenvolvimento em PHP, criação das imagens em 3d, UX e SEO do site institucional da empresa.',
-      'url': 'https://www.realiplasticos.com.br/',
-      'image': 'assets/images/photos/site-reali-plasticos.png',
-    },
-    {
-      'title': 'Minha Comanda Eletrônica, App Flutter',
-      'tag': 'App · Flutter',
-      'description':
-          'Participação na concepção e desenvolvimento em Flutter (Android, IOS, Cielo, Rede e PagSeguro), MVVM e Bloc/Cubit.',
-      'url':
+    WorkItem(
+      title: {'pt': 'Roni Paschoal (V1)', 'en': 'Roni Paschoal (V1)'},
+      tag: 'Web · AngularJS',
+      description: {
+        'pt': 'Site anterior desenvolvido em AngularJS.',
+        'en': 'Previous site developed in AngularJS.',
+      },
+      url: 'https://angular.ronipaschoal.com.br/',
+      image: 'assets/images/photos/site-roni-paschoal-angularjs.png',
+    ),
+    WorkItem(
+      title: {
+        'pt': 'O Eremita do Iceberg, Flutter',
+        'en': 'O Eremita do Iceberg, Flutter',
+      },
+      tag: 'Web · Flutter',
+      description: {
+        'pt':
+            'Estudo de animações nativas e gerenciamento de estados Bloc/Cubit, em Flutter.',
+        'en':
+            'Study of native animations and Bloc/Cubit state management, in Flutter.',
+      },
+      url: 'https://eremitaflutter.ronipaschoal.com.br/',
+      image: 'assets/images/photos/flutter-o-eremita-do-iceberg.png',
+    ),
+    WorkItem(
+      title: {'pt': 'Reali Plásticos', 'en': 'Reali Plásticos'},
+      tag: 'Web · PHP',
+      description: {
+        'pt':
+            'Desenvolvimento em PHP, criação das imagens em 3d, UX e SEO do site institucional da empresa.',
+        'en':
+            "Development in PHP, creation of 3D images, UX and SEO of the company's institutional website.",
+      },
+      url: 'https://www.realiplasticos.com.br/',
+      image: 'assets/images/photos/site-reali-plasticos.png',
+    ),
+    WorkItem(
+      title: {
+        'pt': 'Minha Comanda Eletrônica, App Flutter',
+        'en': 'Minha Comanda Eletrônica, App Flutter',
+      },
+      tag: 'App · Flutter',
+      description: {
+        'pt':
+            'Participação na concepção e desenvolvimento em Flutter (Android, IOS, Cielo, Rede e PagSeguro), MVVM e Bloc/Cubit.',
+        'en':
+            'Participation in the design and development in Flutter (Android, IOS, Cielo, Rede and PagSeguro), MVVM and Bloc/Cubit.',
+      },
+      url:
           'https://play.google.com/store/apps/details?id=com.totvs.thex.minhacomanda',
-      'urlApple':
+      urlApple:
           'https://apps.apple.com/br/app/minha-comanda-eletr%C3%B4nica/id6474201107',
-      'image': 'assets/images/photos/minha-comanda.png',
-    },
+      image: 'assets/images/photos/minha-comanda.png',
+    ),
   ];
 
   @override
@@ -118,13 +142,19 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
                   child: Stack(
                     children: [
                       ClipRect(
-                        child: Transform.translate(
-                          offset: Offset(-progress * travelDistance, 0),
-                          child: OverflowBox(
-                            alignment: Alignment.centerLeft,
-                            minWidth: 0,
-                            maxWidth: double.infinity,
-                            maxHeight: viewportSize.height,
+                        child: OverflowBox(
+                          alignment: Alignment.centerLeft,
+                          minWidth: 0,
+                          maxWidth: double.infinity,
+                          maxHeight: viewportSize.height,
+                          child: Transform.translate(
+                            // Transform's hit-testing is bounded by its own
+                            // layout size, which OverflowBox reports as the
+                            // (larger) size of this Row rather than the
+                            // clipped viewport — so cards scrolled into view
+                            // stay tappable instead of only the portion that
+                            // was visible before any translation.
+                            offset: Offset(-progress * travelDistance, 0),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -193,7 +223,7 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
 }
 
 class _GalleryCard extends StatefulWidget {
-  final Map<String, String> work;
+  final WorkItem work;
   final int index;
   final double width;
   final double height;
@@ -218,15 +248,15 @@ class _GalleryCardState extends State<_GalleryCard> {
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     final isMacOS = Theme.of(context).platform == TargetPlatform.macOS;
     final work = widget.work;
-    final hasAppleUrl = work['urlApple']?.isNotEmpty ?? false;
-    final url =
-        (isIOS || isMacOS) && hasAppleUrl ? work['urlApple']! : work['url']!;
+    final hasAppleUrl = work.urlApple?.isNotEmpty ?? false;
+    final url = (isIOS || isMacOS) && hasAppleUrl ? work.urlApple! : work.url;
     HyperlinkHelper.targetBlank(url);
   }
 
   @override
   Widget build(BuildContext context) {
     final work = widget.work;
+    final locale = Localizations.localeOf(context);
     final reduceMotion =
         MediaQuery.maybeOf(context)?.disableAnimations ?? false;
     final duration =
@@ -247,7 +277,7 @@ class _GalleryCardState extends State<_GalleryCard> {
               fit: StackFit.expand,
               children: [
                 RpImageWidget(
-                  asset: work['image']!,
+                  asset: work.image,
                   width: double.infinity,
                   height: double.infinity,
                   fit: BoxFit.cover,
@@ -289,12 +319,12 @@ class _GalleryCardState extends State<_GalleryCard> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        work['tag']!.toUpperCase(),
+                        work.tag.toUpperCase(),
                         style: RpTheme.labelStyle,
                       ),
                       RpTheme.spacerSmall,
                       Text(
-                        work['title']!,
+                        work.titleFor(locale),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: widget.compact ? 17.0 : 22.0,
@@ -303,7 +333,7 @@ class _GalleryCardState extends State<_GalleryCard> {
                       ),
                       RpTheme.spacerSmallX,
                       Text(
-                        work['description']!,
+                        work.descriptionFor(locale),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

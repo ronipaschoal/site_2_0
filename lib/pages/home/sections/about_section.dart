@@ -16,6 +16,7 @@ class AboutSection extends StatelessWidget {
     return HomeSectionWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RpTheme.spacerLarge,
           HomeSectionTitleWidget(

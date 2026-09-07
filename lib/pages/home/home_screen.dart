@@ -156,6 +156,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                 body: Stack(
                   children: [
+                    Positioned(
+                      bottom: -MediaQuery.sizeOf(context).height / 4,
+                      left: -MediaQuery.sizeOf(context).width / 4,
+                      child: const RpLogoWidget.screen(),
+                    ),
                     SingleChildScrollView(
                       controller: _scrollController,
                       child: Column(

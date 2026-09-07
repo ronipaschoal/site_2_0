@@ -30,6 +30,7 @@ class ContactSection extends StatelessWidget {
     return HomeSectionWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           RpTheme.spacerLarge,
