@@ -13,6 +13,7 @@ import 'package:ronip/pages/home/sections/work_gallery_section.dart';
 import 'package:ronip/ui/theme.dart';
 import 'package:ronip/ui/widgets/flutter_banner_widget.dart';
 import 'package:ronip/ui/widgets/locale_button_widget.dart';
+import 'package:ronip/ui/widgets/logo_scroll_transition_widget.dart';
 import 'package:ronip/ui/widgets/logo_widget.dart';
 import 'package:ronip/ui/widgets/scroll_progress_widget.dart';
 
@@ -107,6 +108,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+
     return FlutterBannerWidget(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 1200.0),
@@ -118,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 key: _drawerKey,
                 extendBody: true,
                 extendBodyBehindAppBar: true,
-                drawer: MediaQueryHelper(context).isSmallScreen()
+                drawer: isSmallScreen
                     ? HomeDrawerWidget(
                         drawerKey: _drawerKey,
                         scrollController: _scrollController,
@@ -127,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         actionList: _actionList,
                       )
                     : null,
-                appBar: MediaQueryHelper(context).isSmallScreen()
+                appBar: isSmallScreen
                     ? AppBar(
                         surfaceTintColor: RpTheme.menuColor,
                         backgroundColor: RpTheme.menuColor,
@@ -142,7 +145,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     : AppBar(
                         surfaceTintColor: RpTheme.menuColor,
                         backgroundColor: RpTheme.menuColor,
-                        title: const RpLogoWidget(size: Size(36.0, 36.0)),
+                        title: const SelectableText(
+                          'Roni Paschoal',
+                          semanticsLabel: 'Roni Paschoal',
+                          style: TextStyle(
+                            fontFamily: RpTheme.fontFamilyDisplay,
+                            fontSize: RpTheme.fontSizeMedium,
+                            color: RpTheme.textHighlightColor,
+                          ),
+                        ),
                         actions: [
                           HomeMenuWidget(
                             drawerKey: _drawerKey,
@@ -157,9 +168,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 body: Stack(
                   children: [
                     Positioned(
-                      bottom: -MediaQuery.sizeOf(context).height / 4,
+                      bottom: -MediaQuery.sizeOf(context).height / 7,
                       left: -MediaQuery.sizeOf(context).width / 4,
-                      child: const RpLogoWidget.screen(),
+                      child: RpLogoScrollTransitionWidget(
+                        scrollController: _scrollController,
+                        sectionKey: _homeMenu.key,
+                      ),
                     ),
                     SingleChildScrollView(
                       controller: _scrollController,

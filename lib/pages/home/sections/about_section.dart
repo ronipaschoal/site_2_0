@@ -26,9 +26,9 @@ class AboutSection extends StatelessWidget {
           RpRevealOnScrollWidget(
             scrollController: scrollController,
             child: SelectableText(
-              AppLocalizations.of(context)!.hybridTechnologyEnthusiast,
+              AppLocalizations.of(context)!.softwareDeveloperOverview,
               semanticsLabel:
-                  AppLocalizations.of(context)!.hybridTechnologyEnthusiast,
+                  AppLocalizations.of(context)!.softwareDeveloperOverview,
               textAlign: TextAlign.justify,
             ),
           ),
@@ -36,8 +36,9 @@ class AboutSection extends StatelessWidget {
           RpRevealOnScrollWidget(
             scrollController: scrollController,
             child: SelectableText(
-              AppLocalizations.of(context)!.totvsMobileApps,
-              semanticsLabel: AppLocalizations.of(context)!.totvsMobileApps,
+              AppLocalizations.of(context)!.flutterTeamContribution,
+              semanticsLabel:
+                  AppLocalizations.of(context)!.flutterTeamContribution,
               textAlign: TextAlign.justify,
             ),
           ),
@@ -45,8 +46,27 @@ class AboutSection extends StatelessWidget {
           RpRevealOnScrollWidget(
             scrollController: scrollController,
             child: SelectableText(
-              AppLocalizations.of(context)!.letSConnect,
-              semanticsLabel: AppLocalizations.of(context)!.letSConnect,
+              AppLocalizations.of(context)!.mobileAppLifecycle,
+              semanticsLabel: AppLocalizations.of(context)!.mobileAppLifecycle,
+              textAlign: TextAlign.justify,
+            ),
+          ),
+          RpTheme.spacerLarge,
+          RpRevealOnScrollWidget(
+            scrollController: scrollController,
+            child: SelectableText(
+              AppLocalizations.of(context)!.webAndAiBackground,
+              semanticsLabel: AppLocalizations.of(context)!.webAndAiBackground,
+              textAlign: TextAlign.justify,
+            ),
+          ),
+          RpTheme.spacerLarge,
+          RpRevealOnScrollWidget(
+            scrollController: scrollController,
+            child: SelectableText(
+              AppLocalizations.of(context)!.continuousFlutterEvolution,
+              semanticsLabel:
+                  AppLocalizations.of(context)!.continuousFlutterEvolution,
               textAlign: TextAlign.justify,
             ),
           ),

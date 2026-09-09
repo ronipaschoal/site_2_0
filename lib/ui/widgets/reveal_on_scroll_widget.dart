@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Fades and slides [child] up once it first scrolls within
 /// [revealAtFraction] of the viewport height from the top — a one-time
-/// scroll-triggered reveal, distinct from [RpParallaxWidget]'s continuous
+/// scroll-triggered reveal
 /// scroll-linked drift.
 class RpRevealOnScrollWidget extends StatefulWidget {
   final Widget child;
@@ -21,8 +21,7 @@ class RpRevealOnScrollWidget extends StatefulWidget {
   });
 
   @override
-  State<RpRevealOnScrollWidget> createState() =>
-      _RpRevealOnScrollWidgetState();
+  State<RpRevealOnScrollWidget> createState() => _RpRevealOnScrollWidgetState();
 }
 
 class _RpRevealOnScrollWidgetState extends State<RpRevealOnScrollWidget>
@@ -41,7 +40,8 @@ class _RpRevealOnScrollWidgetState extends State<RpRevealOnScrollWidget>
       vsync: this,
       duration: reduceMotion ? Duration.zero : widget.duration,
     );
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
+    _animation =
+        CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
     widget.scrollController.addListener(_checkReveal);
     WidgetsBinding.instance.addPostFrameCallback((_) => _checkReveal());
   }

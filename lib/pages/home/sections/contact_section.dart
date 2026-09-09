@@ -51,7 +51,7 @@ class ContactSection extends StatelessWidget {
             child: MediaQueryHelper(context).isSmallScreen()
                 ? Column(
                     children: [
-                      RpTheme.spacerLargeX2,
+                      RpTheme.spacerSmall,
                       HomeContactItemWidget(
                         text: 'roni@ronipaschoal.com.br',
                         icon: SvgPicture.asset(
@@ -67,7 +67,7 @@ class ContactSection extends StatelessWidget {
                           'mailto:roni@ronipaschoal.com.br?subject=Website contact!',
                         ),
                       ),
-                      RpTheme.spacerLargeX,
+                      RpTheme.spacerMedium,
                       ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,

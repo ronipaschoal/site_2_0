@@ -30,9 +30,9 @@ class RpLogoWidget extends StatelessWidget {
   const RpLogoWidget.screen({
     super.key,
     this.color,
-    this.asset = 'assets/images/logos/logo.png',
+    this.asset = 'assets/images/logos/logo-original.png',
     this.padding = const EdgeInsets.all(1.0),
-    this.opacity = 0.03,
+    this.opacity = 0.1,
   }) : size = null;
 
   @override
