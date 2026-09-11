@@ -6,12 +6,34 @@
     "wellcome": "Olá, eu sou",
     "flutterSpecialist": "Especialista Flutter",
     "aboutMe": "Sobre mim",
-    "softwareDeveloperOverview": "Sou Desenvolvedor de Software com cerca de 8 anos de experiência, com trajetória em desenvolvimento web e mobile e especialização atual no desenvolvimento de aplicações mobile com Flutter para Android e iOS. Essa trajetória me proporcionou uma visão ampla do ciclo de desenvolvimento de software, desde a concepção e definição técnica até a implementação, testes e publicação de aplicações.",
-    "flutterTeamContribution": "Nos últimos anos, concentrei minha atuação no ecossistema Flutter, participando da estruturação de uma equipe dedicada ao desenvolvimento mobile e contribuindo para a definição de padrões técnicos, boas práticas e decisões de arquitetura. Também fui um dos responsáveis pela criação de uma biblioteca interna em Flutter/Dart, baseada no Design System da empresa, utilizada para padronizar componentes e acelerar o desenvolvimento dos produtos.",
-    "mobileAppLifecycle": "Participei do desenvolvimento de aplicações mobile desde a concepção até a publicação na Google Play e App Store, atuando com arquitetura MVVM, gerenciamento de estado com BLoC/Cubit, integração com APIs REST, testes automatizados e Git. Também tenho experiência com distribuição de aplicações para diferentes plataformas, incluindo Android, iOS e Smart POS.",
-    "webAndAiBackground": "Minha experiência anterior com desenvolvimento web, passando por Angular, React e outras tecnologias, complementa minha atuação atual em mobile, contribuindo para uma visão mais abrangente de arquitetura, integração entre sistemas e desenvolvimento de produtos. No dia a dia, utilizo Inteligência Artificial como apoio ao desenvolvimento, principalmente em pair programming, refatoração, análise de requisitos e automação de tarefas.",
-    "continuousFlutterEvolution": "Tenho como foco a evolução contínua no ecossistema Flutter, com atenção a arquitetura, qualidade de software, performance, reutilização de código e construção de aplicações escaláveis que gerem valor para usuários e negócio.",
+    "softwareDeveloperOverview": "Sou Desenvolvedor de Software com cerca de 8 anos de experiência, com especialização em Flutter para aplicações mobile Android e iOS. Ao longo da carreira também atuei fullstack, começando com mobile híbrido em PhoneGap e, mais recentemente, no backoffice do Mercado Pago (React e Go), na Mercado Livre.",
+    "flutterTeamContribution": "Nos últimos anos, concentrei minha atuação no ecossistema Flutter, participando da estruturação de uma equipe dedicada ao desenvolvimento mobile e definindo padrões técnicos, Clean Architecture e boas práticas de arquitetura (MVVM). Fui um dos responsáveis pela criação de uma biblioteca interna em Flutter/Dart baseada no Design System da empresa, padronizando componentes e acelerando o desenvolvimento dos produtos.",
+    "mobileAppLifecycle": "Desenvolvo aplicações mobile de ponta a ponta, da concepção à publicação na Google Play e App Store, utilizando MVVM e Clean Architecture, gerenciamento de estado com BLoC/Cubit, consumo de REST APIs (com Dio) e testes automatizados (unitários e de integração), com versionamento via Git. Tenho experiência publicando para Android, iOS e Smart POS.",
+    "webAndAiBackground": "Minha experiência anterior com desenvolvimento web (Angular, React) complementa minha atuação em mobile, agregando uma visão mais ampla de arquitetura e integração entre sistemas. Utilizo Inteligência Artificial no dia a dia como apoio ao desenvolvimento, incluindo pair programming, refatoração, análise de requisitos e automação de tarefas.",
+    "continuousFlutterEvolution": "Mantenho projetos pessoais como o RP Pay, laboratório para explorar Flutter, arquitetura e Inteligência Artificial aplicada ao desenvolvimento, e meu portfólio (também em Flutter), com CI/CD configurado via GitHub Actions. Após esse período no Mercado Pago, meu objetivo é retornar ao desenvolvimento mobile com Flutter, área em que pretendo seguir minha carreira. Estou aberto a novas oportunidades como desenvolvedor mobile Flutter, em times que valorizem arquitetura sólida, qualidade de código e aprendizado contínuo.",
     "myPrograms": "Alguns dos meus programas",
     "getInTouch": "Entre em contato",
-    "sayHello": "Estou à disposição no que puder ajudar, é só mandar um oi!"
+    "sayHello": "Estou à disposição no que puder ajudar, é só mandar um oi!",
+    "cvHeading": "Currículo",
+    "cvAge": "{age} anos",
+    "@cvAge": {
+        "placeholders": {
+            "age": {
+                "type": "int"
+            }
+        }
+    },
+    "cvSummary": "Resumo",
+    "cvSkills": "Competências",
+    "cvSkillsMobile": "Mobile",
+    "cvSkillsArchitecture": "Arquitetura",
+    "cvSkillsFullstack": "Fullstack",
+    "cvSkillsTools": "Ferramentas",
+    "cvSkillsLanguages": "Idiomas",
+    "cvExperience": "Experiência Profissional",
+    "cvProjects": "Projetos Pessoais",
+    "cvCertifications": "Certificações",
+    "cvEducation": "Formação Acadêmica",
+    "cvBackToHome": "Voltar para o início",
+    "cvPrint": "Imprimir"
 }

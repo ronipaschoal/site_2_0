@@ -5,6 +5,7 @@ import 'package:ronip/helpers/media_query_helper.dart';
 import 'package:ronip/model/home_menu_model.dart';
 import 'package:ronip/pages/home/cubit/home_cubit.dart';
 import 'package:ronip/pages/home/sections/home_section.dart';
+import 'package:ronip/pages/home/widgets/cv_menu_link_widget.dart';
 import 'package:ronip/pages/home/widgets/home_drawer_widget.dart';
 import 'package:ronip/pages/home/widgets/home_menu_widget.dart';
 import 'package:ronip/pages/home/sections/about_section.dart';
@@ -87,6 +88,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ];
 
   late final _actionList = <Widget>[
+    CvMenuLinkWidget(
+      appCubit: widget.appCubit,
+      drawerKey: _drawerKey,
+    ),
     LocaleButtonWidget(
       changeLocale: widget.appCubit.changeLocale,
     ),
