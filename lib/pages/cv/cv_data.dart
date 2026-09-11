@@ -96,12 +96,12 @@ const cvExperienceList = [
     description: {
       'pt': 'Atuação fullstack na evolução do backoffice (React no front-end '
           'e Go no back-end) para gestão de conteúdo do app Mercado Pago, '
-          'com testes unitários, pipelines de CI/CD e uso de Inteligência '
+          'com testes unitários e uso de Inteligência '
           'Artificial para desenvolvimento, refatoração e automação de '
           'tarefas.',
       'en': 'Worked fullstack evolving the backoffice (React front-end and Go '
           'back-end) for Mercado Pago app content management, with unit '
-          'testing, CI/CD pipelines, and use of Artificial Intelligence for '
+          'testing, and use of Artificial Intelligence for '
           'development, refactoring, and task automation.',
     },
   ),
@@ -274,7 +274,7 @@ const cvExperienceList = [
 
 const cvProjectList = [
   CvProjectItem(
-    title: 'rppay',
+    title: 'Rppay',
     tech: ['Flutter', 'MVVM', 'BLoC/Cubit', 'SOLID', 'Material 3'],
     url: 'https://github.com/ronipaschoal/rppay',
     description: {

@@ -67,11 +67,11 @@ class _CvScreenState extends State<CvScreen> {
               actions: [
                 IconButton(
                   icon: const Icon(
-                    Icons.print_outlined,
+                    Icons.download_outlined,
                     color: RpTheme.textHighlightColor,
                   ),
-                  tooltip: AppLocalizations.of(context)!.cvPrint,
-                  onPressed: () => CvPdfBuilder.print(
+                  tooltip: AppLocalizations.of(context)!.cvDownload,
+                  onPressed: () => CvPdfBuilder.download(
                     Localizations.localeOf(context).languageCode,
                   ),
                 ),

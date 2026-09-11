@@ -58,13 +58,13 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
       icon: const Icon(Icons.close, color: RpTheme.textHighlightColor),
     );
 
-    final printButton = IconButton(
-      onPressed: () => CvPdfBuilder.print(
+    final downloadButton = IconButton(
+      onPressed: () => CvPdfBuilder.download(
         Localizations.localeOf(context).languageCode,
       ),
-      tooltip: AppLocalizations.of(context)!.cvPrint,
+      tooltip: AppLocalizations.of(context)!.cvDownload,
       icon: const Icon(
-        Icons.print_outlined,
+        Icons.download_outlined,
         color: RpTheme.textHighlightColor,
       ),
     );
@@ -88,7 +88,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
           backgroundColor: RpTheme.menuColor,
           leading: closeButton,
           actions: [
-            printButton,
+            downloadButton,
             LocaleButtonWidget(changeLocale: widget.appCubit.changeLocale),
             RpTheme.spacerMedium,
           ],
@@ -128,7 +128,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
                 child: Material(
                   color: RpTheme.menuColor,
                   shape: const CircleBorder(),
-                  child: printButton,
+                  child: downloadButton,
                 ),
               ),
             ],

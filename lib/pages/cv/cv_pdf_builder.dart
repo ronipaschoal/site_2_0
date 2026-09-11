@@ -8,8 +8,16 @@ import 'package:ronip/pages/cv/cv_data.dart';
 
 /// Builds the résumé as a paginated PDF — from the same content as
 /// `CvContentWidget` in `cv_data.dart` — and hands it to the platform's
-/// print dialog (browser print preview on web, native print/share sheet
-/// elsewhere).
+/// share/save sheet (a direct file download on web, native share sheet
+/// elsewhere) as a ready file, rather than opening a print dialog.
+///
+/// A print dialog's own "save as PDF" step re-renders the document through
+/// the browser/OS printing pipeline, which — for a paginated PDF shown via
+/// an embedded viewer — commonly rasterizes pages past the first and drops
+/// their link annotations (e.g. the Personal Projects links, which land on
+/// page 2 once the résumé grows past one page). Sharing the already-built
+/// bytes directly sidesteps that pipeline entirely, so every link stays
+/// clickable regardless of which page it ends up on.
 ///
 /// This generates an actual document rather than asking the browser to
 /// print the page directly, because Flutter web only paints the portion of
@@ -75,19 +83,22 @@ sealed class CvPdfBuilder {
     },
   };
 
-  /// Opens the platform print dialog with the résumé rendered in
-  /// [languageCode] ('pt' or 'en'). The suggested file name is date-stamped
+  /// Builds the résumé rendered in [languageCode] ('pt' or 'en') and hands
+  /// it to the platform's share/save sheet as a ready file — a direct
+  /// download on web. The suggested file name is date-stamped
   /// (`_yyyy_mm_dd`) so successive exports don't collide/overwrite one
   /// another on disk.
-  static Future<void> print(String languageCode) {
+  static Future<void> download(String languageCode) async {
     final now = DateTime.now();
     final datestamp = '${now.year}'
         '_${now.month.toString().padLeft(2, '0')}'
         '_${now.day.toString().padLeft(2, '0')}';
 
-    return Printing.layoutPdf(
-      name: 'Roni_Paschoal_Mobile_Developer_Flutter_$datestamp',
-      onLayout: (format) => _build(languageCode, format),
+    final bytes = await _build(languageCode, PdfPageFormat.a4);
+
+    await Printing.sharePdf(
+      bytes: bytes,
+      filename: 'Roni_Paschoal_Mobile_Developer_Flutter_$datestamp.pdf',
     );
   }
 
