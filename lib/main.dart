@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       buildWhen: (previous, current) => previous.locale != current.locale,
       builder: (context, state) {
         return MaterialApp.router(
-          title: 'Roni Paschoal',
+          title: 'Roni Paschoal - Engenheiro de Software Flutter',
           locale: state.locale,
           debugShowCheckedModeBanner: false,
           routerConfig: RpRoutes.router,

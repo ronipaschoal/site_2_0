@@ -86,9 +86,9 @@ class _CvHeaderWidget extends StatelessWidget {
           ),
         ),
         RpTheme.spacerSmall,
-        const SelectableText(
-          'MOBILE ENGINEER',
-          style: TextStyle(
+        SelectableText(
+          AppLocalizations.of(context)!.cvRole.toUpperCase(),
+          style: const TextStyle(
             fontFamily: RpTheme.fontFamilyMono,
             fontSize: RpTheme.fontSizeRegular,
             fontWeight: FontWeight.w600,

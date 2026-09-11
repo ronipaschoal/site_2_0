@@ -1,12 +1,12 @@
 {
-    "name": "Roni Paschoal",
+    "name": "Roni Paschoal - Engenheiro de Software Flutter",
     "short_name": "Ronip",
-    "title": "Roni Paschoal",
+    "title": "Roni Paschoal - Engenheiro de Software Flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Desenvolvedor com mais de 10 anos de experiência, 4 focados em mobile, atuo hoje com Flutter e Dart e sou pós-graduaado em Dispositivos Móveis pelo IFSP.",
+    "description": "Desenvolvedor de software com mais de 8 anos de experiência, especializado em Flutter para apps mobile Android e iOS. Pós-graduado em Dispositivos Móveis pelo IFSP.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -52,6 +52,7 @@ sealed class CvPdfBuilder {
   // no BuildContext to read AppLocalizations from.
   static const _labels = {
     'pt': {
+      'role': 'Engenheiro de Software Flutter',
       'contact': 'Contato',
       'skills': 'Competências',
       'summary': 'Resumo',
@@ -67,6 +68,7 @@ sealed class CvPdfBuilder {
       'age': 'anos',
     },
     'en': {
+      'role': 'Flutter Software Engineer',
       'contact': 'Contact',
       'skills': 'Skills',
       'summary': 'Summary',
@@ -199,7 +201,7 @@ sealed class CvPdfBuilder {
         pw.Text('Roni Paschoal', style: const pw.TextStyle(fontSize: 24)),
         pw.SizedBox(height: 4),
         pw.Text(
-          'MOBILE ENGINEER',
+          labels['role']!.toUpperCase(),
           style: const pw.TextStyle(
             fontSize: 10,
             color: _brand,

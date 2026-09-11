@@ -15,6 +15,7 @@
     "getInTouch": "Get in Touch",
     "sayHello": "I'm available to help in any way I can, just send a hello!",
     "cvHeading": "Resume",
+    "cvRole": "Flutter Software Engineer",
     "cvAge": "{age} years old",
     "@cvAge": {
         "placeholders": {
