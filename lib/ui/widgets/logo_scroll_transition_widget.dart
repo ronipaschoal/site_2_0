@@ -75,7 +75,6 @@ class _RpLogoScrollTransitionWidgetState
       child: Transform.scale(
         scale: widget.startScale + (1 - widget.startScale) * t,
         child: RpLogoWidget.screen(opacity: t * widget.targetOpacity),
-        // child: RpLogoWidget.screen(),
       ),
     );
   }

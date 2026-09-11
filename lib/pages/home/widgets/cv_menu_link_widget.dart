@@ -25,7 +25,7 @@ class CvMenuLinkWidget extends StatelessWidget {
       },
       child: Text(
         AppLocalizations.of(context)!.cvHeading,
-        style: const TextStyle(color: RpTheme.textColor),
+        style: TextStyle(color: RpTheme.textColor),
       ),
     );
   }

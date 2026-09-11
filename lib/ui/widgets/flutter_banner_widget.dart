@@ -12,7 +12,7 @@ class FlutterBannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: RpTheme.backgroundColorDark,
+      color: RpTheme.backgroundColor,
       child: SafeArea(
         child: Banner(
           location: BannerLocation.topEnd,

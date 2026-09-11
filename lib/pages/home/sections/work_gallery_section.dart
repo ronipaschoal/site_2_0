@@ -181,21 +181,14 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
                         top: isSmallScreen
                             ? topInset + 20.0
                             : viewportSize.height * 0.1,
-                        child: IgnorePointer(
-                          child: AnimatedOpacity(
-                            duration: const Duration(milliseconds: 250),
-                            opacity: (1 - progress * 6).clamp(0.0, 1.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                HomeSectionTitleWidget(
-                                  title:
-                                      HomeSectionEnum.programs.title(context),
-                                  scrollController: widget.scrollController,
-                                ),
-                              ],
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            HomeSectionTitleWidget(
+                              title: HomeSectionEnum.programs.title(context),
+                              scrollController: widget.scrollController,
                             ),
-                          ),
+                          ],
                         ),
                       ),
                       Positioned(
@@ -272,7 +265,8 @@ class _GalleryCardState extends State<_GalleryCard> {
           curve: Curves.easeOut,
           width: widget.width,
           height: widget.height,
-          child: ClipRect(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -285,14 +279,21 @@ class _GalleryCardState extends State<_GalleryCard> {
                 Positioned.fill(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      border: Border.all(
+                        color: RpTheme.blackColor.withAlpha(120),
+                        width: 0.6,
+                      ),
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          RpTheme.backgroundColor.withAlpha(100),
+                          RpTheme.backgroundColor.withAlpha(235),
+                          RpTheme.backgroundColor.withAlpha(50),
+                          RpTheme.backgroundColor.withAlpha(50),
                           RpTheme.backgroundColor.withAlpha(235),
                         ],
-                        stops: const [0.45, 1.0],
+                        stops: const [0.0, 0.16, 0.6, 0.9],
                       ),
                     ),
                   ),
@@ -300,7 +301,7 @@ class _GalleryCardState extends State<_GalleryCard> {
                 Positioned(
                   left: 20.0,
                   top: 16.0,
-                  child: Text(
+                  child: SelectableText(
                     (widget.index + 1).toString().padLeft(2, '0'),
                     style: TextStyle(
                       fontFamily: RpTheme.fontFamilyMono,
@@ -318,12 +319,12 @@ class _GalleryCardState extends State<_GalleryCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      SelectableText(
                         work.tag.toUpperCase(),
                         style: RpTheme.labelStyle,
                       ),
                       RpTheme.spacerSmall,
-                      Text(
+                      SelectableText(
                         work.titleFor(locale),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -332,10 +333,9 @@ class _GalleryCardState extends State<_GalleryCard> {
                         ),
                       ),
                       RpTheme.spacerSmallX,
-                      Text(
+                      SelectableText(
                         work.descriptionFor(locale),
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: RpTheme.textColor,
                           fontSize: widget.compact ? 12.5 : 14.0,

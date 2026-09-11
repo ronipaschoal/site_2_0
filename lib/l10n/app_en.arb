@@ -3,6 +3,8 @@
     "about": "About",
     "programs": "Programs",
     "contact": "Contact",
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode",
     "wellcome": "Hello, I am",
     "flutterSpecialist": "Flutter Specialist",
     "aboutMe": "About Me",

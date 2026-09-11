@@ -36,7 +36,7 @@ class HomeSectionTitleWidget extends StatelessWidget {
         RpDecodeTextWidget(
           text: title,
           scrollController: scrollController,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: RpTheme.fontFamilyBody,
             fontWeight: FontWeight.w600,
             fontSize: RpTheme.fontSizeMedium,

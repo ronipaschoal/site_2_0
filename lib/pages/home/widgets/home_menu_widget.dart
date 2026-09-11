@@ -59,6 +59,7 @@ class HomeMenuWidget extends StatelessWidget {
           height: 24.0,
           color: RpTheme.brandColor,
         ),
+        RpTheme.spacerMedium,
         ...actionList,
       ],
     );

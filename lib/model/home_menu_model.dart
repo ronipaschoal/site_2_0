@@ -84,7 +84,7 @@ class ExternalMenu {
       icon,
       width: size.width,
       height: size.height,
-      colorFilter: const ColorFilter.mode(
+      colorFilter: ColorFilter.mode(
         RpTheme.textColor,
         BlendMode.srcIn,
       ),

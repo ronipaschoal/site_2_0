@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ronip/model/locale_model.dart';
+import 'package:ronip/ui/theme.dart';
 
 class LocaleButtonWidget extends StatelessWidget {
   final ValueChanged<Locale> changeLocale;
@@ -16,7 +17,7 @@ class LocaleButtonWidget extends StatelessWidget {
         onPressed: () => changeLocale(LocaleEnum.en.locale),
         child: Text(
           LocaleEnum.en.text,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: RpTheme.textHighlightColor),
         ),
       );
     }
@@ -24,7 +25,7 @@ class LocaleButtonWidget extends StatelessWidget {
       onPressed: () => changeLocale(LocaleEnum.pt.locale),
       child: Text(
         LocaleEnum.pt.text,
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: RpTheme.textHighlightColor),
       ),
     );
   }

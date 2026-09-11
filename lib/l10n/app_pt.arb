@@ -3,6 +3,8 @@
     "about": "Sobre",
     "programs": "Programas",
     "contact": "Contato",
+    "switchToLightMode": "Mudar para modo claro",
+    "switchToDarkMode": "Mudar para modo escuro",
     "wellcome": "Olá, eu sou",
     "flutterSpecialist": "Especialista Flutter",
     "aboutMe": "Sobre mim",

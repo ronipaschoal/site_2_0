@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ronip/ui/theme.dart';
+import 'dart:ui';
 
 class HomeContactItemWidget extends StatelessWidget {
   final String text;
@@ -15,32 +16,45 @@ class HomeContactItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 280.0,
-        height: 140.0,
-        child: IconButton(
-          style: IconButton.styleFrom(
-            backgroundColor: const Color.fromARGB(152, 6, 6, 15),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Container(
+          width: 280.0,
+          height: 140.0,
+          decoration: BoxDecoration(
+            color: RpTheme.textHighlightColor.withAlpha(20),
+            borderRadius: BorderRadius.circular(20.0),
+            border: Border.all(
+              color: RpTheme.textHighlightColor.withAlpha(40),
+              width: 1.5,
             ),
           ),
-          onPressed: onPressed,
-          icon: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              icon,
-              RpTheme.spacerMedium,
-              Text(
-                text,
-                style: const TextStyle(
-                  color: RpTheme.textColor,
-                  fontSize: RpTheme.fontSizeRegular,
+          child: IconButton(
+            style: IconButton.styleFrom(
+              padding: EdgeInsets.zero,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20.0),
                 ),
               ),
-            ],
+            ),
+            onPressed: onPressed,
+            icon: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                icon,
+                RpTheme.spacerMedium,
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: RpTheme.textColor,
+                    fontSize: RpTheme.fontSizeRegular,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -97,7 +97,7 @@ class _CvHeaderWidget extends StatelessWidget {
           ),
         ),
         RpTheme.spacerSmallX,
-        const SelectableText(
+        SelectableText(
           'Flutter · Dart · Android · iOS',
           style: TextStyle(color: RpTheme.textColor),
         ),
@@ -105,13 +105,13 @@ class _CvHeaderWidget extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
+            Icon(
               Icons.location_on_outlined,
               size: 15.0,
               color: RpTheme.textColor,
             ),
             const SizedBox(width: 4.0),
-            const SelectableText('Santo André, SP', style: RpTheme.labelStyle),
+            SelectableText('Santo André, SP', style: RpTheme.labelStyle),
             const SizedBox(width: 12.0),
             SelectableText(
               AppLocalizations.of(context)!
@@ -233,7 +233,7 @@ class _CvMainColumnWidget extends StatelessWidget {
           _CvExperienceCardWidget(item: cvExperienceList[i]),
           if (i != cvExperienceList.length - 1) ...[
             RpTheme.spacerLarge,
-            const Divider(color: RpTheme.hairlineColor, height: 1.0),
+            Divider(color: RpTheme.hairlineColor, height: 1.0),
             RpTheme.spacerLarge,
           ],
         ],
@@ -342,7 +342,7 @@ class _CvExperienceCardWidget extends StatelessWidget {
           children: [
             SelectableText(
               item.company,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18.0,
                 color: RpTheme.textHighlightColor,
@@ -350,7 +350,7 @@ class _CvExperienceCardWidget extends StatelessWidget {
             ),
             SelectableText(
               item.period,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: RpTheme.fontFamilyMono,
                 fontSize: 12.5,
                 color: RpTheme.textColor,
@@ -405,14 +405,14 @@ class _CvCertificationRowWidget extends StatelessWidget {
             children: [
               SelectableText(
                 item.title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: RpTheme.textHighlightColor,
                 ),
               ),
               SelectableText(
                 '${item.issuer} · ${item.date}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: RpTheme.fontFamilyMono,
                   fontSize: 12.0,
                   color: RpTheme.textColor,
@@ -451,14 +451,14 @@ class _CvEducationRowWidget extends StatelessWidget {
             children: [
               SelectableText(
                 '${item.institution} · ${item.course}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: RpTheme.textHighlightColor,
                 ),
               ),
               SelectableText(
                 item.period,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: RpTheme.fontFamilyMono,
                   fontSize: 12.0,
                   color: RpTheme.textColor,
@@ -487,7 +487,7 @@ class _CvSkillChipWidget extends StatelessWidget {
       ),
       child: SelectableText(
         skill,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: RpTheme.fontFamilyMono,
           fontSize: 12.5,
           color: RpTheme.textHighlightColor,

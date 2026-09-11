@@ -6,6 +6,7 @@ import 'package:ronip/pages/cv/cv_content_widget.dart';
 import 'package:ronip/pages/cv/cv_pdf_builder.dart';
 import 'package:ronip/ui/theme.dart';
 import 'package:ronip/ui/widgets/locale_button_widget.dart';
+import 'package:ronip/ui/widgets/theme_button_widget.dart';
 
 /// Shows the résumé as a dismissible overlay above the current page,
 /// instead of navigating away to the `/cv` route: a centered "window" with
@@ -55,7 +56,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
     final closeButton = IconButton(
       onPressed: () => Navigator.of(context).pop(),
       tooltip: MaterialLocalizations.of(context).closeButtonLabel,
-      icon: const Icon(Icons.close, color: RpTheme.textHighlightColor),
+      icon: Icon(Icons.close, color: RpTheme.textHighlightColor),
     );
 
     final downloadButton = IconButton(
@@ -63,7 +64,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
         Localizations.localeOf(context).languageCode,
       ),
       tooltip: AppLocalizations.of(context)!.cvDownload,
-      icon: const Icon(
+      icon: Icon(
         Icons.download_outlined,
         color: RpTheme.textHighlightColor,
       ),
@@ -90,6 +91,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
           actions: [
             downloadButton,
             LocaleButtonWidget(changeLocale: widget.appCubit.changeLocale),
+            ThemeButtonWidget(toggleTheme: widget.appCubit.toggleTheme),
             RpTheme.spacerMedium,
           ],
         ),

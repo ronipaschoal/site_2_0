@@ -25,8 +25,8 @@ class HomeMenuButtonWidget extends StatelessWidget {
               child: Text(
                 menu.translate(context),
                 style: menu.section == state.activeMenu
-                    ? const TextStyle(color: RpTheme.textHighlightColor)
-                    : const TextStyle(color: RpTheme.textColor),
+                    ? TextStyle(color: RpTheme.textHighlightColor)
+                    : TextStyle(color: RpTheme.textColor),
               ),
             ),
             if (menu.section == state.activeMenu)

@@ -97,7 +97,7 @@ class _RpDecodeTextWidgetState extends State<RpDecodeTextWidget>
         animation: _controller,
         builder: (context, _) => Opacity(
           opacity: _triggered ? 1.0 : 0.0,
-          child: Text(
+          child: SelectableText(
             _triggered ? _scrambledAt(_controller.value) : widget.text,
             semanticsLabel: widget.text,
             textAlign: widget.textAlign,

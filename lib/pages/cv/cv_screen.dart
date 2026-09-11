@@ -9,6 +9,7 @@ import 'package:ronip/pages/home/home_route.dart';
 import 'package:ronip/ui/theme.dart';
 import 'package:ronip/ui/widgets/flutter_banner_widget.dart';
 import 'package:ronip/ui/widgets/locale_button_widget.dart';
+import 'package:ronip/ui/widgets/theme_button_widget.dart';
 
 /// Full-page `/cv` route: the same [CvContentWidget] shown by
 /// `CvDialogWidget`, wrapped in the site's usual page chrome so it also
@@ -48,7 +49,7 @@ class _CvScreenState extends State<CvScreen> {
               surfaceTintColor: RpTheme.menuColor,
               backgroundColor: RpTheme.menuColor,
               leading: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back,
                   color: RpTheme.textHighlightColor,
                 ),
@@ -58,7 +59,7 @@ class _CvScreenState extends State<CvScreen> {
               title: SelectableText(
                 AppLocalizations.of(context)!.cvHeading,
                 semanticsLabel: AppLocalizations.of(context)!.cvHeading,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: RpTheme.fontFamilyDisplay,
                   fontSize: RpTheme.fontSizeMedium,
                   color: RpTheme.textHighlightColor,
@@ -66,7 +67,7 @@ class _CvScreenState extends State<CvScreen> {
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.download_outlined,
                     color: RpTheme.textHighlightColor,
                   ),
@@ -76,6 +77,7 @@ class _CvScreenState extends State<CvScreen> {
                   ),
                 ),
                 LocaleButtonWidget(changeLocale: widget.appCubit.changeLocale),
+                ThemeButtonWidget(toggleTheme: widget.appCubit.toggleTheme),
                 RpTheme.spacerMedium,
               ],
             ),

@@ -85,7 +85,7 @@ class _HomeSectionState extends State<HomeSection>
           RpTheme.spacerSmall,
           _RiseIn(
             animation: nameStage,
-            child: const SelectableText(
+            child: SelectableText(
               'Roni Paschoal',
               semanticsLabel: 'Roni Paschoal',
               style: TextStyle(

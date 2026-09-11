@@ -17,6 +17,7 @@ import 'package:ronip/ui/widgets/locale_button_widget.dart';
 import 'package:ronip/ui/widgets/logo_scroll_transition_widget.dart';
 import 'package:ronip/ui/widgets/logo_widget.dart';
 import 'package:ronip/ui/widgets/scroll_progress_widget.dart';
+import 'package:ronip/ui/widgets/theme_button_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppCubit appCubit;
@@ -95,6 +96,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     LocaleButtonWidget(
       changeLocale: widget.appCubit.changeLocale,
     ),
+    ThemeButtonWidget(
+      toggleTheme: widget.appCubit.toggleTheme,
+    ),
   ];
 
   @override
@@ -150,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     : AppBar(
                         surfaceTintColor: RpTheme.menuColor,
                         backgroundColor: RpTheme.menuColor,
-                        title: const SelectableText(
+                        title: SelectableText(
                           'Roni Paschoal',
                           semanticsLabel: 'Roni Paschoal',
                           style: TextStyle(

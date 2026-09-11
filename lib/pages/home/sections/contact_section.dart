@@ -40,7 +40,7 @@ class ContactSection extends StatelessWidget {
           ),
           RpRevealOnScrollWidget(
             scrollController: scrollController,
-            child: Text(
+            child: SelectableText(
               AppLocalizations.of(context)!.sayHello,
               textAlign: TextAlign.justify,
             ),
@@ -52,54 +52,67 @@ class ContactSection extends StatelessWidget {
                 ? Column(
                     children: [
                       RpTheme.spacerSmall,
-                      HomeContactItemWidget(
-                        text: 'roni@ronipaschoal.com.br',
-                        icon: SvgPicture.asset(
-                          'assets/images/logos/email.svg',
-                          width: iconSize.width,
-                          height: iconSize.height,
-                          colorFilter: const ColorFilter.mode(
-                            RpTheme.textColor,
-                            BlendMode.srcIn,
+                      Center(
+                        child: SizedBox(
+                          width: 260.0,
+                          child: HomeContactItemWidget(
+                            text: 'roni@ronipaschoal.com.br',
+                            icon: SvgPicture.asset(
+                              'assets/images/logos/email.svg',
+                              width: iconSize.width,
+                              height: iconSize.height,
+                              colorFilter: ColorFilter.mode(
+                                RpTheme.textColor,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                            onPressed: () => HyperlinkHelper.mail(
+                              'mailto:roni@ronipaschoal.com.br?subject=Website contact!',
+                            ),
                           ),
-                        ),
-                        onPressed: () => HyperlinkHelper.mail(
-                          'mailto:roni@ronipaschoal.com.br?subject=Website contact!',
                         ),
                       ),
                       RpTheme.spacerMedium,
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        itemCount: 1,
-                        itemBuilder: (_, index) {
-                          final externalMenu = externalMenuList[index];
-                          return HomeContactItemWidget(
-                            text: externalMenu.text,
-                            icon: externalMenu.iconWidget(iconSize),
-                            onPressed: externalMenu.goToExternal,
-                          );
-                        },
+                      Center(
+                        child: SizedBox(
+                          width: 260.0,
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            itemCount: 1,
+                            itemBuilder: (_, index) {
+                              final externalMenu = externalMenuList[index];
+                              return HomeContactItemWidget(
+                                text: externalMenu.text,
+                                icon: externalMenu.iconWidget(iconSize),
+                                onPressed: externalMenu.goToExternal,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      HomeContactItemWidget(
-                        text: 'roni@ronipaschoal.com.br',
-                        icon: SvgPicture.asset(
-                          'assets/images/logos/email.svg',
-                          width: iconSize.width,
-                          height: iconSize.height,
-                          colorFilter: const ColorFilter.mode(
-                            RpTheme.textColor,
-                            BlendMode.srcIn,
+                      SizedBox(
+                        height: 160.0,
+                        child: HomeContactItemWidget(
+                          text: 'roni@ronipaschoal.com.br',
+                          icon: SvgPicture.asset(
+                            'assets/images/logos/email.svg',
+                            width: iconSize.width,
+                            height: iconSize.height,
+                            colorFilter: ColorFilter.mode(
+                              RpTheme.textColor,
+                              BlendMode.srcIn,
+                            ),
                           ),
-                        ),
-                        onPressed: () => HyperlinkHelper.mail(
-                          'mailto:roni@ronipaschoal.com.br?subject=Website contact!',
+                          onPressed: () => HyperlinkHelper.mail(
+                            'mailto:roni@ronipaschoal.com.br?subject=Website contact!',
+                          ),
                         ),
                       ),
                       const SizedBox(width: RpTheme.spacingMedium),
