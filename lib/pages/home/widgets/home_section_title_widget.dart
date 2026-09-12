@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/helpers/media_query_helper.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/decode_text_widget.dart';
+import 'package:ronip/core/media_query_helper.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/decode_text_widget.dart';
 
 class HomeSectionTitleWidget extends StatelessWidget {
   final String title;
@@ -22,7 +22,7 @@ class HomeSectionTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+    final isSmallScreen = context.isSmallScreen;
     final underline = Container(
       height: 2.0,
       width: 42.0,
@@ -40,7 +40,7 @@ class HomeSectionTitleWidget extends StatelessWidget {
             fontFamily: RpTheme.fontFamilyBody,
             fontWeight: FontWeight.w600,
             fontSize: RpTheme.fontSizeMedium,
-            color: RpTheme.textHighlightColor,
+            color: context.rpColors.textHighlightColor,
             letterSpacing: -0.2,
           ),
           textAlign: centered ? TextAlign.center : TextAlign.start,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/ui/theme.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/scroll_progress_mixin.dart';
 
 /// Thin bar pinned to the top of the page that fills left-to-right in step
 /// with [scrollController]'s scroll progress through the full page height.
@@ -19,30 +20,16 @@ class RpScrollProgressWidget extends StatefulWidget {
   State<RpScrollProgressWidget> createState() => _RpScrollProgressWidgetState();
 }
 
-class _RpScrollProgressWidgetState extends State<RpScrollProgressWidget> {
-  double _progress = 0.0;
+class _RpScrollProgressWidgetState extends State<RpScrollProgressWidget>
+    with ScrollProgressMixin {
+  @override
+  ScrollController get scrollProgressController => widget.scrollController;
 
   @override
-  void initState() {
-    super.initState();
-    widget.scrollController.addListener(_updateProgress);
-  }
-
-  @override
-  void dispose() {
-    widget.scrollController.removeListener(_updateProgress);
-    super.dispose();
-  }
-
-  void _updateProgress() {
-    if (!widget.scrollController.hasClients) return;
+  double computeScrollProgress() {
     final position = widget.scrollController.position;
     final maxExtent = position.maxScrollExtent;
-    final progress =
-        maxExtent <= 0 ? 0.0 : (position.pixels / maxExtent).clamp(0.0, 1.0);
-    if (progress != _progress) {
-      setState(() => _progress = progress);
-    }
+    return maxExtent <= 0 ? 0.0 : position.pixels / maxExtent;
   }
 
   @override
@@ -51,7 +38,7 @@ class _RpScrollProgressWidgetState extends State<RpScrollProgressWidget> {
       height: widget.height,
       child: FractionallySizedBox(
         alignment: Alignment.centerLeft,
-        widthFactor: _progress,
+        widthFactor: progress,
         child: ColoredBox(color: widget.color),
       ),
     );

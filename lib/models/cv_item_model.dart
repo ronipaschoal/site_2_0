@@ -1,3 +1,5 @@
+import 'package:ronip/models/localized_map.dart';
+
 /// A résumé job entry. `role` and `description` carry one value per
 /// language code (e.g. `{'pt': ..., 'en': ...}`), matching the shape a real
 /// content source (CMS/database) would return per locale — this data is
@@ -20,17 +22,10 @@ class CvExperienceItem {
     required this.description,
   });
 
-  static const _fallbackLanguageCode = 'pt';
-
-  String roleFor(String languageCode) => _localize(role, languageCode);
+  String roleFor(String languageCode) => role.resolve(languageCode);
 
   String descriptionFor(String languageCode) =>
-      _localize(description, languageCode);
-
-  String _localize(Map<String, String> values, String languageCode) =>
-      values[languageCode] ??
-      values[_fallbackLanguageCode] ??
-      values.values.first;
+      description.resolve(languageCode);
 }
 
 /// A personal/study project entry. `description` carries one value per
@@ -49,12 +44,8 @@ class CvProjectItem {
     required this.url,
   });
 
-  static const _fallbackLanguageCode = 'pt';
-
   String descriptionFor(String languageCode) =>
-      description[languageCode] ??
-      description[_fallbackLanguageCode] ??
-      description.values.first;
+      description.resolve(languageCode);
 }
 
 /// A course/certificate entry. Titles and issuers are proper names handed
@@ -96,16 +87,9 @@ class CvLanguageItem {
     required this.level,
   });
 
-  static const _fallbackLanguageCode = 'pt';
+  String languageFor(String languageCode) => language.resolve(languageCode);
 
-  String languageFor(String languageCode) => _localize(language, languageCode);
-
-  String levelFor(String languageCode) => _localize(level, languageCode);
-
-  String _localize(Map<String, String> values, String languageCode) =>
-      values[languageCode] ??
-      values[_fallbackLanguageCode] ??
-      values.values.first;
+  String levelFor(String languageCode) => level.resolve(languageCode);
 }
 
 /// What a [CvContactItem] links to — lets each renderer (on-screen icon,

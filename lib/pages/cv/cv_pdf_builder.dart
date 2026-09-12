@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:ronip/model/cv_item_model.dart';
+import 'package:ronip/models/cv_item_model.dart';
 import 'package:ronip/pages/cv/cv_data.dart';
 
 /// Builds the résumé as a paginated PDF — from the same content as

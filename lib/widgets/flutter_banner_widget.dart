@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/ui/theme.dart';
+import 'package:ronip/core/theme.dart';
 
 class FlutterBannerWidget extends StatelessWidget {
   final Widget child;
@@ -12,7 +12,7 @@ class FlutterBannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: RpTheme.backgroundColor,
+      color: context.rpColors.backgroundColor,
       child: SafeArea(
         child: Banner(
           location: BannerLocation.topEnd,

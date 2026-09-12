@@ -1,9 +1,13 @@
-import 'package:ronip/model/cv_item_model.dart';
+import 'package:ronip/models/cv_item_model.dart';
 
 /// Birth year, used to compute the age shown in the résumé header. Only the
 /// year is tracked (not the full birth date), so the age simply follows the
 /// current calendar year rather than the exact birthday.
 const cvBirthYear = 1985;
+
+/// The single contact email shown across the site (résumé and the home
+/// page's Contact section) — kept in one place so the two never drift apart.
+const contactEmail = 'ronipaschoal@gmail.com';
 
 /// The résumé's content, shared by the on-screen [CvContentWidget] and the
 /// PDF export (`CvPdfBuilder`) so both stay in sync from one source.
@@ -30,8 +34,8 @@ const cvSummary = {
 const cvContactList = [
   CvContactItem(
     type: CvContactType.email,
-    text: 'ronipaschoal@gmail.com',
-    url: 'mailto:ronipaschoal@gmail.com?subject=Contato via CV',
+    text: contactEmail,
+    url: 'mailto:$contactEmail?subject=Contato via CV',
   ),
   CvContactItem(
     type: CvContactType.linkedin,
@@ -59,7 +63,7 @@ const cvSkillGroups = <String, List<String>>{
     'MVVM',
     'Clean Architecture',
     'SOLID',
-    'Design Patterns'
+    'Design Patterns',
   ],
   'fullstack': ['Angular', 'React', 'Go'],
   'tools': [

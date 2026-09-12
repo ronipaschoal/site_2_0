@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:ronip/models/localized_map.dart';
 
 /// A work-gallery entry. `title` and `description` carry one value per
 /// language code (e.g. `{'pt': ..., 'en': ...}`), matching the shape a real
@@ -22,14 +23,8 @@ class WorkItem {
     required this.description,
   });
 
-  static const _fallbackLanguageCode = 'pt';
+  String titleFor(Locale locale) => title.resolve(locale.languageCode);
 
-  String titleFor(Locale locale) => _localize(title, locale);
-
-  String descriptionFor(Locale locale) => _localize(description, locale);
-
-  String _localize(Map<String, String> values, Locale locale) =>
-      values[locale.languageCode] ??
-      values[_fallbackLanguageCode] ??
-      values.values.first;
+  String descriptionFor(Locale locale) =>
+      description.resolve(locale.languageCode);
 }

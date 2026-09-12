@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ronip/l10n/app_localizations.dart';
-import 'package:ronip/model/home_menu_model.dart';
+import 'package:ronip/models/home_menu_model.dart';
 import 'package:ronip/pages/home/widgets/home_section_title_widget.dart';
 import 'package:ronip/pages/home/widgets/home_section_widget.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/reveal_on_scroll_widget.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/reveal_on_scroll_widget.dart';
 
 class AboutSection extends StatelessWidget {
   final ScrollController scrollController;

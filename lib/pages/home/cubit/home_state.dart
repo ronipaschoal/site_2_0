@@ -14,4 +14,12 @@ class HomeState {
       activeMenu: activeMenu ?? this.activeMenu,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HomeState && other.activeMenu == activeMenu;
+
+  @override
+  int get hashCode => activeMenu.hashCode;
 }

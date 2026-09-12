@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ronip/widgets/scroll_reveal_mixin.dart';
 
 /// Fades and slides [child] up once it first scrolls within
 /// [revealAtFraction] of the viewport height from the top — a one-time
-/// scroll-triggered reveal
-/// scroll-linked drift.
+/// reveal, not a continuous scroll-linked drift.
 class RpRevealOnScrollWidget extends StatefulWidget {
   final Widget child;
   final ScrollController scrollController;
@@ -25,11 +25,18 @@ class RpRevealOnScrollWidget extends StatefulWidget {
 }
 
 class _RpRevealOnScrollWidgetState extends State<RpRevealOnScrollWidget>
-    with SingleTickerProviderStateMixin {
-  final _anchorKey = GlobalKey();
+    with SingleTickerProviderStateMixin, ScrollRevealMixin {
   late final AnimationController _controller;
   late final Animation<double> _animation;
-  bool _revealed = false;
+
+  @override
+  ScrollController get revealScrollController => widget.scrollController;
+
+  @override
+  double get revealAtFraction => widget.revealAtFraction;
+
+  @override
+  void onReveal() => _controller.forward();
 
   @override
   void initState() {
@@ -42,35 +49,20 @@ class _RpRevealOnScrollWidgetState extends State<RpRevealOnScrollWidget>
     );
     _animation =
         CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
-    widget.scrollController.addListener(_checkReveal);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkReveal());
+    startRevealTracking();
   }
 
   @override
   void dispose() {
-    widget.scrollController.removeListener(_checkReveal);
+    stopRevealTracking();
     _controller.dispose();
     super.dispose();
-  }
-
-  void _checkReveal() {
-    if (_revealed || !mounted) return;
-    final box = _anchorKey.currentContext?.findRenderObject() as RenderBox?;
-    if (box == null || !box.attached || !box.hasSize) return;
-
-    final viewportHeight = MediaQuery.sizeOf(context).height;
-    final top = box.localToGlobal(Offset.zero).dy;
-    if (top < viewportHeight * widget.revealAtFraction) {
-      _revealed = true;
-      widget.scrollController.removeListener(_checkReveal);
-      _controller.forward();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return KeyedSubtree(
-      key: _anchorKey,
+      key: revealAnchorKey,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) => Opacity(

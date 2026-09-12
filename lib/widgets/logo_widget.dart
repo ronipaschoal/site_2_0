@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/image_widget.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/image_widget.dart';
 
 class RpLogoWidget extends StatelessWidget {
   final Size? size;

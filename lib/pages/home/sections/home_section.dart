@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/home/widgets/home_section_widget.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/logo_widget.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/logo_widget.dart';
 
 class HomeSection extends StatefulWidget {
-  final ScrollController scrollController;
-
-  const HomeSection({super.key, required this.scrollController});
+  const HomeSection({super.key});
 
   @override
   State<HomeSection> createState() => _HomeSectionState();
@@ -16,12 +14,6 @@ class HomeSection extends StatefulWidget {
 class _HomeSectionState extends State<HomeSection>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-
-  // How far the user has scrolled past this section, as a 0..1 fraction of
-  // its own height - kept in step with RpLogoScrollTransitionWidget's own
-  // progress so the hero logo fades out exactly as the background watermark
-  // logo grows in.
-  double _scrollProgress = 0.0;
 
   @override
   void initState() {
@@ -33,25 +25,12 @@ class _HomeSectionState extends State<HomeSection>
       duration:
           reduceMotion ? Duration.zero : const Duration(milliseconds: 900),
     )..forward();
-    widget.scrollController.addListener(_updateScrollProgress);
   }
 
   @override
   void dispose() {
-    widget.scrollController.removeListener(_updateScrollProgress);
     _controller.dispose();
     super.dispose();
-  }
-
-  void _updateScrollProgress() {
-    if (!widget.scrollController.hasClients) return;
-    final extent = context.size?.height ?? 0.0;
-    final progress = extent <= 0
-        ? 0.0
-        : (widget.scrollController.offset / extent).clamp(0.0, 1.0);
-    if (progress != _scrollProgress) {
-      setState(() => _scrollProgress = progress);
-    }
   }
 
   Animation<double> _stage(double begin, double end) => CurvedAnimation(
@@ -79,7 +58,7 @@ class _HomeSectionState extends State<HomeSection>
               AppLocalizations.of(context)!.wellcome.toUpperCase(),
               semanticsLabel: AppLocalizations.of(context)!.wellcome,
               textAlign: TextAlign.center,
-              style: RpTheme.labelStyle,
+              style: RpTheme.labelStyle(context.rpColors.textColor),
             ),
           ),
           RpTheme.spacerSmall,
@@ -91,7 +70,7 @@ class _HomeSectionState extends State<HomeSection>
               style: TextStyle(
                 fontFamily: RpTheme.fontFamilyDisplay,
                 fontSize: RpTheme.fontSizeLarge,
-                color: RpTheme.textHighlightColor,
+                color: context.rpColors.textHighlightColor,
               ),
             ),
           ),

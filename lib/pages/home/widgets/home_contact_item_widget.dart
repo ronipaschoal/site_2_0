@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/ui/theme.dart';
+import 'package:ronip/core/theme.dart';
 import 'dart:ui';
 
 class HomeContactItemWidget extends StatelessWidget {
@@ -24,10 +24,10 @@ class HomeContactItemWidget extends StatelessWidget {
           width: 280.0,
           height: 140.0,
           decoration: BoxDecoration(
-            color: RpTheme.textHighlightColor.withAlpha(20),
+            color: context.rpColors.textHighlightColor.withAlpha(20),
             borderRadius: BorderRadius.circular(20.0),
             border: Border.all(
-              color: RpTheme.textHighlightColor.withAlpha(40),
+              color: context.rpColors.textHighlightColor.withAlpha(40),
               width: 1.5,
             ),
           ),
@@ -49,7 +49,7 @@ class HomeContactItemWidget extends StatelessWidget {
                 Text(
                   text,
                   style: TextStyle(
-                    color: RpTheme.textColor,
+                    color: context.rpColors.textColor,
                     fontSize: RpTheme.fontSizeRegular,
                   ),
                 ),

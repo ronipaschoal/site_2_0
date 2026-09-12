@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ronip/cubits/app/app_cubit.dart';
-import 'package:ronip/helpers/routes_helper.dart';
+import 'package:ronip/app/routes_helper.dart';
 import 'package:ronip/pages/home/cubit/home_cubit.dart';
 import 'package:ronip/pages/home/home_screen.dart';
 
@@ -14,9 +13,7 @@ sealed class HomeRoute {
       pageBuilder: (context, __) => RoutesHelper.transitionPage(
         BlocProvider(
           create: (context) => HomeCubit(),
-          child: HomeScreen(
-            appCubit: context.read<AppCubit>(),
-          ),
+          child: const HomeScreen(),
         ),
       ),
     );

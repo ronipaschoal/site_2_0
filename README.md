@@ -36,13 +36,14 @@ TODO: add screenshots of Home and the Résumé page (light/dark, PT/EN).
 
 This is a static content site with no backend, so there's no data layer to abstract behind repositories — unlike a project such as [rppay](https://github.com/ronipaschoal/rppay), an MVVM+repository stack would be more structure than the content actually needs here.
 
-Instead, the structure favors separation by page/route (`home/`, `cv/`), with a handful of cross-cutting layers (`model/`, `helpers/`, `ui/`) shared across pages, and Cubit/BLoC reserved for the few pieces of state that actually change at runtime — the current locale, the light/dark theme, and the currently active menu section — rather than for content, which is static and lives directly in the code.
+Instead, the structure favors separation by page/route (`home/`, `cv/`), with a handful of cross-cutting layers (`models/`, `core/`, `widgets/`) shared across pages, and Cubit/BLoC reserved for the few pieces of state that actually change at runtime — the current locale, the light/dark theme, and the currently active menu section — rather than for content, which is static and lives directly in the code.
 
 Some principles are still applied where they make sense for this shape of app:
 
 - **Single Responsibility** — sections/widgets only build UI, cubits only hold a small piece of state, model classes only structure data.
 - **Locale-aware content, not locale-aware UI copy** — fixed UI strings (buttons, section titles) go through ARB-based `AppLocalizations`; per-record content (résumé entries, work items) carries one value per language code directly on the model instead, matching the shape a real content source (CMS/database) would return per locale.
-- **Shared page composition** — page transitions, breakpoint checks, and link handling live once in `helpers/`, not duplicated per page.
+- **Shared page composition** — page transitions, breakpoint checks, and link handling live once in `core/`, not duplicated per page.
+- **Theme via `ThemeExtension`, not global state** — light/dark colors are read through `Theme.of(context)` (`context.rpColors`), so a theme change propagates only to the widgets that actually read it, the same way any other Flutter theme change does.
 
 ### State management
 
@@ -62,26 +63,27 @@ Everything else on the page is either stateless or owned by a local `ScrollContr
 
 ```
 lib/
-├── config/                                    # 🧭 Routing configuration
-│   ├── navigate.dart                          # Thin GoRouter push/pop helpers
-│   └── routes.dart                            # App's route table (GoRouter)
+├── app/                                       # 🧭 App-level routing
+│   ├── routes.dart                            # App's route table (GoRouter)
+│   └── routes_helper.dart                     # Shared page-transition builder
+│
+├── core/                                      # 🎨 Cross-cutting design system + utilities
+│   ├── theme.dart                             # RpColors (ThemeExtension), text styles, spacing
+│   ├── hyperlink_helper.dart                  # Opens external links / mailto
+│   └── media_query_helper.dart                # Small-screen/breakpoint extension on BuildContext
 │
 ├── cubits/
 │   └── app/
 │       ├── app_cubit.dart                     # App-wide state (locale, theme)
 │       └── app_state.dart                     # App state
 │
-├── helpers/
-│   ├── hyperlink_helper.dart                  # Opens external links / mailto
-│   ├── media_query_helper.dart                # Small-screen/breakpoint helpers
-│   └── routes_helper.dart                     # Shared page-transition builder
-│
 ├── l10n/                                      # 🌐 Fixed UI copy (ARB), generated AppLocalizations
 │
-├── model/                                     # 📦 Shared, page-agnostic data models
+├── models/                                    # 📦 Shared, page-agnostic data models
 │   ├── cv_item_model.dart                     # Résumé entry models (experience, education, ...)
 │   ├── home_menu_model.dart                   # Home navigation menu items/sections
 │   ├── locale_model.dart                      # Supported locales
+│   ├── localized_map.dart                     # Shared per-language-map fallback resolution
 │   └── work_item_model.dart                   # Work-gallery project entries
 │
 ├── pages/                                     # 📄 App pages, one folder per route
@@ -109,22 +111,31 @@ lib/
 │       ├── cv_route.dart                      # GoRoute registration
 │       └── cv_screen.dart                     # Full-page résumé screen
 │
-├── ui/                                        # 🎨 Shared design system
-│   ├── theme.dart                             # Colors, text styles, spacing
-│   └── widgets/                               # Scroll-driven animations, logo, banner, ...
+├── widgets/                                   # 🧩 Shared, reusable widgets
+│   ├── rp_app_bar.dart                        # Site-standard AppBar chrome
+│   ├── scroll_progress_mixin.dart             # Shared "0..1 progress from a ScrollController" logic
+│   ├── scroll_reveal_mixin.dart               # Shared "reveal once scrolled into view" logic
+│   └── ...                                    # Logo, banner, decode text, locale/theme buttons, ...
 │
 └── main.dart                                  # 🎬 Application entry point
+
+test/
+├── cubits/                                    # AppCubit/HomeCubit + their states
+├── models/                                    # Résumé/work-item localization fallback logic
+├── pages/                                     # Page-scoped widget tests
+├── widgets/                                   # Shared-widget tests
+└── helpers/                                   # pump_app.dart — shared MaterialApp test harness
 ```
 
 ### Layer organization
 
-- `config/` — routing setup (GoRouter) and navigation helpers.
+- `app/` — routing setup (GoRouter) and the shared page-transition builder.
+- `core/` — the shared design system (`RpColors`/`RpTheme`) plus small stateless utilities used across pages (links, breakpoints).
 - `cubits/app/` — app-wide state that isn't tied to a single page (the active locale and light/dark theme).
-- `helpers/` — small stateless utilities shared across pages (links, breakpoints, page transitions).
 - `l10n/` — fixed UI copy, generated by `flutter gen-l10n` from the ARB files.
-- `model/` — plain data classes shared across pages. Per-record content carries one value per locale on the model itself, rather than going through ARB.
+- `models/` — plain data classes shared across pages. Per-record content carries one value per locale on the model itself, rather than going through ARB.
 - `pages/<page>/` — one folder per route, holding only what that page needs: its own `cubit/` (if it has runtime state), `sections/`/`widgets/`, its GoRoute registration, and its screen.
-- `ui/` — the shared design system: theme plus reusable scroll-driven animated widgets (reveal-on-scroll, decode text, scroll progress, logo transition) used across every page.
+- `widgets/` — reusable widgets shared across every page (reveal-on-scroll, decode text, scroll progress, logo transition, the site's `AppBar`).
 
 This organization favors keeping each page self-contained while sharing only what genuinely cuts across pages, without imposing a data-layer abstraction the app doesn't need.
 
@@ -206,7 +217,23 @@ claude mcp list
 
 ## 🧪 Tests
 
-TODO: add unit tests, widget tests, and/or integration tests.
+Unit tests cover the pieces of logic that don't require a running widget tree:
+
+- `test/models/` — per-language content fallback (`LocalizedMap.resolve` and the résumé/work-item models built on it, e.g. `CvExperienceItem.roleFor`), plus the supported-locale mapping (`LocaleEnum`).
+- `test/cubits/` — `AppCubit` (locale/theme changes, persisting and reloading the light/dark preference via a mocked `SharedPreferences`) and `HomeCubit` (active-section tracking), including their `AppState`/`HomeState` value equality.
+
+Widget tests pump real widgets through `WidgetTester`, via the shared `test/helpers/pump_app.dart` harness (the app's theme + localizations, so anything reading `context.rpColors` or `AppLocalizations.of(context)` behaves as it does at runtime):
+
+- `test/widgets/` — `ThemeButtonWidget`/`LocaleButtonWidget` (icon/label reflects the current theme/locale, tapping fires the callback with the right value), `RpAppBar` (renders leading/title/actions with the theme's menu color), `RpScrollProgressWidget` (bar width tracks scroll position), `RpRevealOnScrollWidget` (child stays hidden until scrolled near the viewport, then fades in).
+- `test/pages/` — `HomeContactItemWidget` (renders and taps through to `onPressed`), `HomeMenuButtonWidget` (label recolors once `HomeCubit` marks its section active).
+
+Run the suite with:
+
+```
+flutter test
+```
+
+Integration tests aren't in place yet — see the roadmap below.
 
 ## 🔄 CI/CD
 
@@ -234,8 +261,8 @@ Some points that may be documented in the future:
 ## 🗺️ Roadmap
 
 - [ ] Add screenshots to this README
-- [ ] Add unit tests
-- [ ] Add widget tests
+- [x] Add unit tests
+- [x] Add widget tests
 - [ ] Add integration tests
 - [ ] Document architectural decisions
 - [ ] Document AI usage

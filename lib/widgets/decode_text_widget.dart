@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:ronip/widgets/scroll_reveal_mixin.dart';
 
 /// Displays [text] scrambled through random characters that progressively
 /// lock into the real glyphs, left to right, once the widget first scrolls
@@ -26,13 +27,20 @@ class RpDecodeTextWidget extends StatefulWidget {
 }
 
 class _RpDecodeTextWidgetState extends State<RpDecodeTextWidget>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, ScrollRevealMixin {
   static const _charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+-/\\';
 
-  final _anchorKey = GlobalKey();
   final _random = Random();
   late final AnimationController _controller;
-  bool _triggered = false;
+
+  @override
+  ScrollController get revealScrollController => widget.scrollController;
+
+  @override
+  double get revealAtFraction => widget.revealAtFraction;
+
+  @override
+  void onReveal() => _controller.forward();
 
   @override
   void initState() {
@@ -48,33 +56,18 @@ class _RpDecodeTextWidgetState extends State<RpDecodeTextWidget>
     );
 
     if (reduceMotion) {
-      _triggered = true;
+      revealed = true;
       _controller.value = 1.0;
     } else {
-      widget.scrollController.addListener(_checkReveal);
-      WidgetsBinding.instance.addPostFrameCallback((_) => _checkReveal());
+      startRevealTracking();
     }
   }
 
   @override
   void dispose() {
-    widget.scrollController.removeListener(_checkReveal);
+    stopRevealTracking();
     _controller.dispose();
     super.dispose();
-  }
-
-  void _checkReveal() {
-    if (_triggered || !mounted) return;
-    final box = _anchorKey.currentContext?.findRenderObject() as RenderBox?;
-    if (box == null || !box.attached || !box.hasSize) return;
-
-    final viewportHeight = MediaQuery.sizeOf(context).height;
-    final top = box.localToGlobal(Offset.zero).dy;
-    if (top < viewportHeight * widget.revealAtFraction) {
-      setState(() => _triggered = true);
-      widget.scrollController.removeListener(_checkReveal);
-      _controller.forward();
-    }
   }
 
   String _scrambledAt(double progress) {
@@ -92,13 +85,13 @@ class _RpDecodeTextWidgetState extends State<RpDecodeTextWidget>
   @override
   Widget build(BuildContext context) {
     return KeyedSubtree(
-      key: _anchorKey,
+      key: revealAnchorKey,
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, _) => Opacity(
-          opacity: _triggered ? 1.0 : 0.0,
+          opacity: revealed ? 1.0 : 0.0,
           child: SelectableText(
-            _triggered ? _scrambledAt(_controller.value) : widget.text,
+            revealed ? _scrambledAt(_controller.value) : widget.text,
             semanticsLabel: widget.text,
             textAlign: widget.textAlign,
             style: widget.style,

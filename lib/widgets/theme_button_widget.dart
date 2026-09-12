@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ronip/l10n/app_localizations.dart';
-import 'package:ronip/ui/theme.dart';
+import 'package:ronip/core/theme.dart';
 
 class ThemeButtonWidget extends StatelessWidget {
   final VoidCallback toggleTheme;
@@ -18,7 +18,7 @@ class ThemeButtonWidget extends StatelessWidget {
           : AppLocalizations.of(context)!.switchToDarkMode,
       icon: Icon(
         isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
-        color: RpTheme.textHighlightColor,
+        color: context.rpColors.textHighlightColor,
       ),
     );
   }

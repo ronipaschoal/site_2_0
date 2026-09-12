@@ -1,7 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ronip/cubits/app/app_cubit.dart';
-import 'package:ronip/helpers/routes_helper.dart';
+import 'package:ronip/app/routes_helper.dart';
 import 'package:ronip/pages/cv/cv_screen.dart';
 
 sealed class CvRoute {
@@ -11,9 +9,7 @@ sealed class CvRoute {
     return GoRoute(
       path: cv,
       pageBuilder: (context, __) => RoutesHelper.transitionPage(
-        CvScreen(
-          appCubit: context.read<AppCubit>(),
-        ),
+        const CvScreen(),
       ),
     );
   }

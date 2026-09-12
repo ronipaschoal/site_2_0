@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/helpers/hyperlink_helper.dart';
-import 'package:ronip/helpers/media_query_helper.dart';
-import 'package:ronip/model/home_menu_model.dart';
-import 'package:ronip/model/work_item_model.dart';
+import 'package:ronip/core/hyperlink_helper.dart';
+import 'package:ronip/core/media_query_helper.dart';
+import 'package:ronip/models/home_menu_model.dart';
+import 'package:ronip/models/work_item_model.dart';
 import 'package:ronip/pages/home/widgets/home_section_title_widget.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/image_widget.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/image_widget.dart';
 
 /// "Pin and scrub" gallery: the section reserves a tall block of vertical
 /// scroll space, but pins itself to the viewport for that whole distance
@@ -98,7 +98,7 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
   Widget build(BuildContext context) {
     final reduceMotion =
         MediaQuery.maybeOf(context)?.disableAnimations ?? false;
-    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+    final isSmallScreen = context.isSmallScreen;
     final viewportSize = MediaQuery.sizeOf(context);
     final cardCount = WorkGallerySection._workList.length;
 
@@ -199,7 +199,8 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
                         child: IgnorePointer(
                           child: Text(
                             '${(progress * (cardCount - 1)).round() + 1} / $cardCount',
-                            style: RpTheme.labelStyle,
+                            style:
+                                RpTheme.labelStyle(context.rpColors.textColor),
                           ),
                         ),
                       ),
@@ -243,7 +244,7 @@ class _GalleryCardState extends State<_GalleryCard> {
     final work = widget.work;
     final hasAppleUrl = work.urlApple?.isNotEmpty ?? false;
     final url = (isIOS || isMacOS) && hasAppleUrl ? work.urlApple! : work.url;
-    HyperlinkHelper.targetBlank(url);
+    HyperlinkHelper.open(url);
   }
 
   @override
@@ -256,96 +257,102 @@ class _GalleryCardState extends State<_GalleryCard> {
         reduceMotion ? Duration.zero : const Duration(milliseconds: 220);
 
     return MouseRegion(
+      cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovering = true),
       onExit: (_) => setState(() => _hovering = false),
       child: GestureDetector(
         onTap: () => _open(context),
-        child: AnimatedContainer(
+        child: AnimatedScale(
           duration: duration,
           curve: Curves.easeOut,
-          width: widget.width,
-          height: widget.height,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16.0),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                RpImageWidget(
-                  asset: work.image,
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(
-                        color: RpTheme.blackColor.withAlpha(120),
-                        width: 0.6,
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          RpTheme.backgroundColor.withAlpha(235),
-                          RpTheme.backgroundColor.withAlpha(50),
-                          RpTheme.backgroundColor.withAlpha(50),
-                          RpTheme.backgroundColor.withAlpha(235),
-                        ],
-                        stops: const [0.0, 0.16, 0.6, 0.9],
+          scale: _hovering ? 1.02 : 1.0,
+          child: AnimatedContainer(
+            duration: duration,
+            curve: Curves.easeOut,
+            width: widget.width,
+            height: widget.height,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  RpImageWidget(
+                    asset: work.image,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned.fill(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.0),
+                        border: Border.all(
+                          color: RpTheme.blackColor.withAlpha(120),
+                          width: 0.6,
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            context.rpColors.backgroundColor.withAlpha(235),
+                            context.rpColors.backgroundColor.withAlpha(50),
+                            context.rpColors.backgroundColor.withAlpha(50),
+                            context.rpColors.backgroundColor.withAlpha(235),
+                          ],
+                          stops: const [0.0, 0.16, 0.6, 0.9],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  left: 20.0,
-                  top: 16.0,
-                  child: SelectableText(
-                    (widget.index + 1).toString().padLeft(2, '0'),
-                    style: TextStyle(
-                      fontFamily: RpTheme.fontFamilyMono,
-                      fontSize: widget.compact ? 16.0 : 20.0,
-                      fontWeight: FontWeight.w600,
-                      color: RpTheme.textHighlightColor,
+                  Positioned(
+                    left: 20.0,
+                    top: 16.0,
+                    child: SelectableText(
+                      (widget.index + 1).toString().padLeft(2, '0'),
+                      style: TextStyle(
+                        fontFamily: RpTheme.fontFamilyMono,
+                        fontSize: widget.compact ? 16.0 : 20.0,
+                        fontWeight: FontWeight.w600,
+                        color: context.rpColors.textHighlightColor,
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  left: 20.0,
-                  right: 20.0,
-                  bottom: 18.0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SelectableText(
-                        work.tag.toUpperCase(),
-                        style: RpTheme.labelStyle,
-                      ),
-                      RpTheme.spacerSmall,
-                      SelectableText(
-                        work.titleFor(locale),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: widget.compact ? 17.0 : 22.0,
-                          color: RpTheme.textHighlightColor,
+                  Positioned(
+                    left: 20.0,
+                    right: 20.0,
+                    bottom: 18.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SelectableText(
+                          work.tag.toUpperCase(),
+                          style: RpTheme.labelStyle(context.rpColors.textColor),
                         ),
-                      ),
-                      RpTheme.spacerSmallX,
-                      SelectableText(
-                        work.descriptionFor(locale),
-                        maxLines: 2,
-                        style: TextStyle(
-                          color: RpTheme.textColor,
-                          fontSize: widget.compact ? 12.5 : 14.0,
-                          height: 1.4,
+                        RpTheme.spacerSmall,
+                        SelectableText(
+                          work.titleFor(locale),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: widget.compact ? 17.0 : 22.0,
+                            color: context.rpColors.textHighlightColor,
+                          ),
                         ),
-                      ),
-                    ],
+                        RpTheme.spacerSmallX,
+                        SelectableText(
+                          work.descriptionFor(locale),
+                          maxLines: 2,
+                          style: TextStyle(
+                            color: context.rpColors.textColor,
+                            fontSize: widget.compact ? 12.5 : 14.0,
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

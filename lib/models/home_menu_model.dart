@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ronip/helpers/hyperlink_helper.dart';
+import 'package:ronip/core/hyperlink_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
-import 'package:ronip/ui/theme.dart';
+import 'package:ronip/core/theme.dart';
 
 extension SectionExtensions on HomeSectionEnum {
   String title(BuildContext context) {
@@ -46,22 +46,28 @@ class HomeMenu {
   final HomeSectionEnum section;
   final GlobalKey<ScaffoldState> drawerKey;
   final ScrollController scrollController;
-  final List<HomeMenu> previousMenuList;
 
   HomeMenu({
     required this.key,
     required this.section,
     required this.drawerKey,
     required this.scrollController,
-    this.previousMenuList = const [],
   });
+
+  /// The full, ordered list of home sections, set once by [HomeScreen] right
+  /// after building it. [sectionPosition] sums the size of every menu ahead
+  /// of this one in that list, rather than each [HomeMenu] carrying its own
+  /// copy of "everything that came before".
+  List<HomeMenu> siblingsInOrder = const [];
 
   double get sectionSize => key.currentContext?.size?.height ?? 0.0;
 
-  double get sectionPosition => previousMenuList.fold(
-        0.0,
-        (previous, element) => previous + element.sectionSize,
-      );
+  double get sectionPosition {
+    final index = siblingsInOrder.indexOf(this);
+    return siblingsInOrder
+        .take(index < 0 ? 0 : index)
+        .fold(0.0, (sum, menu) => sum + menu.sectionSize);
+  }
 }
 
 class ExternalMenu {
@@ -76,16 +82,16 @@ class ExternalMenu {
   });
 
   void goToExternal() {
-    HyperlinkHelper.targetBlank(url);
+    HyperlinkHelper.open(url);
   }
 
-  Widget iconWidget(Size size) {
+  Widget iconWidget(BuildContext context, Size size) {
     return SvgPicture.asset(
       icon,
       width: size.width,
       height: size.height,
       colorFilter: ColorFilter.mode(
-        RpTheme.textColor,
+        context.rpColors.textColor,
         BlendMode.srcIn,
       ),
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:ronip/config/routes.dart';
+import 'package:ronip/app/routes.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
 import 'package:ronip/l10n/app_localizations.dart';
-import 'package:ronip/ui/theme.dart';
+import 'package:ronip/core/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,15 +33,6 @@ class MyApp extends StatelessWidget {
           previous.brightness != current.brightness,
       builder: (context, state) {
         return MaterialApp.router(
-          // Forces the whole page tree (including go_router's persisted
-          // Navigator pages) to remount on a theme toggle. Widgets read
-          // RpTheme's color getters as plain static values at build time,
-          // not through an InheritedWidget, so an ancestor rebuild alone
-          // wouldn't reach pages the Navigator keeps mounted (their own
-          // State.build never reruns just because MaterialApp got a new
-          // ThemeData) — a changed key forces a real rebuild instead of an
-          // update, so every one of those reads picks up the new palette.
-          key: ValueKey(state.brightness),
           title: 'Roni Paschoal - Engenheiro de Software Flutter',
           locale: state.locale,
           debugShowCheckedModeBanner: false,
@@ -56,7 +47,7 @@ class MyApp extends StatelessWidget {
             Locale('pt', 'BR'),
             Locale('en', 'US'),
           ],
-          theme: RpTheme.theme,
+          theme: RpTheme.themeFor(state.brightness),
         );
       },
     );

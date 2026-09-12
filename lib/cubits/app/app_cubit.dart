@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ronip/ui/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit({Brightness initialBrightness = Brightness.dark})
-      : super(AppState(brightness: initialBrightness)) {
-    RpTheme.brightness = initialBrightness;
-  }
+      : super(AppState(brightness: initialBrightness));
 
   static const _brightnessPrefKey = 'theme_brightness';
 
@@ -17,15 +14,15 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(locale: locale));
   }
 
-  /// Flips light/dark, applies it immediately (so [RpTheme]'s color getters
-  /// reflect it as soon as this rebuild runs), and persists the choice so it
-  /// sticks on the next visit.
+  /// Flips light/dark and persists the choice so it sticks on the next
+  /// visit. [MyApp] rebuilds `MaterialApp.router`'s `theme` from the new
+  /// state, and every widget reading colors via `context.rpColors` picks it
+  /// up through the normal `Theme.of(context)` dependency mechanism.
   Future<void> toggleTheme() async {
     final next = state.brightness == Brightness.dark
         ? Brightness.light
         : Brightness.dark;
 
-    RpTheme.brightness = next;
     emit(state.copyWith(brightness: next));
 
     final prefs = await SharedPreferences.getInstance();

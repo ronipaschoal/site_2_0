@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ronip/helpers/hyperlink_helper.dart';
-import 'package:ronip/helpers/media_query_helper.dart';
+import 'package:ronip/core/hyperlink_helper.dart';
+import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
-import 'package:ronip/model/home_menu_model.dart';
+import 'package:ronip/models/home_menu_model.dart';
+import 'package:ronip/pages/cv/cv_data.dart';
 import 'package:ronip/pages/home/widgets/home_contact_item_widget.dart';
 import 'package:ronip/pages/home/widgets/home_section_title_widget.dart';
 import 'package:ronip/pages/home/widgets/home_section_widget.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/reveal_on_scroll_widget.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/reveal_on_scroll_widget.dart';
 
 class ContactSection extends StatelessWidget {
   final List<ExternalMenu> externalMenuList;
@@ -20,12 +21,39 @@ class ContactSection extends StatelessWidget {
     required this.scrollController,
   });
 
+  Widget _emailCard(BuildContext context) {
+    const iconSize = Size(RpTheme.fontSizeLarge, RpTheme.fontSizeLarge);
+
+    return HomeContactItemWidget(
+      text: contactEmail,
+      icon: SvgPicture.asset(
+        'assets/images/logos/email.svg',
+        width: iconSize.width,
+        height: iconSize.height,
+        colorFilter: ColorFilter.mode(
+          context.rpColors.textColor,
+          BlendMode.srcIn,
+        ),
+      ),
+      onPressed: () => HyperlinkHelper.open(
+        'mailto:$contactEmail?subject=Website contact!',
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    const iconSize = Size(
-      RpTheme.fontSizeLarge,
-      RpTheme.fontSizeLarge,
-    );
+    const iconSize = Size(RpTheme.fontSizeLarge, RpTheme.fontSizeLarge);
+    final isSmallScreen = context.isSmallScreen;
+
+    final externalCards = [
+      for (final externalMenu in externalMenuList)
+        HomeContactItemWidget(
+          text: externalMenu.text,
+          icon: externalMenu.iconWidget(context, iconSize),
+          onPressed: externalMenu.goToExternal,
+        ),
+    ];
 
     return HomeSectionWidget(
       child: Column(
@@ -48,91 +76,36 @@ class ContactSection extends StatelessWidget {
           RpTheme.spacerLargeX,
           RpRevealOnScrollWidget(
             scrollController: scrollController,
-            child: MediaQueryHelper(context).isSmallScreen()
+            child: isSmallScreen
                 ? Column(
                     children: [
                       RpTheme.spacerSmall,
                       Center(
                         child: SizedBox(
                           width: 260.0,
-                          child: HomeContactItemWidget(
-                            text: 'roni@ronipaschoal.com.br',
-                            icon: SvgPicture.asset(
-                              'assets/images/logos/email.svg',
-                              width: iconSize.width,
-                              height: iconSize.height,
-                              colorFilter: ColorFilter.mode(
-                                RpTheme.textColor,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            onPressed: () => HyperlinkHelper.mail(
-                              'mailto:roni@ronipaschoal.com.br?subject=Website contact!',
-                            ),
-                          ),
+                          child: _emailCard(context),
                         ),
                       ),
                       RpTheme.spacerMedium,
-                      Center(
-                        child: SizedBox(
-                          width: 260.0,
-                          child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            itemCount: 1,
-                            itemBuilder: (_, index) {
-                              final externalMenu = externalMenuList[index];
-                              return HomeContactItemWidget(
-                                text: externalMenu.text,
-                                icon: externalMenu.iconWidget(iconSize),
-                                onPressed: externalMenu.goToExternal,
-                              );
-                            },
-                          ),
-                        ),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: RpTheme.spacingMedium,
+                        runSpacing: RpTheme.spacingMedium,
+                        children: [
+                          for (final card in externalCards)
+                            SizedBox(width: 260.0, child: card),
+                        ],
                       ),
                     ],
                   )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                : Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: RpTheme.spacingMedium,
+                    runSpacing: RpTheme.spacingMedium,
                     children: [
-                      SizedBox(
-                        height: 160.0,
-                        child: HomeContactItemWidget(
-                          text: 'roni@ronipaschoal.com.br',
-                          icon: SvgPicture.asset(
-                            'assets/images/logos/email.svg',
-                            width: iconSize.width,
-                            height: iconSize.height,
-                            colorFilter: ColorFilter.mode(
-                              RpTheme.textColor,
-                              BlendMode.srcIn,
-                            ),
-                          ),
-                          onPressed: () => HyperlinkHelper.mail(
-                            'mailto:roni@ronipaschoal.com.br?subject=Website contact!',
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: RpTheme.spacingMedium),
-                      SizedBox(
-                        height: 160.0,
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 1,
-                          itemBuilder: (_, index) {
-                            final externalMenu = externalMenuList[index];
-                            return HomeContactItemWidget(
-                              text: externalMenu.text,
-                              icon: externalMenu.iconWidget(iconSize),
-                              onPressed: externalMenu.goToExternal,
-                            );
-                          },
-                          separatorBuilder: (_, __) => RpTheme.spacerSmallX,
-                        ),
-                      ),
+                      SizedBox(height: 160.0, child: _emailCard(context)),
+                      for (final card in externalCards)
+                        SizedBox(height: 160.0, child: card),
                     ],
                   ),
           ),

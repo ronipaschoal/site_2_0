@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
-import 'package:ronip/helpers/media_query_helper.dart';
+import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/cv/cv_content_widget.dart';
 import 'package:ronip/pages/cv/cv_pdf_builder.dart';
 import 'package:ronip/pages/home/home_route.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/flutter_banner_widget.dart';
-import 'package:ronip/ui/widgets/locale_button_widget.dart';
-import 'package:ronip/ui/widgets/theme_button_widget.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/flutter_banner_widget.dart';
+import 'package:ronip/widgets/locale_button_widget.dart';
+import 'package:ronip/widgets/rp_app_bar.dart';
+import 'package:ronip/widgets/theme_button_widget.dart';
 
 /// Full-page `/cv` route: the same [CvContentWidget] shown by
 /// `CvDialogWidget`, wrapped in the site's usual page chrome so it also
 /// works as a shareable, directly-linkable URL.
 class CvScreen extends StatefulWidget {
-  final AppCubit appCubit;
-
-  const CvScreen({
-    super.key,
-    required this.appCubit,
-  });
+  const CvScreen({super.key});
 
   @override
   State<CvScreen> createState() => _CvScreenState();
@@ -28,6 +25,7 @@ class CvScreen extends StatefulWidget {
 
 class _CvScreenState extends State<CvScreen> {
   final _scrollController = ScrollController();
+  late final _appCubit = context.read<AppCubit>();
 
   @override
   void dispose() {
@@ -37,7 +35,7 @@ class _CvScreenState extends State<CvScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+    final isSmallScreen = context.isSmallScreen;
 
     return FlutterBannerWidget(
       child: ConstrainedBox(
@@ -45,13 +43,11 @@ class _CvScreenState extends State<CvScreen> {
         child: SizedBox(
           width: double.infinity,
           child: Scaffold(
-            appBar: AppBar(
-              surfaceTintColor: RpTheme.menuColor,
-              backgroundColor: RpTheme.menuColor,
+            appBar: RpAppBar(
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: RpTheme.textHighlightColor,
+                  color: context.rpColors.textHighlightColor,
                 ),
                 tooltip: AppLocalizations.of(context)!.cvBackToHome,
                 onPressed: () => context.go(HomeRoute.home),
@@ -59,25 +55,23 @@ class _CvScreenState extends State<CvScreen> {
               title: SelectableText(
                 AppLocalizations.of(context)!.cvHeading,
                 semanticsLabel: AppLocalizations.of(context)!.cvHeading,
-                style: TextStyle(
-                  fontFamily: RpTheme.fontFamilyDisplay,
-                  fontSize: RpTheme.fontSizeMedium,
-                  color: RpTheme.textHighlightColor,
+                style: RpTheme.pageTitleStyle(
+                  context.rpColors.textHighlightColor,
                 ),
               ),
               actions: [
                 IconButton(
                   icon: Icon(
                     Icons.download_outlined,
-                    color: RpTheme.textHighlightColor,
+                    color: context.rpColors.textHighlightColor,
                   ),
                   tooltip: AppLocalizations.of(context)!.cvDownload,
                   onPressed: () => CvPdfBuilder.download(
                     Localizations.localeOf(context).languageCode,
                   ),
                 ),
-                LocaleButtonWidget(changeLocale: widget.appCubit.changeLocale),
-                ThemeButtonWidget(toggleTheme: widget.appCubit.toggleTheme),
+                LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
+                ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
                 RpTheme.spacerMedium,
               ],
             ),

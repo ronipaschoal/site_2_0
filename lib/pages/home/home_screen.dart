@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
-import 'package:ronip/helpers/media_query_helper.dart';
-import 'package:ronip/model/home_menu_model.dart';
+import 'package:ronip/core/media_query_helper.dart';
+import 'package:ronip/models/home_menu_model.dart';
 import 'package:ronip/pages/home/cubit/home_cubit.dart';
 import 'package:ronip/pages/home/sections/home_section.dart';
 import 'package:ronip/pages/home/widgets/cv_menu_link_widget.dart';
@@ -11,21 +11,17 @@ import 'package:ronip/pages/home/widgets/home_menu_widget.dart';
 import 'package:ronip/pages/home/sections/about_section.dart';
 import 'package:ronip/pages/home/sections/contact_section.dart';
 import 'package:ronip/pages/home/sections/work_gallery_section.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/flutter_banner_widget.dart';
-import 'package:ronip/ui/widgets/locale_button_widget.dart';
-import 'package:ronip/ui/widgets/logo_scroll_transition_widget.dart';
-import 'package:ronip/ui/widgets/logo_widget.dart';
-import 'package:ronip/ui/widgets/scroll_progress_widget.dart';
-import 'package:ronip/ui/widgets/theme_button_widget.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/flutter_banner_widget.dart';
+import 'package:ronip/widgets/locale_button_widget.dart';
+import 'package:ronip/widgets/logo_scroll_transition_widget.dart';
+import 'package:ronip/widgets/logo_widget.dart';
+import 'package:ronip/widgets/rp_app_bar.dart';
+import 'package:ronip/widgets/scroll_progress_widget.dart';
+import 'package:ronip/widgets/theme_button_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  final AppCubit appCubit;
-
-  const HomeScreen({
-    super.key,
-    required this.appCubit,
-  });
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -35,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final _drawerKey = GlobalKey<ScaffoldState>();
   final _scrollController = ScrollController();
 
+  late final _appCubit = context.read<AppCubit>();
   late final _homeCubit = context.read<HomeCubit>();
 
   late final _homeMenu = HomeMenu(
@@ -49,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     section: HomeSectionEnum.about,
     drawerKey: _drawerKey,
     scrollController: _scrollController,
-    previousMenuList: [_homeMenu],
   );
 
   late final _programsMenu = HomeMenu(
@@ -57,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     section: HomeSectionEnum.programs,
     drawerKey: _drawerKey,
     scrollController: _scrollController,
-    previousMenuList: [_homeMenu, _aboutMenu],
   );
 
   late final _contactMenu = HomeMenu(
@@ -65,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     section: HomeSectionEnum.contact,
     drawerKey: _drawerKey,
     scrollController: _scrollController,
-    previousMenuList: [_homeMenu, _aboutMenu, _programsMenu],
   );
 
   late final _menuList = [
@@ -90,20 +84,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   late final _actionList = <Widget>[
     CvMenuLinkWidget(
-      appCubit: widget.appCubit,
       drawerKey: _drawerKey,
     ),
     LocaleButtonWidget(
-      changeLocale: widget.appCubit.changeLocale,
+      changeLocale: _appCubit.changeLocale,
     ),
     ThemeButtonWidget(
-      toggleTheme: widget.appCubit.toggleTheme,
+      toggleTheme: _appCubit.toggleTheme,
     ),
   ];
 
   @override
   void initState() {
     super.initState();
+    for (final menu in _menuList) {
+      menu.siblingsInOrder = _menuList;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.addListener(() => _onScroll(_scrollController.offset));
     });
@@ -117,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+    final isSmallScreen = context.isSmallScreen;
 
     return FlutterBannerWidget(
       child: ConstrainedBox(
@@ -132,17 +128,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 extendBodyBehindAppBar: true,
                 drawer: isSmallScreen
                     ? HomeDrawerWidget(
-                        drawerKey: _drawerKey,
-                        scrollController: _scrollController,
                         menuList: _menuList,
                         externalMenuList: _externalMenuList,
                         actionList: _actionList,
                       )
                     : null,
                 appBar: isSmallScreen
-                    ? AppBar(
-                        surfaceTintColor: RpTheme.menuColor,
-                        backgroundColor: RpTheme.menuColor,
+                    ? RpAppBar(
                         leading: IconButton(
                           icon: const RpLogoWidget.menu(),
                           onPressed: () =>
@@ -151,22 +143,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               .openAppDrawerTooltip,
                         ),
                       )
-                    : AppBar(
-                        surfaceTintColor: RpTheme.menuColor,
-                        backgroundColor: RpTheme.menuColor,
+                    : RpAppBar(
                         title: SelectableText(
                           'Roni Paschoal',
                           semanticsLabel: 'Roni Paschoal',
-                          style: TextStyle(
-                            fontFamily: RpTheme.fontFamilyDisplay,
-                            fontSize: RpTheme.fontSizeMedium,
-                            color: RpTheme.textHighlightColor,
+                          style: RpTheme.pageTitleStyle(
+                            context.rpColors.textHighlightColor,
                           ),
                         ),
                         actions: [
                           HomeMenuWidget(
-                            drawerKey: _drawerKey,
-                            scrollController: _scrollController,
                             menuList: _menuList,
                             externalMenuList: _externalMenuList,
                             actionList: _actionList,
@@ -190,7 +176,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         children: [
                           HomeSection(
                             key: _getKeyByTitle(HomeSectionEnum.home),
-                            scrollController: _scrollController,
                           ),
                           AboutSection(
                             key: _getKeyByTitle(HomeSectionEnum.about),

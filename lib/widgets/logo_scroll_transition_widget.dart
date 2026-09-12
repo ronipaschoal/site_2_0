@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/ui/widgets/logo_widget.dart';
+import 'package:ronip/widgets/logo_widget.dart';
+import 'package:ronip/widgets/scroll_progress_mixin.dart';
 
 /// Grows the big background watermark logo out of the small hero logo in
 /// `HomeSection` as the user scrolls past it, so the two read as one logo
@@ -34,37 +35,21 @@ class RpLogoScrollTransitionWidget extends StatefulWidget {
 }
 
 class _RpLogoScrollTransitionWidgetState
-    extends State<RpLogoScrollTransitionWidget> {
-  double _progress = 0.0;
+    extends State<RpLogoScrollTransitionWidget> with ScrollProgressMixin {
+  @override
+  ScrollController get scrollProgressController => widget.scrollController;
 
   @override
-  void initState() {
-    super.initState();
-    widget.scrollController.addListener(_updateProgress);
-  }
-
-  @override
-  void dispose() {
-    widget.scrollController.removeListener(_updateProgress);
-    super.dispose();
-  }
-
-  void _updateProgress() {
-    if (!widget.scrollController.hasClients) return;
+  double computeScrollProgress() {
     final extent = widget.sectionKey.currentContext?.size?.height ?? 0.0;
-    final progress = extent <= 0
-        ? 0.0
-        : (widget.scrollController.offset / extent).clamp(0.0, 1.0);
-    if (progress != _progress) {
-      setState(() => _progress = progress);
-    }
+    return extent <= 0 ? 0.0 : widget.scrollController.offset / extent;
   }
 
   @override
   Widget build(BuildContext context) {
     final reduceMotion =
         MediaQuery.maybeOf(context)?.disableAnimations ?? false;
-    final t = reduceMotion ? 1.0 : Curves.easeOutCubic.transform(_progress);
+    final t = reduceMotion ? 1.0 : Curves.easeOutCubic.transform(progress);
     final size = MediaQuery.sizeOf(context);
 
     return Transform.translate(

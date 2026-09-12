@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ronip/helpers/media_query_helper.dart';
+import 'package:ronip/core/media_query_helper.dart';
 
 class HomeSectionWidget extends StatefulWidget {
   final Widget child;
@@ -16,7 +16,7 @@ class HomeSectionWidget extends StatefulWidget {
 class _HomeSectionWidgetState extends State<HomeSectionWidget> {
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+    final isSmallScreen = context.isSmallScreen;
 
     return Container(
       constraints: BoxConstraints(

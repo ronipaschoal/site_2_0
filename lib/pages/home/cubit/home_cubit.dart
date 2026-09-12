@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ronip/model/home_menu_model.dart';
+import 'package:ronip/models/home_menu_model.dart';
 
 part 'home_state.dart';
 

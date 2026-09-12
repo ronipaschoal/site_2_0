@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ronip/helpers/hyperlink_helper.dart';
-import 'package:ronip/helpers/media_query_helper.dart';
+import 'package:ronip/core/hyperlink_helper.dart';
+import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
-import 'package:ronip/model/cv_item_model.dart';
+import 'package:ronip/models/cv_item_model.dart';
 import 'package:ronip/pages/cv/cv_data.dart';
 import 'package:ronip/pages/home/widgets/home_section_title_widget.dart';
-import 'package:ronip/ui/theme.dart';
+import 'package:ronip/core/theme.dart';
 
 /// The résumé content itself — header, contact/skills sidebar, and the
 /// summary/experience/certifications/education main column — laid out
@@ -31,7 +31,7 @@ class CvContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+    final isSmallScreen = context.isSmallScreen;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +71,7 @@ class _CvHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+    final isSmallScreen = context.isSmallScreen;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +82,7 @@ class _CvHeaderWidget extends StatelessWidget {
           style: TextStyle(
             fontFamily: RpTheme.fontFamilyDisplay,
             fontSize: isSmallScreen ? 32.0 : RpTheme.fontSizeLarge,
-            color: RpTheme.textHighlightColor,
+            color: context.rpColors.textHighlightColor,
           ),
         ),
         RpTheme.spacerSmall,
@@ -99,7 +99,7 @@ class _CvHeaderWidget extends StatelessWidget {
         RpTheme.spacerSmallX,
         SelectableText(
           'Flutter · Dart · Android · iOS',
-          style: TextStyle(color: RpTheme.textColor),
+          style: TextStyle(color: context.rpColors.textColor),
         ),
         RpTheme.spacerSmall,
         Row(
@@ -108,15 +108,18 @@ class _CvHeaderWidget extends StatelessWidget {
             Icon(
               Icons.location_on_outlined,
               size: 15.0,
-              color: RpTheme.textColor,
+              color: context.rpColors.textColor,
             ),
             const SizedBox(width: 4.0),
-            SelectableText('Santo André, SP', style: RpTheme.labelStyle),
+            SelectableText(
+              'Santo André, SP',
+              style: RpTheme.labelStyle(context.rpColors.textColor),
+            ),
             const SizedBox(width: 12.0),
             SelectableText(
               AppLocalizations.of(context)!
                   .cvAge(DateTime.now().year - cvBirthYear),
-              style: RpTheme.labelStyle,
+              style: RpTheme.labelStyle(context.rpColors.textColor),
             ),
           ],
         ),
@@ -166,7 +169,7 @@ class _CvSidebarWidget extends StatelessWidget {
         for (final key in cvSkillGroupOrder) ...[
           SelectableText(
             _skillGroupLabel(context, key).toUpperCase(),
-            style: RpTheme.labelStyle,
+            style: RpTheme.labelStyle(context.rpColors.textColor),
           ),
           RpTheme.spacerSmall,
           Wrap(
@@ -181,7 +184,7 @@ class _CvSidebarWidget extends StatelessWidget {
         ],
         SelectableText(
           AppLocalizations.of(context)!.cvSkillsLanguages.toUpperCase(),
-          style: RpTheme.labelStyle,
+          style: RpTheme.labelStyle(context.rpColors.textColor),
         ),
         RpTheme.spacerSmall,
         Wrap(
@@ -233,7 +236,7 @@ class _CvMainColumnWidget extends StatelessWidget {
           _CvExperienceCardWidget(item: cvExperienceList[i]),
           if (i != cvExperienceList.length - 1) ...[
             RpTheme.spacerLarge,
-            Divider(color: RpTheme.hairlineColor, height: 1.0),
+            Divider(color: context.rpColors.hairlineColor, height: 1.0),
             RpTheme.spacerLarge,
           ],
         ],
@@ -282,7 +285,7 @@ class _CvProjectCardWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: () => HyperlinkHelper.targetBlank(item.url),
+          onTap: () => HyperlinkHelper.open(item.url),
           child: Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: RpTheme.spacingSmallX,
@@ -345,7 +348,7 @@ class _CvExperienceCardWidget extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18.0,
-                color: RpTheme.textHighlightColor,
+                color: context.rpColors.textHighlightColor,
               ),
             ),
             SelectableText(
@@ -353,7 +356,7 @@ class _CvExperienceCardWidget extends StatelessWidget {
               style: TextStyle(
                 fontFamily: RpTheme.fontFamilyMono,
                 fontSize: 12.5,
-                color: RpTheme.textColor,
+                color: context.rpColors.textColor,
               ),
             ),
           ],
@@ -407,7 +410,7 @@ class _CvCertificationRowWidget extends StatelessWidget {
                 item.title,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: RpTheme.textHighlightColor,
+                  color: context.rpColors.textHighlightColor,
                 ),
               ),
               SelectableText(
@@ -415,7 +418,7 @@ class _CvCertificationRowWidget extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: RpTheme.fontFamilyMono,
                   fontSize: 12.0,
-                  color: RpTheme.textColor,
+                  color: context.rpColors.textColor,
                 ),
               ),
             ],
@@ -453,7 +456,7 @@ class _CvEducationRowWidget extends StatelessWidget {
                 '${item.institution} · ${item.course}',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: RpTheme.textHighlightColor,
+                  color: context.rpColors.textHighlightColor,
                 ),
               ),
               SelectableText(
@@ -461,7 +464,7 @@ class _CvEducationRowWidget extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: RpTheme.fontFamilyMono,
                   fontSize: 12.0,
-                  color: RpTheme.textColor,
+                  color: context.rpColors.textColor,
                 ),
               ),
             ],
@@ -482,7 +485,7 @@ class _CvSkillChipWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
       decoration: BoxDecoration(
-        border: Border.all(color: RpTheme.hairlineColor),
+        border: Border.all(color: context.rpColors.hairlineColor),
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: SelectableText(
@@ -490,7 +493,7 @@ class _CvSkillChipWidget extends StatelessWidget {
         style: TextStyle(
           fontFamily: RpTheme.fontFamilyMono,
           fontSize: 12.5,
-          color: RpTheme.textHighlightColor,
+          color: context.rpColors.textHighlightColor,
         ),
       ),
     );
@@ -516,9 +519,7 @@ class _CvLinkRowWidgetState extends State<_CvLinkRowWidget> {
   late final TapGestureRecognizer _recognizer = TapGestureRecognizer()
     ..onTap = _open;
 
-  void _open() => widget.contact.url.startsWith('mailto:')
-      ? HyperlinkHelper.mail(widget.contact.url)
-      : HyperlinkHelper.targetBlank(widget.contact.url);
+  void _open() => HyperlinkHelper.open(widget.contact.url);
 
   @override
   void dispose() {

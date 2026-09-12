@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
-import 'package:ronip/helpers/media_query_helper.dart';
+import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/cv/cv_content_widget.dart';
 import 'package:ronip/pages/cv/cv_pdf_builder.dart';
-import 'package:ronip/ui/theme.dart';
-import 'package:ronip/ui/widgets/locale_button_widget.dart';
-import 'package:ronip/ui/widgets/theme_button_widget.dart';
+import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/locale_button_widget.dart';
+import 'package:ronip/widgets/rp_app_bar.dart';
+import 'package:ronip/widgets/theme_button_widget.dart';
 
 /// Shows the résumé as a dismissible overlay above the current page,
 /// instead of navigating away to the `/cv` route: a centered "window" with
 /// a close (X) button on wide screens, a full-screen sheet on small ones.
 class CvDialogWidget extends StatefulWidget {
-  final AppCubit appCubit;
+  const CvDialogWidget({super.key});
 
-  const CvDialogWidget({super.key, required this.appCubit});
-
-  static Future<void> show(BuildContext context, AppCubit appCubit) {
+  static Future<void> show(BuildContext context) {
     return showGeneralDialog(
       context: context,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       barrierDismissible: true,
       barrierColor: const Color(0xCC000000),
       transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (context, _, __) => CvDialogWidget(appCubit: appCubit),
+      pageBuilder: (context, _, __) => const CvDialogWidget(),
       transitionBuilder: (context, animation, _, child) => FadeTransition(
         opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
         child: ScaleTransition(
@@ -42,6 +42,7 @@ class CvDialogWidget extends StatefulWidget {
 
 class _CvDialogWidgetState extends State<CvDialogWidget> {
   final _scrollController = ScrollController();
+  late final _appCubit = context.read<AppCubit>();
 
   @override
   void dispose() {
@@ -51,12 +52,12 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = MediaQueryHelper(context).isSmallScreen();
+    final isSmallScreen = context.isSmallScreen;
 
     final closeButton = IconButton(
       onPressed: () => Navigator.of(context).pop(),
       tooltip: MaterialLocalizations.of(context).closeButtonLabel,
-      icon: Icon(Icons.close, color: RpTheme.textHighlightColor),
+      icon: Icon(Icons.close, color: context.rpColors.textHighlightColor),
     );
 
     final downloadButton = IconButton(
@@ -66,7 +67,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
       tooltip: AppLocalizations.of(context)!.cvDownload,
       icon: Icon(
         Icons.download_outlined,
-        color: RpTheme.textHighlightColor,
+        color: context.rpColors.textHighlightColor,
       ),
     );
 
@@ -83,15 +84,13 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
 
     if (isSmallScreen) {
       return Scaffold(
-        backgroundColor: RpTheme.backgroundColor,
-        appBar: AppBar(
-          surfaceTintColor: RpTheme.menuColor,
-          backgroundColor: RpTheme.menuColor,
+        backgroundColor: context.rpColors.backgroundColor,
+        appBar: RpAppBar(
           leading: closeButton,
           actions: [
             downloadButton,
-            LocaleButtonWidget(changeLocale: widget.appCubit.changeLocale),
-            ThemeButtonWidget(toggleTheme: widget.appCubit.toggleTheme),
+            LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
+            ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
             RpTheme.spacerMedium,
           ],
         ),
@@ -109,7 +108,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
           maxHeight: MediaQuery.sizeOf(context).height * 0.86,
         ),
         child: Material(
-          color: RpTheme.backgroundColor,
+          color: context.rpColors.backgroundColor,
           borderRadius: const BorderRadius.all(Radius.circular(16.0)),
           clipBehavior: Clip.antiAlias,
           child: Stack(
@@ -119,7 +118,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
                 top: RpTheme.spacingSmall,
                 right: RpTheme.spacingSmall,
                 child: Material(
-                  color: RpTheme.menuColor,
+                  color: context.rpColors.menuColor,
                   shape: const CircleBorder(),
                   child: closeButton,
                 ),
@@ -128,7 +127,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
                 top: RpTheme.spacingSmall,
                 right: 56.0,
                 child: Material(
-                  color: RpTheme.menuColor,
+                  color: context.rpColors.menuColor,
                   shape: const CircleBorder(),
                   child: downloadButton,
                 ),

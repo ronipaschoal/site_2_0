@@ -12,4 +12,14 @@ class AppState {
       brightness: brightness ?? this.brightness,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppState &&
+          other.locale == locale &&
+          other.brightness == brightness;
+
+  @override
+  int get hashCode => Object.hash(locale, brightness);
 }
