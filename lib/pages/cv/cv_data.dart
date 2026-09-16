@@ -113,8 +113,8 @@ const cvExperienceList = [
     company: 'TOTVS',
     period: 'Ago/2022 - Abr/2025',
     role: {
-      'pt': 'Desenvolvedor de Aplicativos Móveis Sênior',
-      'en': 'Senior Mobile Application Developer',
+      'pt': 'Engenheiro de Software Móvel Flutter Sênior',
+      'en': 'Senior Flutter Mobile Software Engineer',
     },
     description: {
       'pt': 'Definição e adoção do Flutter como plataforma de '
@@ -166,8 +166,8 @@ const cvExperienceList = [
     company: 'Setfin',
     period: 'Set/2022 - Out/2023',
     role: {
-      'pt': 'Desenvolvedor de Aplicativos Móveis Sênior · Freelance',
-      'en': 'Senior Mobile Application Developer · Freelance',
+      'pt': 'Engenheiro de Software Móvel Flutter Sênior · Freelance',
+      'en': 'Senior Flutter Mobile Software Engineer · Freelance',
     },
     description: {
       'pt':
