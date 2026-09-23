@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ronip/l10n/app_localizations.dart';
-import 'package:ronip/pages/home/home_route.dart';
 
-/// Static recreation of the Tokio Marine Seguradora "Assistência ·
-/// Automóvel" search screen: a CPF/CNPJ + placa lookup form. Colors and
-/// layout are hardcoded to match the reference design rather than the
-/// site's own light/dark palette, since this page reproduces a specific
-/// third-party UI rather than portfolio content.
+/// Static "Assistência · Automóvel" search screen for Insura, a generic
+/// insurance brand: a CPF/CNPJ + placa lookup form. Colors and layout are
+/// hardcoded for this page rather than following the site's own light/dark
+/// palette, since it is a standalone UI mockup rather than portfolio
+/// content.
 class InsuraScreen extends StatefulWidget {
   const InsuraScreen({super.key});
 
@@ -16,13 +13,12 @@ class InsuraScreen extends StatefulWidget {
 }
 
 class _InsuraScreenState extends State<InsuraScreen> {
-  static const _barColor = Color(0xFF141420);
   static const _accentColor = Color(0xFF2CA58D);
   static const _headingColor = Color(0xFF1A1818);
   static const _subtitleColor = Color(0xFF8C8C8C);
   static const _borderColor = Color(0xFFDDDDDD);
 
-  final _cpfCnpjController = TextEditingController(text: '659.317.342-87');
+  final _cpfCnpjController = TextEditingController();
   final _placaController = TextEditingController();
 
   @override
@@ -134,16 +130,7 @@ class _InsuraLogo extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'TOKIO MARINE',
-              style: TextStyle(
-                color: color,
-                fontSize: fontSize,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.5,
-              ),
-            ),
-            Text(
-              'SEGURADORA',
+              'Insura',
               style: TextStyle(
                 color: color,
                 fontSize: fontSize,
@@ -152,32 +139,6 @@ class _InsuraLogo extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ],
-    );
-  }
-}
-
-class _NotificationBellIcon extends StatelessWidget {
-  const _NotificationBellIcon();
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        const Icon(Icons.notifications_outlined, color: Colors.white),
-        Positioned(
-          right: 0.0,
-          top: 0.0,
-          child: Container(
-            width: 8.0,
-            height: 8.0,
-            decoration: const BoxDecoration(
-              color: Color(0xFFE91E63),
-              shape: BoxShape.circle,
-            ),
-          ),
         ),
       ],
     );
