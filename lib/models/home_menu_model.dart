@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ronip/core/hyperlink_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
@@ -54,19 +55,18 @@ class HomeMenu {
     required this.scrollController,
   });
 
-  /// The full, ordered list of home sections, set once by [HomeScreen] right
-  /// after building it. [sectionPosition] sums the size of every menu ahead
-  /// of this one in that list, rather than each [HomeMenu] carrying its own
-  /// copy of "everything that came before".
-  List<HomeMenu> siblingsInOrder = const [];
-
   double get sectionSize => key.currentContext?.size?.height ?? 0.0;
 
+  /// The scroll offset at which this section's top reaches the top of the
+  /// viewport, read from the actual layout — so anything placed between
+  /// sections (e.g. a quote band) is accounted for, instead of assuming the
+  /// sections are stacked back to back.
   double get sectionPosition {
-    final index = siblingsInOrder.indexOf(this);
-    return siblingsInOrder
-        .take(index < 0 ? 0 : index)
-        .fold(0.0, (sum, menu) => sum + menu.sectionSize);
+    final renderObject = key.currentContext?.findRenderObject();
+    if (renderObject == null) return 0.0;
+
+    final viewport = RenderAbstractViewport.maybeOf(renderObject);
+    return viewport?.getOffsetToReveal(renderObject, 0.0).offset ?? 0.0;
   }
 }
 

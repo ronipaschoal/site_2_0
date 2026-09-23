@@ -97,9 +97,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    for (final menu in _menuList) {
-      menu.siblingsInOrder = _menuList;
-    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.addListener(() => _onScroll(_scrollController.offset));
     });
