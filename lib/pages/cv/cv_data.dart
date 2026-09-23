@@ -111,7 +111,7 @@ const cvExperienceList = [
   ),
   CvExperienceItem(
     company: 'TOTVS',
-    period: 'Ago/2022 - Abr/2025',
+    period: 'Mar/2022 - Abr/2025',
     role: {
       'pt': 'Engenheiro de Software Móvel Flutter Sênior',
       'en': 'Senior Flutter Mobile Software Engineer',
@@ -148,7 +148,7 @@ const cvExperienceList = [
   ),
   CvExperienceItem(
     company: 'TOTVS',
-    period: 'Dez/2021 - Ago/2022',
+    period: 'Dez/2021 - Abr/2022',
     role: {
       'pt': 'Desenvolvedor Front End Pleno',
       'en': 'Mid-Level Front-End Developer',

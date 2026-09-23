@@ -98,9 +98,13 @@ sealed class CvPdfBuilder {
 
     final bytes = await _build(languageCode, PdfPageFormat.a4);
 
+    final filename = languageCode == 'pt'
+        ? 'Engenheiro_de_Software_Mobile_Flutter'
+        : 'Flutter_Mobile_Software_Engineer';
+
     await Printing.sharePdf(
       bytes: bytes,
-      filename: 'Roni_Paschoal_Mobile_Developer_Flutter_$datestamp.pdf',
+      filename: 'Roni_Paschoal_${filename}_$datestamp.pdf',
     );
   }
 
