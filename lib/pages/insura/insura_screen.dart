@@ -22,8 +22,7 @@ class _InsuraScreenState extends State<InsuraScreen> {
   static const _subtitleColor = Color(0xFF8C8C8C);
   static const _borderColor = Color(0xFFDDDDDD);
 
-  final _cpfCnpjController =
-      TextEditingController(text: '659.317.342-87');
+  final _cpfCnpjController = TextEditingController(text: '659.317.342-87');
   final _placaController = TextEditingController();
 
   @override
@@ -37,23 +36,6 @@ class _InsuraScreenState extends State<InsuraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: _barColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
-          tooltip: AppLocalizations.of(context)!.cvBackToHome,
-          onPressed: () => context.go(HomeRoute.home),
-        ),
-        title: const _InsuraLogo(color: Colors.white, compact: true),
-        centerTitle: true,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: _NotificationBellIcon(),
-          ),
-        ],
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -104,8 +86,7 @@ class _InsuraScreenState extends State<InsuraScreen> {
                           style: OutlinedButton.styleFrom(
                             foregroundColor: _accentColor,
                             side: const BorderSide(color: _accentColor),
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 16.0),
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4.0),
                             ),
@@ -247,8 +228,7 @@ class _InsuraTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4.0),
-          borderSide:
-              const BorderSide(color: _InsuraScreenState._accentColor),
+          borderSide: const BorderSide(color: _InsuraScreenState._accentColor),
         ),
       ),
     );
