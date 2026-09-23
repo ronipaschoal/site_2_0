@@ -356,7 +356,7 @@ sealed class CvPdfBuilder {
               ),
             ),
             pw.Text(
-              item.period,
+              item.periodWithDurationFor(languageCode),
               style: const pw.TextStyle(fontSize: 9, color: _muted),
             ),
           ],

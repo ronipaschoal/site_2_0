@@ -26,6 +26,65 @@ class CvExperienceItem {
 
   String descriptionFor(String languageCode) =>
       description.resolve(languageCode);
+
+  static const _ptMonths = 'jan fev mar abr mai jun jul ago set out nov dez';
+  static const _enMonths = 'jan feb mar apr may jun jul aug sep oct nov dec';
+
+  /// Months covered by [period] (`'Mmm/yyyy - Mmm/yyyy'`), counting both
+  /// the start and end months — so `'Jul/2025 - Jun/2026'` is 12 months,
+  /// matching how LinkedIn reports tenure. Null when [period] isn't in that
+  /// shape, so a free-form period simply renders without a duration.
+  int? get durationInMonths {
+    final bounds = period.split('-').map(_parseMonth).toList();
+    if (bounds.length != 2 || bounds.contains(null)) return null;
+
+    final months = bounds[1]! - bounds[0]! + 1;
+    return months > 0 ? months : null;
+  }
+
+  static int? _parseMonth(String value) {
+    final parts = value.trim().split('/');
+    if (parts.length != 2) return null;
+
+    final name = parts[0].toLowerCase();
+    var index = _ptMonths.split(' ').indexOf(name);
+    if (index < 0) index = _enMonths.split(' ').indexOf(name);
+    final year = int.tryParse(parts[1]);
+    if (index < 0 || year == null) return null;
+
+    return year * 12 + index;
+  }
+
+  /// [durationInMonths] as readable text, e.g. `'2 anos e 3 meses'` /
+  /// `'2 yrs 3 mos'`. Null when the duration can't be computed.
+  String? durationFor(String languageCode) {
+    final total = durationInMonths;
+    if (total == null) return null;
+
+    final years = total ~/ 12;
+    final months = total % 12;
+    final isPt = languageCode != 'en';
+
+    final parts = [
+      if (years > 0)
+        isPt
+            ? '$years ${years == 1 ? 'ano' : 'anos'}'
+            : '$years ${years == 1 ? 'yr' : 'yrs'}',
+      if (months > 0)
+        isPt
+            ? '$months ${months == 1 ? 'mês' : 'meses'}'
+            : '$months ${months == 1 ? 'mo' : 'mos'}',
+    ];
+
+    return parts.join(isPt ? ' e ' : ' ');
+  }
+
+  /// [period] followed by its duration, e.g.
+  /// `'Jul/2025 - Jun/2026 · 1 ano'`.
+  String periodWithDurationFor(String languageCode) {
+    final duration = durationFor(languageCode);
+    return duration == null ? period : '$period · $duration';
+  }
 }
 
 /// A personal/study project entry. `description` carries one value per

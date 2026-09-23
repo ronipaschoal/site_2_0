@@ -352,7 +352,7 @@ class _CvExperienceCardWidget extends StatelessWidget {
               ),
             ),
             SelectableText(
-              item.period,
+              item.periodWithDurationFor(languageCode),
               style: TextStyle(
                 fontFamily: RpTheme.fontFamilyMono,
                 fontSize: 12.5,
