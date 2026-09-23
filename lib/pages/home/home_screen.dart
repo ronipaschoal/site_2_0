@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
+import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/models/home_menu_model.dart';
 import 'package:ronip/pages/home/cubit/home_cubit.dart';
@@ -8,6 +9,7 @@ import 'package:ronip/pages/home/sections/home_section.dart';
 import 'package:ronip/pages/home/widgets/cv_menu_link_widget.dart';
 import 'package:ronip/pages/home/widgets/home_drawer_widget.dart';
 import 'package:ronip/pages/home/widgets/home_menu_widget.dart';
+import 'package:ronip/pages/home/widgets/home_quote_band_widget.dart';
 import 'package:ronip/pages/home/sections/about_section.dart';
 import 'package:ronip/pages/home/sections/contact_section.dart';
 import 'package:ronip/pages/home/sections/work_gallery_section.dart';
@@ -173,6 +175,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         children: [
                           HomeSection(
                             key: _getKeyByTitle(HomeSectionEnum.home),
+                          ),
+                          HomeQuoteBandWidget(
+                            text: AppLocalizations.of(context)!
+                                .solutionPhilosophy,
+                            scrollController: _scrollController,
                           ),
                           AboutSection(
                             key: _getKeyByTitle(HomeSectionEnum.about),
