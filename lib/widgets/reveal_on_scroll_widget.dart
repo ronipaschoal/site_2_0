@@ -65,8 +65,12 @@ class _RpRevealOnScrollWidgetState extends State<RpRevealOnScrollWidget>
       key: revealAnchorKey,
       child: AnimatedBuilder(
         animation: _animation,
+        // alwaysIncludeSemantics: a not-yet-revealed (fully transparent)
+        // child must still be reachable by screen readers, which navigate
+        // the whole page without scrolling it into view first.
         builder: (context, child) => Opacity(
           opacity: _animation.value,
+          alwaysIncludeSemantics: true,
           child: Transform.translate(
             offset: Offset(0, (1 - _animation.value) * widget.offsetY),
             child: child,

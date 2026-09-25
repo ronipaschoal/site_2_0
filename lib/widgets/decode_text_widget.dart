@@ -88,8 +88,11 @@ class _RpDecodeTextWidgetState extends State<RpDecodeTextWidget>
       key: revealAnchorKey,
       child: AnimatedBuilder(
         animation: _controller,
+        // Kept in the semantics tree before the reveal, so screen readers
+        // reach the title without it having to scroll into view first.
         builder: (context, _) => Opacity(
           opacity: revealed ? 1.0 : 0.0,
+          alwaysIncludeSemantics: true,
           child: SelectableText(
             revealed ? _scrambledAt(_controller.value) : widget.text,
             semanticsLabel: widget.text,
