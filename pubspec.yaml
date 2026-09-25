@@ -21,6 +21,7 @@ dependencies:
   pdf: ^3.13.0
   printing: ^5.15.0
   shared_preferences: ^2.3.2
+  web: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +58,13 @@ flutter:
     - assets/images/logos/
     - assets/images/photos/
 
+  shaders:
+    - shaders/ambient.frag
+
   fonts:
+    - family: Space Grotesk
+      fonts:
+        - asset: assets/fonts/SpaceGrotesk.ttf
     - family: Inkburrow
       fonts:
         - asset: assets/fonts/inkburrow.ttf
