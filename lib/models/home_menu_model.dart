@@ -68,6 +68,17 @@ class HomeMenu {
     final viewport = RenderAbstractViewport.maybeOf(renderObject);
     return viewport?.getOffsetToReveal(renderObject, 0.0).offset ?? 0.0;
   }
+
+  /// Closes the drawer (if open) and scrolls this section into view — shared
+  /// by the nav buttons and the command palette.
+  void goTo() {
+    drawerKey.currentState?.closeDrawer();
+    scrollController.animateTo(
+      sectionPosition,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 }
 
 class ExternalMenu {
