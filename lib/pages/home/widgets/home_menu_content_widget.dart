@@ -69,9 +69,19 @@ class HomeMenuContentWidget extends StatelessWidget {
       Axis.horizontal,
       [
         for (final externalMenu in externalMenuList)
-          IconButton(
-            onPressed: externalMenu.goToExternal,
-            icon: externalMenu.iconWidget(context, const Size(16.0, 16.0)),
+          // Announced as a link to its URL (not a generic button), named
+          // after the destination since the button is icon-only.
+          Semantics(
+            link: true,
+            linkUrl: Uri.parse(externalMenu.url),
+            label: externalMenu.text,
+            onTap: externalMenu.goToExternal,
+            excludeSemantics: true,
+            child: IconButton(
+              tooltip: externalMenu.text,
+              onPressed: externalMenu.goToExternal,
+              icon: externalMenu.iconWidget(context, const Size(16.0, 16.0)),
+            ),
           ),
       ],
       RpTheme.spacerSmallX,

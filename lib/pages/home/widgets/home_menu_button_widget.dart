@@ -17,36 +17,32 @@ class HomeMenuButtonWidget extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       buildWhen: (prev, current) => prev.activeMenu != current.activeMenu,
       builder: (context, state) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () => _goToSection(menu),
-              child: Text(
-                menu.translate(context),
-                style: menu.section == state.activeMenu
-                    ? TextStyle(color: context.rpColors.textHighlightColor)
-                    : TextStyle(color: context.rpColors.textColor),
+        // `selected` tells screen readers which section is current — the
+        // underline alone is visual only.
+        return Semantics(
+          selected: menu.section == state.activeMenu,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: menu.goTo,
+                child: Text(
+                  menu.translate(context),
+                  style: menu.section == state.activeMenu
+                      ? TextStyle(color: context.rpColors.textHighlightColor)
+                      : TextStyle(color: context.rpColors.textColor),
+                ),
               ),
-            ),
-            if (menu.section == state.activeMenu)
-              Container(
-                width: 16.0,
-                height: 2.0,
-                color: RpTheme.brandColor,
-              ),
-          ],
+              if (menu.section == state.activeMenu)
+                Container(
+                  width: 16.0,
+                  height: 2.0,
+                  color: RpTheme.brandColor,
+                ),
+            ],
+          ),
         );
       },
-    );
-  }
-
-  void _goToSection(HomeMenu menu) {
-    menu.drawerKey.currentState?.closeDrawer();
-    menu.scrollController.animateTo(
-      menu.sectionPosition,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
     );
   }
 }

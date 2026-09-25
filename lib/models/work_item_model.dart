@@ -8,7 +8,10 @@ import 'package:ronip/models/localized_map.dart';
 /// ARB-based `AppLocalizations`.
 class WorkItem {
   final String tag;
-  final String image;
+
+  /// Screenshot shown as the card background; null renders a generated
+  /// cover instead (e.g. for this site itself).
+  final String? image;
   final String url;
   final String? urlApple;
   final Map<String, String> title;
@@ -16,7 +19,7 @@ class WorkItem {
 
   const WorkItem({
     required this.tag,
-    required this.image,
+    this.image,
     required this.url,
     this.urlApple,
     required this.title,

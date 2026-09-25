@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/models/locale_model.dart';
 import 'package:ronip/core/theme.dart';
 
@@ -20,6 +21,8 @@ class LocaleButtonWidget extends StatelessWidget {
       onPressed: () => changeLocale(next.locale),
       child: Text(
         next.text,
+        // "EN"/"PT" alone is ambiguous when read aloud.
+        semanticsLabel: AppLocalizations.of(context)!.commandChangeLanguage,
         style: TextStyle(color: context.rpColors.textHighlightColor),
       ),
     );

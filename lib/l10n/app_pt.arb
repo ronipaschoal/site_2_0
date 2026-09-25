@@ -39,5 +39,56 @@
     "cvEducation": "Formação Acadêmica",
     "cvBackToHome": "Voltar para o início",
     "cvDownload": "Baixar PDF",
-    "solutionPhilosophy": "Acredito que uma boa solução vai além de simplesmente funcionar. É preciso encontrar o equilíbrio entre qualidade técnica, simplicidade e experiência do usuário, criando produtos que sejam consistentes, intuitivos e agradáveis de utilizar."
+    "solutionPhilosophy": "Acredito que uma boa solução vai além de simplesmente funcionar. É preciso encontrar o equilíbrio entre qualidade técnica, simplicidade e experiência do usuário, criando produtos que sejam consistentes, intuitivos e agradáveis de utilizar.",
+    "heroHeadline": "Construo apps Flutter que parecem nativos em qualquer tela.",
+    "statusOpenToWork": "Aberto a oportunidades Flutter",
+    "statusWorking": "Construindo com Flutter",
+    "yearsOfExperience": "{years} anos de experiência",
+    "@yearsOfExperience": {
+        "placeholders": {
+            "years": {
+                "type": "String"
+            }
+        }
+    },
+    "commandHint": "para navegar",
+    "scrollHint": "Role",
+    "aboutLead": "Mobile de ponta a ponta, da arquitetura à loja.",
+    "factExperience": "anos de experiência",
+    "factHybridMobile": "anos em desenvolvimento mobile híbrido",
+    "factFlutter": "anos com Flutter",
+    "factStack": "Stack principal",
+    "factPlatforms": "Plataformas publicadas",
+    "factSecondaryStack": "Stacks secundárias",
+    "nowTitle": "Agora",
+    "nowText": "Retornando ao mobile com Flutter após o Mercado Pago, explorando IA aplicada ao desenvolvimento e evoluindo o RP Pay.",
+    "timelineTitle": "Trajetória",
+    "letsTalk": "Vamos conversar",
+    "copyEmail": "Copiar email",
+    "copied": "Copiado",
+    "builtWithFlutter": "Feito com Flutter",
+    "sourceCode": "Código-fonte",
+    "openLabel": "Abrir",
+    "commandPaletteTooltip": "Paleta de comandos",
+    "commandPaletteHint": "Digite um comando ou busque…",
+    "commandNoResults": "Nenhum comando encontrado",
+    "commandGoTo": "Ir para {section}",
+    "@commandGoTo": {
+        "placeholders": {
+            "section": {
+                "type": "String"
+            }
+        }
+    },
+    "commandOpen": "Abrir {name}",
+    "@commandOpen": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "commandToggleTheme": "Alternar tema claro/escuro",
+    "commandChangeLanguage": "Switch to English",
+    "commandOpenCv": "Abrir currículo"
 }

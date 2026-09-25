@@ -37,54 +37,62 @@ class _CvScreenState extends State<CvScreen> {
   Widget build(BuildContext context) {
     final isSmallScreen = context.isSmallScreen;
 
+    // Full-window page (app bar and scrollbar reach the edges); only the
+    // résumé itself is capped to the content column.
     return FlutterBannerWidget(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1200.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: Scaffold(
-            appBar: RpAppBar(
-              leading: IconButton(
+      child: SizedBox.expand(
+        child: Scaffold(
+          appBar: RpAppBar(
+            maxContentWidth: RpTheme.contentMaxWidth,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: context.rpColors.textHighlightColor,
+              ),
+              tooltip: AppLocalizations.of(context)!.cvBackToHome,
+              onPressed: () => context.go(HomeRoute.home),
+            ),
+            title: SelectableText(
+              AppLocalizations.of(context)!.cvHeading,
+              semanticsLabel: AppLocalizations.of(context)!.cvHeading,
+              style: RpTheme.pageTitleStyle(
+                context.rpColors.textHighlightColor,
+              ),
+            ),
+            actions: [
+              IconButton(
                 icon: Icon(
-                  Icons.arrow_back,
+                  Icons.download_outlined,
                   color: context.rpColors.textHighlightColor,
                 ),
-                tooltip: AppLocalizations.of(context)!.cvBackToHome,
-                onPressed: () => context.go(HomeRoute.home),
-              ),
-              title: SelectableText(
-                AppLocalizations.of(context)!.cvHeading,
-                semanticsLabel: AppLocalizations.of(context)!.cvHeading,
-                style: RpTheme.pageTitleStyle(
-                  context.rpColors.textHighlightColor,
+                tooltip: AppLocalizations.of(context)!.cvDownload,
+                onPressed: () => CvPdfBuilder.download(
+                  Localizations.localeOf(context).languageCode,
                 ),
               ),
-              actions: [
-                IconButton(
-                  icon: Icon(
-                    Icons.download_outlined,
-                    color: context.rpColors.textHighlightColor,
+              LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
+              ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
+              RpTheme.spacerMedium,
+            ],
+          ),
+          body: SingleChildScrollView(
+            controller: _scrollController,
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: RpTheme.contentMaxWidth,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    isSmallScreen ? 16.0 : 48.0,
+                    RpTheme.spacingLarge,
+                    isSmallScreen ? 16.0 : 48.0,
+                    RpTheme.spacingLargeX2,
                   ),
-                  tooltip: AppLocalizations.of(context)!.cvDownload,
-                  onPressed: () => CvPdfBuilder.download(
-                    Localizations.localeOf(context).languageCode,
+                  child: SafeArea(
+                    child: CvContentWidget(scrollController: _scrollController),
                   ),
                 ),
-                LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
-                ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
-                RpTheme.spacerMedium,
-              ],
-            ),
-            body: SingleChildScrollView(
-              controller: _scrollController,
-              padding: EdgeInsets.fromLTRB(
-                isSmallScreen ? 16.0 : 48.0,
-                RpTheme.spacingLarge,
-                isSmallScreen ? 16.0 : 48.0,
-                RpTheme.spacingLargeX2,
-              ),
-              child: SafeArea(
-                child: CvContentWidget(scrollController: _scrollController),
               ),
             ),
           ),

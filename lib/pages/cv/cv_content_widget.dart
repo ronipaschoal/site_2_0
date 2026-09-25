@@ -8,6 +8,7 @@ import 'package:ronip/models/cv_item_model.dart';
 import 'package:ronip/pages/cv/cv_data.dart';
 import 'package:ronip/pages/home/widgets/home_section_title_widget.dart';
 import 'package:ronip/core/theme.dart';
+import 'package:ronip/widgets/tappable_widget.dart';
 
 /// The résumé content itself — header, contact/skills sidebar, and the
 /// summary/experience/certifications/education main column — laid out
@@ -29,6 +30,13 @@ class CvContentWidget extends StatelessWidget {
 
   const CvContentWidget({super.key, required this.scrollController});
 
+  /// Screen readers order nodes by position, so without a container per
+  /// column they'd interleave the sidebar and the main column line by line
+  /// ("Contact, Summary, email, …"). A container keeps each column whole:
+  /// the sidebar reads first, then the main column.
+  static Widget _column(Widget child) =>
+      Semantics(container: true, explicitChildNodes: true, child: child);
+
   @override
   Widget build(BuildContext context) {
     final isSmallScreen = context.isSmallScreen;
@@ -42,9 +50,11 @@ class CvContentWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _CvSidebarWidget(scrollController: scrollController),
+              _column(_CvSidebarWidget(scrollController: scrollController)),
               RpTheme.spacerLargeX,
-              _CvMainColumnWidget(scrollController: scrollController),
+              _column(
+                _CvMainColumnWidget(scrollController: scrollController),
+              ),
             ],
           )
         else
@@ -53,15 +63,59 @@ class CvContentWidget extends StatelessWidget {
             children: [
               SizedBox(
                 width: 280.0,
-                child: _CvSidebarWidget(scrollController: scrollController),
+                child: _column(
+                  _CvSidebarWidget(scrollController: scrollController),
+                ),
               ),
               RpTheme.spacerLargeX,
               Expanded(
-                child: _CvMainColumnWidget(scrollController: scrollController),
+                child: _column(
+                  _CvMainColumnWidget(scrollController: scrollController),
+                ),
               ),
             ],
           ),
       ],
+    );
+  }
+}
+
+/// A [SelectableText] that is always named for screen readers — without a
+/// `semanticsLabel`, Flutter Web exposes a SelectableText as an unlabelled
+/// text box. [semanticsLabel] overrides the spoken text (e.g. the natural
+/// case of an all-caps label); [headingLevel] makes it an `<h1>`–`<h6>`.
+class _CvText extends StatelessWidget {
+  final String text;
+  final String? semanticsLabel;
+  final int? headingLevel;
+  final TextStyle? style;
+  final TextAlign? textAlign;
+
+  const _CvText(
+    this.text, {
+    this.semanticsLabel,
+    this.headingLevel,
+    this.style,
+    this.textAlign,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final label = semanticsLabel ?? text;
+    final selectable = SelectableText(
+      text,
+      semanticsLabel: label,
+      style: style,
+      textAlign: textAlign,
+    );
+    final level = headingLevel;
+    if (level == null) return selectable;
+
+    return Semantics(
+      headingLevel: level,
+      label: label,
+      excludeSemantics: true,
+      child: selectable,
     );
   }
 }
@@ -76,9 +130,9 @@ class _CvHeaderWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SelectableText(
+        _CvText(
           'Roni Paschoal',
-          semanticsLabel: 'Roni Paschoal',
+          headingLevel: 1,
           style: TextStyle(
             fontFamily: RpTheme.fontFamilyDisplay,
             fontSize: isSmallScreen ? 32.0 : RpTheme.fontSizeLarge,
@@ -86,18 +140,19 @@ class _CvHeaderWidget extends StatelessWidget {
           ),
         ),
         RpTheme.spacerSmall,
-        SelectableText(
+        _CvText(
           AppLocalizations.of(context)!.cvRole.toUpperCase(),
-          style: const TextStyle(
+          semanticsLabel: AppLocalizations.of(context)!.cvRole,
+          style: TextStyle(
             fontFamily: RpTheme.fontFamilyMono,
             fontSize: RpTheme.fontSizeRegular,
             fontWeight: FontWeight.w600,
-            color: RpTheme.brandColor,
+            color: context.rpColors.accentTextColor,
             letterSpacing: 2.0,
           ),
         ),
         RpTheme.spacerSmallX,
-        SelectableText(
+        _CvText(
           'Flutter · Dart · Android · iOS',
           style: TextStyle(color: context.rpColors.textColor),
         ),
@@ -111,12 +166,12 @@ class _CvHeaderWidget extends StatelessWidget {
               color: context.rpColors.textColor,
             ),
             const SizedBox(width: 4.0),
-            SelectableText(
+            _CvText(
               'Santo André, SP',
               style: RpTheme.labelStyle(context.rpColors.textColor),
             ),
             const SizedBox(width: 12.0),
-            SelectableText(
+            _CvText(
               AppLocalizations.of(context)!
                   .cvAge(DateTime.now().year - cvBirthYear),
               style: RpTheme.labelStyle(context.rpColors.textColor),
@@ -167,8 +222,9 @@ class _CvSidebarWidget extends StatelessWidget {
           scrollController: scrollController,
         ),
         for (final key in cvSkillGroupOrder) ...[
-          SelectableText(
+          _CvText(
             _skillGroupLabel(context, key).toUpperCase(),
+            semanticsLabel: _skillGroupLabel(context, key),
             style: RpTheme.labelStyle(context.rpColors.textColor),
           ),
           RpTheme.spacerSmall,
@@ -182,8 +238,9 @@ class _CvSidebarWidget extends StatelessWidget {
           ),
           RpTheme.spacerMedium,
         ],
-        SelectableText(
+        _CvText(
           AppLocalizations.of(context)!.cvSkillsLanguages.toUpperCase(),
+          semanticsLabel: AppLocalizations.of(context)!.cvSkillsLanguages,
           style: RpTheme.labelStyle(context.rpColors.textColor),
         ),
         RpTheme.spacerSmall,
@@ -193,7 +250,7 @@ class _CvSidebarWidget extends StatelessWidget {
           children: [
             for (final item in cvLanguageList)
               _CvSkillChipWidget(
-                '${item.languageFor(languageCode)} – '
+                '${item.languageFor(languageCode)} · '
                 '${item.levelFor(languageCode)}',
               ),
           ],
@@ -207,6 +264,14 @@ class _CvMainColumnWidget extends StatelessWidget {
   final ScrollController scrollController;
 
   const _CvMainColumnWidget({required this.scrollController});
+
+  /// Certification and education entries only exist in Portuguese (course
+  /// and issuer names), so they're tagged `lang="pt"` on web — with the site
+  /// in English, screen readers still switch to a Portuguese voice for them.
+  static Widget _portuguese(Widget child) => Semantics(
+        localeForSubtree: const Locale('pt'),
+        child: child,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -222,10 +287,9 @@ class _CvMainColumnWidget extends StatelessWidget {
           title: AppLocalizations.of(context)!.cvSummary,
           scrollController: scrollController,
         ),
-        SelectableText(
+        _CvText(
           summaryText,
-          semanticsLabel: summaryText,
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.start,
         ),
         RpTheme.spacerLargeX,
         HomeSectionTitleWidget(
@@ -255,7 +319,7 @@ class _CvMainColumnWidget extends StatelessWidget {
           scrollController: scrollController,
         ),
         for (final certification in cvCertificationList) ...[
-          _CvCertificationRowWidget(item: certification),
+          _portuguese(_CvCertificationRowWidget(item: certification)),
           RpTheme.spacerMedium,
         ],
         RpTheme.spacerLarge,
@@ -264,7 +328,7 @@ class _CvMainColumnWidget extends StatelessWidget {
           scrollController: scrollController,
         ),
         for (final education in cvEducationList) ...[
-          _CvEducationRowWidget(item: education),
+          _portuguese(_CvEducationRowWidget(item: education)),
           RpTheme.spacerMedium,
         ],
       ],
@@ -284,35 +348,39 @@ class _CvProjectCardWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        InkWell(
+        RpTappableWidget(
+          url: item.url,
+          semanticsLabel: item.title,
           onTap: () => HyperlinkHelper.open(item.url),
-          child: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: RpTheme.spacingSmallX,
-            children: [
-              Text(
-                item.title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
-                  color: RpTheme.brandColor,
-                  decoration: TextDecoration.underline,
-                  decorationColor: RpTheme.brandColor,
-                ),
+          builder: (context, highlighted) {
+            final color = context.rpColors.accentTextColor;
+            return Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: RpTheme.spacingSmallX,
+                children: [
+                  Text(
+                    item.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16.0,
+                      color: color,
+                      decoration: TextDecoration.underline,
+                      decorationColor: color,
+                      decorationThickness: highlighted ? 2.0 : 1.0,
+                    ),
+                  ),
+                  Icon(Icons.open_in_new, size: 14.0, color: color),
+                ],
               ),
-              const Icon(
-                Icons.open_in_new,
-                size: 14.0,
-                color: RpTheme.brandColor,
-              ),
-            ],
-          ),
+            );
+          },
         ),
         RpTheme.spacerSmallX,
-        SelectableText(
+        _CvText(
           item.descriptionFor(languageCode),
-          semanticsLabel: item.descriptionFor(languageCode),
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.start,
           style: const TextStyle(fontSize: 14.5),
         ),
         RpTheme.spacerSmall,
@@ -343,15 +411,16 @@ class _CvExperienceCardWidget extends StatelessWidget {
           spacing: RpTheme.spacingSmall,
           runSpacing: RpTheme.spacingSmallX,
           children: [
-            SelectableText(
+            _CvText(
               item.company,
+              headingLevel: 3,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18.0,
                 color: context.rpColors.textHighlightColor,
               ),
             ),
-            SelectableText(
+            _CvText(
               item.periodWithDurationFor(languageCode),
               style: TextStyle(
                 fontFamily: RpTheme.fontFamilyMono,
@@ -362,19 +431,18 @@ class _CvExperienceCardWidget extends StatelessWidget {
           ],
         ),
         RpTheme.spacerSmallX,
-        SelectableText(
+        _CvText(
           item.roleFor(languageCode),
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: RpTheme.fontSizeRegular,
-            color: RpTheme.brandColor,
+            color: context.rpColors.accentTextColor,
           ),
         ),
         RpTheme.spacerSmall,
-        SelectableText(
+        _CvText(
           item.descriptionFor(languageCode),
-          semanticsLabel: item.descriptionFor(languageCode),
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.start,
           style: const TextStyle(fontSize: 14.5),
         ),
       ],
@@ -389,42 +457,44 @@ class _CvCertificationRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 6.0),
-          child: Icon(
-            Icons.workspace_premium_outlined,
-            size: 16.0,
-            color: RpTheme.brandColor,
+    return MergeSemantics(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 6.0),
+            child: Icon(
+              Icons.workspace_premium_outlined,
+              size: 16.0,
+              color: RpTheme.brandColor,
+            ),
           ),
-        ),
-        RpTheme.spacerSmall,
-        Expanded(
-          child: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: RpTheme.spacingSmall,
-            children: [
-              SelectableText(
-                item.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: context.rpColors.textHighlightColor,
+          RpTheme.spacerSmall,
+          Expanded(
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: RpTheme.spacingSmall,
+              children: [
+                _CvText(
+                  item.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: context.rpColors.textHighlightColor,
+                  ),
                 ),
-              ),
-              SelectableText(
-                '${item.issuer} · ${item.date}',
-                style: TextStyle(
-                  fontFamily: RpTheme.fontFamilyMono,
-                  fontSize: 12.0,
-                  color: context.rpColors.textColor,
+                _CvText(
+                  '${item.issuer} · ${item.date}',
+                  style: TextStyle(
+                    fontFamily: RpTheme.fontFamilyMono,
+                    fontSize: 12.0,
+                    color: context.rpColors.textColor,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -436,41 +506,43 @@ class _CvEducationRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 6.0),
-          child: Icon(
-            Icons.school_outlined,
-            size: 16.0,
-            color: RpTheme.brandColor,
+    return MergeSemantics(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 6.0),
+            child: Icon(
+              Icons.school_outlined,
+              size: 16.0,
+              color: RpTheme.brandColor,
+            ),
           ),
-        ),
-        RpTheme.spacerSmall,
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SelectableText(
-                '${item.institution} · ${item.course}',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: context.rpColors.textHighlightColor,
+          RpTheme.spacerSmall,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _CvText(
+                  '${item.institution} · ${item.course}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: context.rpColors.textHighlightColor,
+                  ),
                 ),
-              ),
-              SelectableText(
-                item.period,
-                style: TextStyle(
-                  fontFamily: RpTheme.fontFamilyMono,
-                  fontSize: 12.0,
-                  color: context.rpColors.textColor,
+                _CvText(
+                  item.period,
+                  style: TextStyle(
+                    fontFamily: RpTheme.fontFamilyMono,
+                    fontSize: 12.0,
+                    color: context.rpColors.textColor,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -488,7 +560,7 @@ class _CvSkillChipWidget extends StatelessWidget {
         border: Border.all(color: context.rpColors.hairlineColor),
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
-      child: SelectableText(
+      child: _CvText(
         skill,
         style: TextStyle(
           fontFamily: RpTheme.fontFamilyMono,
@@ -500,12 +572,14 @@ class _CvSkillChipWidget extends StatelessWidget {
   }
 }
 
-/// Icon + text, both tappable to open the link. The text stays a
-/// [SelectableText.rich] (rather than plain `Text`) so the address/handle
-/// can still be selected and copied; the tap-to-open behavior is attached
-/// via a [TapGestureRecognizer] on its span instead of wrapping the row in
-/// an [InkWell] — a `SelectableText`'s own selection gesture would
-/// otherwise compete with an ancestor tap gesture for the same pointer.
+/// Icon + text, both tappable to open the link. The icon is the accessible
+/// link ([RpTappableWidget]: focusable, a real `<a href>` on web). The text
+/// stays a [SelectableText.rich] (rather than plain `Text`) so the
+/// address/handle can still be selected and copied, and is hidden from
+/// semantics so the link isn't announced twice; its tap-to-open behavior is
+/// attached via a [TapGestureRecognizer] on the span instead of an ancestor
+/// tap gesture, which would compete with the text's own selection gesture
+/// for the same pointer.
 class _CvLinkRowWidget extends StatefulWidget {
   final CvContactItem contact;
 
@@ -559,25 +633,32 @@ class _CvLinkRowWidgetState extends State<_CvLinkRowWidget> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        InkWell(
+        // The icon carries the link for keyboard and screen readers (a real
+        // <a href> on web); the text beside it stays a selectable span for
+        // copy/paste and is excluded so the link isn't announced twice.
+        RpTappableWidget(
+          url: widget.contact.url,
+          semanticsLabel: widget.contact.text,
           onTap: _open,
-          customBorder: const CircleBorder(),
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
+          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+          builder: (context, _) => Padding(
+            padding: const EdgeInsets.all(4.0),
             child: _icon(),
           ),
         ),
         RpTheme.spacerSmall,
         Flexible(
-          child: SelectableText.rich(
-            TextSpan(
-              text: widget.contact.text,
-              recognizer: _recognizer,
-              style: const TextStyle(
-                fontSize: 13.5,
-                color: RpTheme.brandColor,
-                decoration: TextDecoration.underline,
-                decorationColor: RpTheme.brandColor,
+          child: ExcludeSemantics(
+            child: SelectableText.rich(
+              TextSpan(
+                text: widget.contact.text,
+                recognizer: _recognizer,
+                style: TextStyle(
+                  fontSize: 13.5,
+                  color: context.rpColors.accentTextColor,
+                  decoration: TextDecoration.underline,
+                  decorationColor: context.rpColors.accentTextColor,
+                ),
               ),
             ),
           ),

@@ -38,41 +38,46 @@ class RpLogoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final effectiveSize = size ?? MediaQuery.sizeOf(context);
-    return Opacity(
-      opacity: opacity,
-      child: Stack(
-        children: [
-          RpImageWidget(
-            asset: asset,
-            width: effectiveSize.width,
-            height: effectiveSize.height,
-            color: RpTheme.blackColor,
-            fit: BoxFit.contain,
-          ),
-          Padding(
-            padding: padding.copyWith(
-              left: padding.left * 10,
-              top: padding.top * 10,
-            ),
-            child: RpImageWidget(
+    // Decorative: three stacked, unlabelled copies of the mark (shadow, brand
+    // offset, face) would otherwise be announced as three blank images. The
+    // name always sits next to it.
+    return ExcludeSemantics(
+      child: Opacity(
+        opacity: opacity,
+        child: Stack(
+          children: [
+            RpImageWidget(
               asset: asset,
               width: effectiveSize.width,
               height: effectiveSize.height,
-              color: RpTheme.brandColor,
+              color: RpTheme.blackColor,
               fit: BoxFit.contain,
             ),
-          ),
-          Padding(
-            padding: padding,
-            child: RpImageWidget(
-              asset: asset,
-              width: effectiveSize.width,
-              height: effectiveSize.height,
-              color: RpTheme.whiteColor,
-              fit: BoxFit.contain,
+            Padding(
+              padding: padding.copyWith(
+                left: padding.left * 10,
+                top: padding.top * 10,
+              ),
+              child: RpImageWidget(
+                asset: asset,
+                width: effectiveSize.width,
+                height: effectiveSize.height,
+                color: RpTheme.brandColor,
+                fit: BoxFit.contain,
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: padding,
+              child: RpImageWidget(
+                asset: asset,
+                width: effectiveSize.width,
+                height: effectiveSize.height,
+                color: RpTheme.whiteColor,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

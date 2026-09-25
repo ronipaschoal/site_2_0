@@ -13,14 +13,18 @@ The site is a single-page personal portfolio (`/`) plus a dedicated résumé pag
 Currently, the project includes:
 
 - **Home** (single scrollable page, section-based navigation)
-  - Hero section with a scramble/decode-in text animation and a logo-to-watermark scroll transition
-  - About section
-  - Programs / project gallery
-  - Contact section
-  - Scroll progress bar
+  - Ambient background drawn by a fragment shader (drifting brand glow, scroll-parallaxed dot grid, cursor spotlight, grain)
+  - Hero with an "open to work" status, positioning headline, career figures and a logo-to-watermark scroll transition
+  - Philosophy quote band whose words light up as it scrolls through the viewport
+  - About section: lead statement, bento grid of quick facts (experience, stacks, tools, "Now"), and a career timeline built from the résumé data
+  - Programs gallery that pins to the viewport and scrubs sideways with scroll
+  - Contact section with a large mailto CTA, copy-to-clipboard email, and a footer with a hand-written signature and the live build hash
+  - Command palette (⌘K / Ctrl+K) to jump to sections, open the résumé, copy the email, switch theme/language
+  - Scroll progress bar; section titles decode in from scrambled characters
   - Side menu (Drawer) on small screens
   - Locale switcher (PT-BR / EN-US)
   - Light/dark theme toggle, defaulting to the system/browser preference and remembered across visits
+  - Page chrome (app bar, scrollbar, background) spans the window; content is capped to a 1200px column
 - **Résumé** (`/cv`)
   - On-screen résumé: contact, skills, languages, age, experience, projects, certifications, education
   - PDF download, built from the same content as the on-screen version
@@ -68,9 +72,11 @@ lib/
 │   └── routes_helper.dart                     # Shared page-transition builder
 │
 ├── core/                                      # 🎨 Cross-cutting design system + utilities
-│   ├── theme.dart                             # RpColors (ThemeExtension), text styles, spacing
+│   ├── theme.dart                             # RpColors (ThemeExtension), text styles, spacing, content width
+│   ├── profile.dart                           # Personal figures/flags (years, open-to-work, source URL, build hash)
 │   ├── hyperlink_helper.dart                  # Opens external links / mailto
-│   └── media_query_helper.dart                # Small-screen/breakpoint extension on BuildContext
+│   ├── media_query_helper.dart                # Small-screen/breakpoint extension on BuildContext
+│   └── semantic_links/                        # Web-only guard for accessibility-DOM links (see Accessibility)
 │
 ├── cubits/
 │   └── app/
@@ -112,17 +118,25 @@ lib/
 │       └── cv_screen.dart                     # Full-page résumé screen
 │
 ├── widgets/                                   # 🧩 Shared, reusable widgets
-│   ├── rp_app_bar.dart                        # Site-standard AppBar chrome
+│   ├── ambient_background_widget.dart         # Paints shaders/ambient.frag behind the page
+│   ├── command_palette_widget.dart            # ⌘K / Ctrl+K command palette
+│   ├── tappable_widget.dart                   # Accessible custom link/button (focus, keyboard, <a href>)
+│   ├── signature_widget.dart                  # Hand-written name "written" on reveal
+│   ├── rp_app_bar.dart                        # Site-standard AppBar chrome (optionally column-aligned)
 │   ├── scroll_progress_mixin.dart             # Shared "0..1 progress from a ScrollController" logic
 │   ├── scroll_reveal_mixin.dart               # Shared "reveal once scrolled into view" logic
 │   └── ...                                    # Logo, banner, decode text, locale/theme buttons, ...
 │
 └── main.dart                                  # 🎬 Application entry point
 
+shaders/
+└── ambient.frag                               # Fragment shader for the ambient background
+
 test/
+├── a11y/                                      # Screen reader / keyboard / contrast checks
 ├── cubits/                                    # AppCubit/HomeCubit + their states
 ├── models/                                    # Résumé/work-item localization fallback logic
-├── pages/                                     # Page-scoped widget tests
+├── pages/                                     # Page-scoped widget tests (incl. notched-phone layout)
 ├── widgets/                                   # Shared-widget tests
 └── helpers/                                   # pump_app.dart — shared MaterialApp test harness
 ```
@@ -152,6 +166,9 @@ This organization favors keeping each page self-contained while sharing only wha
 | url_launcher | Opening external links / mailto |
 | pdf / printing | Résumé PDF export and direct download |
 | shared_preferences | Persisting the light/dark theme preference across visits |
+| web | Web-only DOM access (guarding accessibility links) |
+| Fragment shaders (`FragmentProgram`) | Ambient page background |
+| Space Grotesk · Inter · IBM Plex Mono · Inkburrow | Headings · body · labels · signature (Space Grotesk under OFL, `assets/fonts/SpaceGrotesk-OFL.txt`) |
 | Claude Code | Development support with AI |
 | Dart/Flutter MCP | Claude Code plugin (`dart-flutter`) providing analysis, hot reload/restart, LSP, and runtime error inspection tools |
 
@@ -224,8 +241,9 @@ Unit tests cover the pieces of logic that don't require a running widget tree:
 
 Widget tests pump real widgets through `WidgetTester`, via the shared `test/helpers/pump_app.dart` harness (the app's theme + localizations, so anything reading `context.rpColors` or `AppLocalizations.of(context)` behaves as it does at runtime):
 
-- `test/widgets/` — `ThemeButtonWidget`/`LocaleButtonWidget` (icon/label reflects the current theme/locale, tapping fires the callback with the right value), `RpAppBar` (renders leading/title/actions with the theme's menu color), `RpScrollProgressWidget` (bar width tracks scroll position), `RpRevealOnScrollWidget` (child stays hidden until scrolled near the viewport, then fades in).
-- `test/pages/` — `HomeContactItemWidget` (renders and taps through to `onPressed`), `HomeMenuButtonWidget` (label recolors once `HomeCubit` marks its section active).
+- `test/widgets/` — `ThemeButtonWidget`/`LocaleButtonWidget` (icon/label reflects the current theme/locale, tapping fires the callback with the right value), `RpAppBar` (menu color; with `maxContentWidth`, spans the window while aligning its content to the column), `RpScrollProgressWidget` (bar width tracks scroll position), `RpRevealOnScrollWidget` (child stays hidden until scrolled near the viewport, then fades in), `RpCommandPaletteWidget` (search filtering, arrow-key selection, Enter runs the command).
+- `test/pages/` — `HomeMenuButtonWidget` (label recolors once `HomeCubit` marks its section active), `AboutSection` (bento tiles in a row share one height), `ContactSection` (copy email hits the clipboard and confirms), and `HomeScreen` on a simulated notched phone (hero scroll cue inside the visible area; pinned gallery cards fill the band between title and progress).
+- `test/a11y/` — `RpTappableWidget` (named link with its URL, Tab + Enter/Space, repeated activations collapsed), section titles as `<h2>` headings, the gallery's projects all exposed as links (including cards scrubbed off-screen), and the résumé (an `<h1>`, links, and no unlabelled text fields). Also runs Flutter's `labeledTapTargetGuideline` and `textContrastGuideline`.
 
 Run the suite with:
 
@@ -239,8 +257,20 @@ Integration tests aren't in place yet — see the roadmap below.
 
 A GitHub Actions workflow (`.github/workflows/main.yaml`) builds and deploys the site on every push/PR to `main`:
 
-1. **Build** — `flutter build web --release`, uploaded as a build artifact.
+1. **Build** — `flutter build web --release --dart-define=GIT_SHA=<short sha>` (the hash shown in the site footer), uploaded as a build artifact.
 2. **Deploy** — on push to `main`, the artifact is synced via FTP to the production host.
+
+## ♿ Accessibility
+
+Flutter Web draws to a canvas and exposes content to assistive tech through a separate accessibility DOM. A few things keep that DOM useful:
+
+- **Semantics always on** — `SemanticsBinding.instance.ensureSemantics()` on web, so screen readers don't land on an empty page behind Flutter's hidden "Enable accessibility" button.
+- **Language** — the semantics tree carries the app's locale (`pt`/`en`), not the browser's, so voices match the copy; Portuguese-only résumé entries are tagged `pt` even in English.
+- **Structure** — one `<h1>`, `<h2>` per section, `<h3>` for sub-sections/companies; decorative glyphs (`[01]`, `/`, `“`, `↗`) are excluded; content hidden until scrolled into view stays in the tree.
+- **Links and keyboard** — custom links/buttons go through `RpTappableWidget` (Tab-focusable, Enter/Space, visible focus ring, real `<a href>`). `lib/core/semantic_links/` cancels the browser's own navigation on those anchors, since the widget already opens the page in a new tab.
+- **Gallery** — its cards get translated off-screen, so keyboard/screen-reader users go through always-present semantic proxies; focusing one scrubs the gallery to that card.
+- **Contrast** — `RpColors.accentTextColor` is the brand hue tuned to WCAG AA for small text and focus rings; the raw brand color is kept for large type and decoration.
+- **Motion** — every animation honors the platform's reduce-motion setting.
 
 ## 🌐 API and data
 
@@ -254,7 +284,8 @@ Some points that may be documented in the future:
 
 - Why content stays in code instead of a CMS/API for a personal site this size
 - Locale strategy: ARB for fixed UI copy vs. per-record locale maps for content
-- The scroll-driven animation approach (reveal-on-scroll, decode text, logo transition)
+- The scroll-driven animation approach (reveal-on-scroll, decode text, logo transition, pinned gallery)
+- The fragment-shader background and its reduced-motion fallback
 - Sharing résumé content between the on-screen view and the PDF export
 - The CI/CD deploy pipeline (GitHub Actions + FTP)
 

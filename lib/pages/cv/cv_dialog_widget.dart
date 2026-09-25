@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
 import 'package:ronip/core/media_query_helper.dart';
@@ -82,57 +83,85 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
       child: CvContentWidget(scrollController: _scrollController),
     );
 
+    // Names the overlay route, so screen readers announce "Résumé" when it
+    // opens (the wide layout has no visible title to take it from) and keep
+    // their reading within it.
+    Widget route(Widget child) => Semantics(
+          scopesRoute: true,
+          namesRoute: true,
+          explicitChildNodes: true,
+          label: AppLocalizations.of(context)!.cvHeading,
+          child: child,
+        );
+
     if (isSmallScreen) {
-      return Scaffold(
-        backgroundColor: context.rpColors.backgroundColor,
-        appBar: RpAppBar(
-          leading: closeButton,
-          actions: [
-            downloadButton,
-            LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
-            ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
-            RpTheme.spacerMedium,
-          ],
+      return route(
+        Scaffold(
+          backgroundColor: context.rpColors.backgroundColor,
+          appBar: RpAppBar(
+            leading: closeButton,
+            actions: [
+              downloadButton,
+              LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
+              ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
+              RpTheme.spacerMedium,
+            ],
+          ),
+          body: SafeArea(child: content),
         ),
-        body: SafeArea(child: content),
       );
     }
 
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding:
-          const EdgeInsets.symmetric(horizontal: 48.0, vertical: 32.0),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: 960.0,
-          maxHeight: MediaQuery.sizeOf(context).height * 0.86,
-        ),
-        child: Material(
-          color: context.rpColors.backgroundColor,
-          borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-          clipBehavior: Clip.antiAlias,
-          child: Stack(
-            children: [
-              content,
-              Positioned(
-                top: RpTheme.spacingSmall,
-                right: RpTheme.spacingSmall,
-                child: Material(
-                  color: context.rpColors.menuColor,
-                  shape: const CircleBorder(),
-                  child: closeButton,
+    return route(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding:
+            const EdgeInsets.symmetric(horizontal: 48.0, vertical: 32.0),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 960.0,
+            maxHeight: MediaQuery.sizeOf(context).height * 0.86,
+          ),
+          child: Material(
+            color: context.rpColors.backgroundColor,
+            borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+            clipBehavior: Clip.antiAlias,
+            child: Stack(
+              children: [
+                // Painted under the actions, but read after them: the sort
+                // keys put Download/Close first for screen readers, instead
+                // of after the whole résumé.
+                Semantics(
+                  container: true,
+                  sortKey: const OrdinalSortKey(1.0),
+                  child: content,
                 ),
-              ),
-              Positioned(
-                top: RpTheme.spacingSmall,
-                right: 56.0,
-                child: Material(
-                  color: context.rpColors.menuColor,
-                  shape: const CircleBorder(),
-                  child: downloadButton,
+                Positioned(
+                  top: RpTheme.spacingSmall,
+                  right: RpTheme.spacingSmall,
+                  child: Semantics(
+                    container: true,
+                    sortKey: const OrdinalSortKey(0.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Material(
+                          color: context.rpColors.menuColor,
+                          shape: const CircleBorder(),
+                          child: downloadButton,
+                        ),
+                        const SizedBox(width: 4.0),
+                        Material(
+                          color: context.rpColors.menuColor,
+                          shape: const CircleBorder(),
+                          child: closeButton,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
