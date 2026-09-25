@@ -13,7 +13,9 @@ const contactEmail = 'ronipaschoal@gmail.com';
 /// PDF export (`CvPdfBuilder`) so both stay in sync from one source.
 const cvSummary = {
   'pt': 'Desenvolvedor de software com mais de 8 anos de experiência, '
-      'especializado em Flutter para aplicações mobile Android e iOS. '
+      'sendo mais de 5 em desenvolvimento mobile híbrido e mais de 3 com '
+      'Flutter. Especializado em Flutter para aplicações mobile Android '
+      'e iOS. '
       'Experiência em arquitetura MVVM e Clean Architecture, Design '
       'Systems, BLoC/Cubit e testes automatizados, com atuação da '
       'definição técnica à publicação de soluções escaláveis, incluindo '
@@ -21,11 +23,13 @@ const cvSummary = {
       'padrões e ferramentas, além do uso de Inteligência Artificial no '
       'dia a dia de desenvolvimento. Aberto a novas oportunidades como '
       'desenvolvedor mobile Flutter.',
-  'en': 'Software developer with more than 8 years of experience, specializing '
-      'in Flutter for Android and iOS mobile applications. Experienced in '
+  'en': 'Software developer with more than 8 years of experience, including '
+      'over 5 in hybrid mobile development and over 3 with Flutter. '
+      'Specialized in Flutter for Android and iOS mobile applications. '
+      'Experienced in '
       'MVVM and Clean Architecture, Design Systems, BLoC/Cubit, and '
       'automated testing, working from technical definition to publishing '
-      'scalable solutions — including a key role in structuring the team '
+      'scalable solutions, including a key role in structuring the team '
       'and defining standards and tools, plus day-to-day use of '
       'Artificial Intelligence in development. Open to new opportunities '
       'as a Flutter mobile developer.',
@@ -56,26 +60,21 @@ const cvContactList = [
 
 const cvSkillGroupOrder = ['mobile', 'architecture', 'fullstack', 'tools'];
 
+// Grouped by kind: packages the apps depend on sit under "mobile", workflow
+// tools under "tools" — shared by the résumé, its PDF and the home bento.
 const cvSkillGroups = <String, List<String>>{
-  'mobile': ['Flutter', 'Dart'],
+  'mobile': ['Flutter', 'Dart', 'BLoC', 'Dio', 'get_it'],
   'architecture': [
     'BLoC',
     'MVVM',
     'Clean Architecture',
     'SOLID',
     'Design Patterns',
-  ],
-  'fullstack': ['Angular', 'React', 'Go'],
-  'tools': [
-    'Git',
-    'GitHub',
-    'GitHub Actions',
     'REST',
-    'Dio',
-    'CI/CD',
     'Automated Testing',
-    'Claude',
   ],
+  'fullstack': ['TypeScript', 'Angular', 'React', 'Go'],
+  'tools': ['Git', 'GitHub', 'GitHub Actions', 'CI/CD', 'Claude'],
 };
 
 const cvLanguageList = [
