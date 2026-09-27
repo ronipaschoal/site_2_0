@@ -48,6 +48,18 @@ class WorkGallerySection extends StatefulWidget {
       image: 'assets/images/photos/minha-comanda.png',
     ),
     WorkItem(
+      title: {'pt': 'Rppay, Flutter Web', 'en': 'Rppay, Flutter Web'},
+      tag: 'Web · Flutter',
+      description: {
+        'pt':
+            'App fictício de pagamentos para estudo de arquitetura feature-first, MVVM, Bloc/Cubit, SOLID e Material 3.',
+        'en':
+            'Fictional payments app to study feature-first architecture, MVVM, Bloc/Cubit, SOLID and Material 3.',
+      },
+      url: 'https://rppay.ronipaschoal.com.br/',
+      image: 'assets/images/photos/rppay.png',
+    ),
+    WorkItem(
       title: {'pt': 'Este site, Flutter Web', 'en': 'This site, Flutter Web'},
       tag: 'Web · Flutter · Shaders',
       description: {
