@@ -9,8 +9,9 @@ import 'package:ronip/models/localized_map.dart';
 /// Deliberately Flutter-free (plain `String` language codes, not `Locale`)
 /// so this model — and anything built only from it, like the PDF export —
 /// stays usable outside a running Flutter engine.
-class CvExperienceItem {
+class CvExperienceItem with CvPeriod {
   final String company;
+  @override
   final String period;
   final Map<String, String> role;
   final Map<String, String> description;
@@ -26,6 +27,58 @@ class CvExperienceItem {
 
   String descriptionFor(String languageCode) =>
       description.resolve(languageCode);
+
+  /// [descriptionFor] split into its sentences — one bullet point each.
+  List<String> highlightsFor(String languageCode) =>
+      sentencesOf(descriptionFor(languageCode));
+
+  /// Splits prose into sentences on a period followed by whitespace.
+  static List<String> sentencesOf(String text) => text
+      .split(RegExp(r'(?<=\.)\s+'))
+      .map((sentence) => sentence.trim())
+      .where((sentence) => sentence.isNotEmpty)
+      .toList();
+}
+
+/// A résumé's consecutive entries at the same company, shown as one
+/// block: the company over the whole span, then each role held there.
+class CvCompanyGroup with CvPeriod {
+  final String company;
+
+  /// Newest first, as in the list the group was built from.
+  final List<CvExperienceItem> roles;
+
+  const CvCompanyGroup(this.company, this.roles);
+
+  /// Merges consecutive entries at the same company, keeping list order.
+  /// Entries at the same company separated by another employer stay apart.
+  static List<CvCompanyGroup> groupByCompany(List<CvExperienceItem> items) {
+    final groups = <CvCompanyGroup>[];
+    for (final item in items) {
+      if (groups.isNotEmpty && groups.last.company == item.company) {
+        groups.last.roles.add(item);
+      } else {
+        groups.add(CvCompanyGroup(item.company, [item]));
+      }
+    }
+    return groups;
+  }
+
+  bool get hasMultipleRoles => roles.length > 1;
+
+  /// From the oldest role's start to the newest role's end.
+  @override
+  String get period {
+    final start = roles.last.period.split('-').first.trim();
+    final end = roles.first.period.split('-').last.trim();
+    return '$start - $end';
+  }
+}
+
+/// Tenure helpers for anything with a `'Mmm/yyyy - Mmm/yyyy'` [period] — a
+/// single role or a whole [CvCompanyGroup].
+mixin CvPeriod {
+  String get period;
 
   static const _ptMonths = 'jan fev mar abr mai jun jul ago set out nov dez';
   static const _enMonths = 'jan feb mar apr may jun jul aug sep oct nov dec';
@@ -137,24 +190,30 @@ class CvEducationItem {
 
 /// A spoken language entry. `language` and `level` carry one value per
 /// language code, same shape as [CvExperienceItem.role]/`description`.
+/// `usage` optionally spells out what the level covers in practice; only
+/// the PDF exports print it — on screen the level chip stays short.
 class CvLanguageItem {
   final Map<String, String> language;
   final Map<String, String> level;
+  final Map<String, String>? usage;
 
   const CvLanguageItem({
     required this.language,
     required this.level,
+    this.usage,
   });
 
   String languageFor(String languageCode) => language.resolve(languageCode);
 
   String levelFor(String languageCode) => level.resolve(languageCode);
+
+  String? usageFor(String languageCode) => usage?.resolve(languageCode);
 }
 
 /// What a [CvContactItem] links to — lets each renderer (on-screen icon,
 /// PDF export) pick its own presentation without the data itself knowing
 /// about icons or fonts.
-enum CvContactType { email, linkedin, github, website }
+enum CvContactType { email, phone, linkedin, github, website }
 
 /// A contact entry (email, social profile, personal site).
 class CvContactItem {

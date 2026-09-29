@@ -1,5 +1,5 @@
 name: ronip
-description: Roni Paschoal — Engenheiro de Software Flutter.
+description: Roni Paschoal — Desenvolvedor de Software Mobile Flutter.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -21,7 +21,9 @@ dependencies:
   pdf: ^3.13.0
   printing: ^5.15.0
   shared_preferences: ^2.3.2
-  web: ^1.1.0
+
+  a11y_kit:
+    path: packages/a11y_kit
 
 dev_dependencies:
   flutter_test:

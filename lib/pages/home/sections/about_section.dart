@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/core/profile.dart';
@@ -195,8 +196,7 @@ class _FactTileState extends State<_FactTile> {
     final colors = context.rpColors;
     final fact = widget.fact;
     final isNumber = RegExp(r'^[\d+]+$').hasMatch(fact.value);
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
 
     // One stop per tile for screen readers: "Years of experience, 8+".
     return MergeSemantics(
@@ -237,9 +237,8 @@ class _FactTileState extends State<_FactTile> {
                     RpTheme.spacerSmall,
                   ],
                   Flexible(
-                    child: Text(
-                      fact.caption.toUpperCase(),
-                      semanticsLabel: fact.caption,
+                    child: A11yCapsText(
+                      fact.caption,
                       style: RpTheme.labelStyle(colors.textColor)
                           .copyWith(fontSize: 11.0, letterSpacing: 1.4),
                     ),
@@ -279,10 +278,9 @@ class _Timeline extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Semantics(
-          headingLevel: 3,
+        A11yHeading(
+          level: 3,
           label: AppLocalizations.of(context)!.timelineTitle,
-          excludeSemantics: true,
           child: Text(
             AppLocalizations.of(context)!.timelineTitle.toUpperCase(),
             style: RpTheme.labelStyle(colors.textHighlightColor),
@@ -303,9 +301,8 @@ class _Timeline extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: isSmallScreen ? null : 200.0,
-                    child: Text(
-                      item.period.toUpperCase(),
-                      semanticsLabel: item.period,
+                    child: A11yCapsText(
+                      item.period,
                       style: periodStyle,
                     ),
                   ),

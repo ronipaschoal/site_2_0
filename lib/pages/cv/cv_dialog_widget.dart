@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,7 +6,7 @@ import 'package:ronip/cubits/app/app_cubit.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/cv/cv_content_widget.dart';
-import 'package:ronip/pages/cv/cv_pdf_builder.dart';
+import 'package:ronip/pages/cv/cv_download_button.dart';
 import 'package:ronip/core/theme.dart';
 import 'package:ronip/widgets/locale_button_widget.dart';
 import 'package:ronip/widgets/rp_app_bar.dart';
@@ -23,7 +24,8 @@ class CvDialogWidget extends StatefulWidget {
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       barrierDismissible: true,
       barrierColor: const Color(0xCC000000),
-      transitionDuration: const Duration(milliseconds: 200),
+      transitionDuration:
+          context.motionDuration(const Duration(milliseconds: 200)),
       pageBuilder: (context, _, __) => const CvDialogWidget(),
       transitionBuilder: (context, animation, _, child) => FadeTransition(
         opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
@@ -61,16 +63,7 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
       icon: Icon(Icons.close, color: context.rpColors.textHighlightColor),
     );
 
-    final downloadButton = IconButton(
-      onPressed: () => CvPdfBuilder.download(
-        Localizations.localeOf(context).languageCode,
-      ),
-      tooltip: AppLocalizations.of(context)!.cvDownload,
-      icon: Icon(
-        Icons.download_outlined,
-        color: context.rpColors.textHighlightColor,
-      ),
-    );
+    const downloadButton = CvDownloadButton();
 
     final content = SingleChildScrollView(
       controller: _scrollController,

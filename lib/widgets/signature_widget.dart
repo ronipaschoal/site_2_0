@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ronip/core/theme.dart';
 import 'package:ronip/widgets/scroll_reveal_mixin.dart';
@@ -35,17 +36,22 @@ class _RpSignatureWidgetState extends State<RpSignatureWidget>
   @override
   void initState() {
     super.initState();
-    final reduceMotion = WidgetsBinding
-        .instance.platformDispatcher.accessibilityFeatures.disableAnimations;
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1600),
     );
-    if (reduceMotion) {
+    startRevealTracking();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Under reduced motion (including when it's switched on mid-visit), show
+    // the finished signature.
+    if (context.reduceMotion && !revealed) {
+      stopRevealTracking();
       revealed = true;
       _controller.value = 1.0;
-    } else {
-      startRevealTracking();
     }
   }
 

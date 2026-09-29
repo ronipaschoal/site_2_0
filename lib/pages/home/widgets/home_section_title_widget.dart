@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/core/theme.dart';
@@ -83,12 +84,8 @@ class HomeSectionTitleWidget extends StatelessWidget {
   /// between sections by heading. The label is set here (and the decoding
   /// text excluded) so the heading always reads as the final title, never
   /// the scrambled frames.
-  Widget _heading(Widget child) => Semantics(
-        headingLevel: 2,
-        label: title,
-        excludeSemantics: true,
-        child: child,
-      );
+  Widget _heading(Widget child) =>
+      A11yHeading(level: 2, label: title, child: child);
 
   Widget _compact(BuildContext context) {
     final isSmallScreen = context.isSmallScreen;

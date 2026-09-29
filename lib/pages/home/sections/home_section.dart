@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/core/profile.dart';
@@ -17,18 +18,20 @@ class HomeSection extends StatefulWidget {
 
 class _HomeSectionState extends State<HomeSection>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1200),
+  );
 
   @override
-  void initState() {
-    super.initState();
-    final reduceMotion = WidgetsBinding
-        .instance.platformDispatcher.accessibilityFeatures.disableAnimations;
-    _controller = AnimationController(
-      vsync: this,
-      duration:
-          reduceMotion ? Duration.zero : const Duration(milliseconds: 1200),
-    )..forward();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Started here rather than in initState, where MediaQuery can't be read.
+    if (context.reduceMotion) {
+      _controller.value = 1.0;
+    } else if (_controller.isDismissed) {
+      _controller.forward();
+    }
   }
 
   @override
@@ -73,9 +76,8 @@ class _HomeSectionState extends State<HomeSection>
                     RpTheme.spacerLarge,
                     _RiseIn(
                       animation: _stage(0.2, 0.6),
-                      child: Text(
-                        l10n.wellcome.toUpperCase(),
-                        semanticsLabel: l10n.wellcome,
+                      child: A11yCapsText(
+                        l10n.wellcome,
                         textAlign: TextAlign.center,
                         style: RpTheme.labelStyle(colors.textColor),
                       ),
@@ -83,10 +85,9 @@ class _HomeSectionState extends State<HomeSection>
                     _RiseIn(
                       animation: _stage(0.3, 0.75),
                       // The page's single <h1>.
-                      child: Semantics(
-                        headingLevel: 1,
+                      child: A11yHeading(
+                        level: 1,
                         label: 'Roni Paschoal',
-                        excludeSemantics: true,
                         child: SelectableText(
                           'Roni Paschoal',
                           textAlign: TextAlign.center,
@@ -173,8 +174,7 @@ class _StatusPillState extends State<_StatusPill>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     reduceMotion ? _pulse.stop() : _pulse.repeat();
   }
 
@@ -236,9 +236,8 @@ class _StatusPillState extends State<_StatusPill>
           // Flexible: on narrow phones (or with a larger system font) the
           // label wraps instead of overflowing the pill.
           Flexible(
-            child: Text(
-              text.toUpperCase(),
-              semanticsLabel: text,
+            child: A11yCapsText(
+              text,
               textAlign: TextAlign.center,
               style: RpTheme.labelStyle(colors.textHighlightColor)
                   .copyWith(fontSize: 11.0, letterSpacing: 1.6),
@@ -275,23 +274,20 @@ class _MetaRow extends StatelessWidget {
       spacing: 12.0,
       runSpacing: 8.0,
       children: [
-        Text(
-          experience.toUpperCase(),
-          semanticsLabel: experience,
+        A11yCapsText(
+          experience,
           style: style,
         ),
         separator,
-        Text(
-          hybrid.toUpperCase(),
-          semanticsLabel: hybrid,
+        A11yCapsText(
+          hybrid,
           style: style,
         ),
         if (!context.isSmallScreen) ...[
           separator,
           Semantics(
             button: true,
-            label: '${l10n.commandPaletteTooltip} '
-                '(${RpCommandPaletteWidget.shortcutLabel})',
+            label: RpCommandPaletteWidget.semanticsLabel(context),
             excludeSemantics: true,
             child: InkWell(
               onTap: onOpenCommandPalette,
@@ -337,8 +333,7 @@ class _ScrollCueState extends State<_ScrollCue>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     reduceMotion ? _loop.stop() : _loop.repeat();
   }
 

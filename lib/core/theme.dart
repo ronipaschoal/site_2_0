@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 
 /// The palette-dependent colors, exposed to widgets via
@@ -222,7 +223,11 @@ sealed class RpTheme {
           height: 1.7,
         ),
       ),
-      extensions: [colors],
+      extensions: [
+        colors,
+        // Focus rings on a11y_kit widgets use the AA-tuned accent.
+        A11yTheme(focusColor: colors.accentTextColor),
+      ],
     );
   }
 }

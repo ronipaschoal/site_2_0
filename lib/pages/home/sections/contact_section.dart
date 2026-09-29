@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:ronip/core/hyperlink_helper.dart';
 import 'package:ronip/core/media_query_helper.dart';
@@ -15,7 +14,7 @@ import 'package:ronip/pages/home/widgets/home_section_widget.dart';
 import 'package:ronip/core/theme.dart';
 import 'package:ronip/widgets/reveal_on_scroll_widget.dart';
 import 'package:ronip/widgets/signature_widget.dart';
-import 'package:ronip/widgets/tappable_widget.dart';
+import 'package:a11y_kit/a11y_kit.dart';
 
 const _mailtoUrl = 'mailto:$contactEmail?subject=Website contact!';
 
@@ -104,14 +103,13 @@ class _LetsTalkCta extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.rpColors;
     final l10n = AppLocalizations.of(context)!;
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     final duration =
         reduceMotion ? Duration.zero : const Duration(milliseconds: 260);
     final fontSize =
         RpTheme.fluid(context, min: 44.0, max: 112.0, factor: 0.09);
 
-    return RpTappableWidget(
+    return A11yTappable(
       url: _mailtoUrl,
       semanticsLabel: '${l10n.letsTalk}: $contactEmail',
       onTap: () => HyperlinkHelper.open(_mailtoUrl),
@@ -189,11 +187,12 @@ class _EmailRowState extends State<_EmailRow> {
     await Clipboard.setData(const ClipboardData(text: contactEmail));
     if (!mounted) return;
     setState(() => _copied = true);
-    // The label swap is purely visual; say it out loud for screen readers.
-    SemanticsService.sendAnnouncement(
-      View.of(context),
+    // The label swap is visual; say it out loud for screen readers — as an
+    // announcement on web/iOS, and through the live region around the
+    // button on Android, which deprecated announcements.
+    A11yAnnouncer.announce(
+      context,
       '${AppLocalizations.of(context)!.copied}: $contactEmail',
-      Directionality.of(context),
     );
     _reset?.cancel();
     _reset = Timer(const Duration(seconds: 2), () {
@@ -220,28 +219,31 @@ class _EmailRowState extends State<_EmailRow> {
             color: colors.textHighlightColor,
           ),
         ),
-        OutlinedButton(
-          onPressed: _copy,
-          style: OutlinedButton.styleFrom(
-            side: BorderSide(
-              color: _copied ? RpTheme.statusColor : colors.hairlineColor,
+        A11yLiveRegion(
+          child: OutlinedButton(
+            onPressed: _copy,
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(
+                color: _copied ? RpTheme.statusColor : colors.hairlineColor,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(999.0),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 14.0),
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(999.0),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 14.0),
-          ),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 180),
-            child: Text(
-              (_copied ? '${l10n.copied} ✓' : l10n.copyEmail).toUpperCase(),
-              key: ValueKey(_copied),
-              semanticsLabel: _copied ? l10n.copied : l10n.copyEmail,
-              // Green only on the border: as text it drops to 1.65:1 on the
-              // light palette.
-              style: RpTheme.labelStyle(
-                _copied ? colors.textHighlightColor : colors.textColor,
-              ).copyWith(fontSize: 11.0, letterSpacing: 1.4),
+            child: AnimatedSwitcher(
+              duration:
+                  context.motionDuration(const Duration(milliseconds: 180)),
+              child: Text(
+                (_copied ? '${l10n.copied} ✓' : l10n.copyEmail).toUpperCase(),
+                key: ValueKey(_copied),
+                semanticsLabel: _copied ? l10n.copied : l10n.copyEmail,
+                // Green only on the border: as text it drops to 1.65:1 on the
+                // light palette.
+                style: RpTheme.labelStyle(
+                  _copied ? colors.textHighlightColor : colors.textColor,
+                ).copyWith(fontSize: 11.0, letterSpacing: 1.4),
+              ),
             ),
           ),
         ),
@@ -265,7 +267,7 @@ class _ArrowLink extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.rpColors;
 
-    return RpTappableWidget(
+    return A11yTappable(
       url: url,
       // The plain name, not the uppercased "LABEL ↗" — screen readers may
       // spell out all-caps words and read the arrow glyph aloud.
@@ -285,7 +287,8 @@ class _ArrowLink extends StatelessWidget {
             ),
             RpTheme.spacerSmallX,
             AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
+              duration:
+                  context.motionDuration(const Duration(milliseconds: 200)),
               height: 1.0,
               width: highlighted ? 60.0 : 0.0,
               color: RpTheme.brandColor,

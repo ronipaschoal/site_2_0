@@ -5,7 +5,7 @@ import 'package:ronip/cubits/app/app_cubit.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/cv/cv_content_widget.dart';
-import 'package:ronip/pages/cv/cv_pdf_builder.dart';
+import 'package:ronip/pages/cv/cv_download_button.dart';
 import 'package:ronip/pages/home/home_route.dart';
 import 'package:ronip/core/theme.dart';
 import 'package:ronip/widgets/flutter_banner_widget.dart';
@@ -60,16 +60,7 @@ class _CvScreenState extends State<CvScreen> {
               ),
             ),
             actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.download_outlined,
-                  color: context.rpColors.textHighlightColor,
-                ),
-                tooltip: AppLocalizations.of(context)!.cvDownload,
-                onPressed: () => CvPdfBuilder.download(
-                  Localizations.localeOf(context).languageCode,
-                ),
-              ),
+              const CvDownloadButton(),
               LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
               ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
               RpTheme.spacerMedium,

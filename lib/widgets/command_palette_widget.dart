@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,6 +45,11 @@ class RpCommandPaletteWidget extends StatefulWidget {
         _ => 'Ctrl K',
       };
 
+  /// "Command palette (⌘K)" — the name of every control that opens it, with
+  /// the shortcut, so keyboard users also hear how to reach it directly.
+  static String semanticsLabel(BuildContext context) =>
+      '${AppLocalizations.of(context)!.commandPaletteTooltip} ($shortcutLabel)';
+
   static bool _open = false;
 
   /// Shows the palette; the chosen command runs after the palette closes,
@@ -55,8 +61,7 @@ class RpCommandPaletteWidget extends StatefulWidget {
   ) async {
     if (_open) return;
     _open = true;
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     try {
       final command = await showGeneralDialog<RpCommand>(
         context: context,
@@ -263,7 +268,7 @@ class _CommandTile extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(10.0),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 90),
+            duration: context.motionDuration(const Duration(milliseconds: 90)),
             padding: const EdgeInsets.symmetric(
               horizontal: RpTheme.spacingMedium - 4.0,
               vertical: 12.0,
@@ -344,7 +349,7 @@ class RpCommandPaletteButtonWidget extends StatelessWidget {
 
     return Semantics(
       button: true,
-      label: '$label (${RpCommandPaletteWidget.shortcutLabel})',
+      label: RpCommandPaletteWidget.semanticsLabel(context),
       excludeSemantics: true,
       onTap: onPressed,
       child: Tooltip(

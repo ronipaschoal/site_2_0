@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ronip/widgets/scroll_reveal_mixin.dart';
 
@@ -41,15 +42,18 @@ class _RpRevealOnScrollWidgetState extends State<RpRevealOnScrollWidget>
   @override
   void initState() {
     super.initState();
-    final reduceMotion = WidgetsBinding
-        .instance.platformDispatcher.accessibilityFeatures.disableAnimations;
-    _controller = AnimationController(
-      vsync: this,
-      duration: reduceMotion ? Duration.zero : widget.duration,
-    );
+    _controller = AnimationController(vsync: this, duration: widget.duration);
     _animation =
         CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
     startRevealTracking();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Re-read on every change, so toggling reduce motion while the page is
+    // open takes effect for reveals that haven't played yet.
+    _controller.duration = context.motionDuration(widget.duration);
   }
 
   @override

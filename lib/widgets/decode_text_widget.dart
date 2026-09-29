@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ronip/widgets/scroll_reveal_mixin.dart';
 
@@ -45,21 +46,23 @@ class _RpDecodeTextWidgetState extends State<RpDecodeTextWidget>
   @override
   void initState() {
     super.initState();
-    final reduceMotion = WidgetsBinding
-        .instance.platformDispatcher.accessibilityFeatures.disableAnimations;
     final charDuration = 55 * widget.text.length;
     _controller = AnimationController(
       vsync: this,
-      duration: reduceMotion
-          ? Duration.zero
-          : Duration(milliseconds: charDuration.clamp(350, 1600)),
+      duration: Duration(milliseconds: charDuration.clamp(350, 1600)),
     );
+    startRevealTracking();
+  }
 
-    if (reduceMotion) {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Under reduced motion (including when it's switched on mid-visit), skip
+    // straight to the final text.
+    if (context.reduceMotion && !revealed) {
+      stopRevealTracking();
       revealed = true;
       _controller.value = 1.0;
-    } else {
-      startRevealTracking();
     }
   }
 

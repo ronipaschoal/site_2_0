@@ -9,30 +9,45 @@ const cvBirthYear = 1985;
 /// page's Contact section) — kept in one place so the two never drift apart.
 const contactEmail = 'ronipaschoal@gmail.com';
 
+/// Phone number, printed only on the classic PDF résumé (its layout asks
+/// for one); the on-screen résumé and the modern PDF don't show it.
+const cvPhone = CvContactItem(
+  type: CvContactType.phone,
+  text: '(11) 98186-3256',
+  url: 'tel:+5511981863256',
+);
+
 /// The résumé's content, shared by the on-screen [CvContentWidget] and the
 /// PDF export (`CvPdfBuilder`) so both stay in sync from one source.
+const cvObjective = {
+  'pt': 'Atuar como Desenvolvedor Mobile Flutter, contribuindo no '
+      'desenvolvimento e evolução de aplicações Android e iOS, utilizando '
+      'Dart, arquitetura de software, gerenciamento de estado, APIs REST, '
+      'testes automatizados e boas práticas de desenvolvimento.',
+  'en': 'To work as a Flutter Mobile Developer, contributing to the '
+      'development and evolution of Android and iOS applications, using '
+      'Dart, software architecture, state management, REST APIs, automated '
+      'testing and development best practices.',
+};
+
 const cvSummary = {
-  'pt': 'Desenvolvedor de software com mais de 8 anos de experiência, '
-      'sendo mais de 5 em desenvolvimento mobile híbrido e mais de 3 com '
-      'Flutter. Especializado em Flutter para aplicações mobile Android '
-      'e iOS. '
-      'Experiência em arquitetura MVVM e Clean Architecture, Design '
-      'Systems, BLoC/Cubit e testes automatizados, com atuação da '
-      'definição técnica à publicação de soluções escaláveis, incluindo '
-      'papel fundamental na estruturação de equipe e na definição de '
-      'padrões e ferramentas, além do uso de Inteligência Artificial no '
-      'dia a dia de desenvolvimento. Aberto a novas oportunidades como '
-      'desenvolvedor mobile Flutter.',
-  'en': 'Software developer with more than 8 years of experience, including '
-      'over 5 in hybrid mobile development and over 3 with Flutter. '
-      'Specialized in Flutter for Android and iOS mobile applications. '
-      'Experienced in '
-      'MVVM and Clean Architecture, Design Systems, BLoC/Cubit, and '
-      'automated testing, working from technical definition to publishing '
-      'scalable solutions, including a key role in structuring the team '
-      'and defining standards and tools, plus day-to-day use of '
-      'Artificial Intelligence in development. Open to new opportunities '
-      'as a Flutter mobile developer.',
+  'pt': 'Desenvolvedor de Software com mais de 8 anos de experiência, sendo '
+      'mais de 5 anos em desenvolvimento mobile. Atuação no desenvolvimento e '
+      'evolução de aplicações mobile e web, com definição de arquitetura, '
+      'componentes reutilizáveis e Design Systems. Sólidos conhecimentos em '
+      'Flutter, Dart, BLoC/Cubit, MVVM, APIs REST e testes automatizados. '
+      'Vivência em desenvolvimento fullstack, publicação de aplicações e '
+      'integração com recursos nativos. Experiência na criação de bibliotecas '
+      'compartilhadas e no uso de IA para apoiar o desenvolvimento e a '
+      'qualidade do código.',
+  'en': 'Software Developer with more than 8 years of experience, including '
+      'over 5 years in mobile development. Develops and evolves mobile and '
+      'web applications, defining architecture, reusable components and '
+      'Design Systems. Solid knowledge of Flutter, Dart, BLoC/Cubit, MVVM, '
+      'REST APIs and automated testing. Hands-on experience with fullstack '
+      'development, app publishing and native feature integration. '
+      'Experienced in building shared libraries and using AI to support '
+      'development and code quality.',
 };
 
 const cvContactList = [
@@ -77,143 +92,242 @@ const cvSkillGroups = <String, List<String>>{
   'tools': ['Git', 'GitHub', 'GitHub Actions', 'CI/CD', 'Claude'],
 };
 
+/// The classic PDF's "Technical skills" list — broader and grouped
+/// differently from [cvSkillGroups], which feeds the on-screen résumé, the
+/// modern PDF and the home bento.
+const cvClassicSkillGroups = [
+  (
+    label: {'pt': 'Mobile', 'en': 'Mobile'},
+    items: {
+      'pt': 'Flutter, Dart, Android, iOS, State Management (BLoC/Cubit), '
+          'MVVM, Repository Pattern, Platform Channels, Offline First, '
+          'SQLite, SharedPreferences, Deep Linking, WebView.',
+      'en': 'Flutter, Dart, Android, iOS, State Management (BLoC/Cubit), '
+          'MVVM, Repository Pattern, Platform Channels, Offline First, '
+          'SQLite, SharedPreferences, Deep Linking, WebView.',
+    },
+  ),
+  (
+    label: {'pt': 'Arquitetura e qualidade', 'en': 'Architecture and quality'},
+    items: {
+      'pt': 'Software Architecture, SOLID, Design Patterns, Dependency '
+          'Injection (GetIt), Unit Testing, Widget Testing, Design Systems, '
+          'componentes reutilizáveis.',
+      'en': 'Software Architecture, SOLID, Design Patterns, Dependency '
+          'Injection (GetIt), Unit Testing, Widget Testing, Design Systems, '
+          'reusable components.',
+    },
+  ),
+  (
+    label: {'pt': 'APIs e desenvolvimento', 'en': 'APIs and development'},
+    items: {
+      'pt': 'REST APIs, Dio, Git, CI/CD, GitHub Actions.',
+      'en': 'REST APIs, Dio, Git, CI/CD, GitHub Actions.',
+    },
+  ),
+  (
+    label: {'pt': 'Web', 'en': 'Web'},
+    items: {
+      'pt': 'React, TypeScript, Angular, AngularJS, Go.',
+      'en': 'React, TypeScript, Angular, AngularJS, Go.',
+    },
+  ),
+  (
+    label: {
+      'pt': 'IA aplicada ao desenvolvimento',
+      'en': 'AI applied to development',
+    },
+    items: {
+      'pt': 'Claude Code, ChatGPT, Cursor, GitHub Copilot, AI-assisted '
+          'Development, Prompt Engineering.',
+      'en': 'Claude Code, ChatGPT, Cursor, GitHub Copilot, AI-assisted '
+          'Development, Prompt Engineering.',
+    },
+  ),
+  (
+    label: {'pt': 'Publicação', 'en': 'Publishing'},
+    items: {
+      'pt': 'App Store, Google Play.',
+      'en': 'App Store, Google Play.',
+    },
+  ),
+];
+
 const cvLanguageList = [
   CvLanguageItem(
     language: {'pt': 'Inglês', 'en': 'English'},
     level: {'pt': 'Nível intermediário', 'en': 'Intermediate proficiency'},
-  ),
-  CvLanguageItem(
-    language: {'pt': 'Português', 'en': 'Portuguese'},
-    level: {'pt': 'Fluente ou nativo', 'en': 'Fluent or native'},
+    usage: {
+      'pt': 'Leitura, escrita e participação passiva em reuniões',
+      'en': 'Reading, writing and passive participation in meetings',
+    },
   ),
 ];
 
+/// A one-line description of the company, keyed by
+/// [CvExperienceItem.company] — shown in italics under the company heading
+/// on screen and in both PDFs, for employers a recruiter may not know.
+const cvCompanyDescriptions = {
+  'Setfin': {
+    'pt': 'Fintech especializada em soluções de gestão financeira para '
+        'microempreendedores.',
+    'en': 'Fintech specialized in financial management solutions for '
+        'micro-entrepreneurs.',
+  },
+};
+
+/// Who actually hired for a company's roles when it was an outsourced
+/// contract, keyed by [CvExperienceItem.company] — shown in italics before
+/// the role on screen and in both PDFs.
+const cvCompanyContractors = {
+  'TOTVS': {
+    'pt': 'Contratado pela TO-Brasil',
+    'en': 'Hired through TO-Brasil',
+  },
+};
+
 const cvExperienceList = [
   CvExperienceItem(
-    company: 'Mercado Livre',
+    company: 'Mercado Pago',
     period: 'Jul/2025 - Jun/2026',
     role: {
-      'pt': 'Engenheiro de Software Pleno',
-      'en': 'Mid-Level Software Engineer',
+      'pt': 'Engenheiro de Software',
+      'en': 'Software Engineer',
     },
     description: {
-      'pt': 'Atuação fullstack na evolução do backoffice (React no front-end '
-          'e Go no back-end) para gestão de conteúdo do app Mercado Pago, '
-          'com testes unitários e uso de Inteligência '
-          'Artificial para desenvolvimento, refatoração e automação de '
-          'tarefas.',
-      'en': 'Worked fullstack evolving the backoffice (React front-end and Go '
-          'back-end) for Mercado Pago app content management, with unit '
-          'testing, and use of Artificial Intelligence for '
-          'development, refactoring, and task automation.',
+      'pt': 'Evolução do backoffice para gestão de conteúdo do aplicativo, '
+          'com atuação em React e Go. '
+          'Desenvolvimento de testes unitários para garantir a qualidade e a '
+          'confiabilidade das aplicações. Utilização de Claude Code, ChatGPT '
+          'e Cursor como apoio ao desenvolvimento, refatoração de código e '
+          'automação de tarefas.',
+      'en': 'Evolution of the backoffice for app content management, working '
+          'with React and Go. Development of unit tests to ensure the quality and '
+          'reliability of the applications. Use of Claude Code, ChatGPT and '
+          'Cursor to support development, code refactoring and task '
+          'automation.',
     },
   ),
   CvExperienceItem(
     company: 'TOTVS',
     period: 'Mar/2022 - Abr/2025',
     role: {
-      'pt': 'Engenheiro de Software Móvel Flutter Sênior',
-      'en': 'Senior Flutter Mobile Software Engineer',
+      'pt': 'Desenvolvedor Mobile Sênior - Flutter',
+      'en': 'Senior Mobile Developer - Flutter',
     },
     description: {
-      'pt': 'Definição e adoção do Flutter como plataforma de '
-          'desenvolvimento mobile, com papel fundamental na estruturação '
-          'de uma equipe de 3 pessoas e na definição da arquitetura e dos '
-          'padrões técnicos. Desenvolvimento e evolução dos aplicativos '
-          'Minha Comanda Eletrônica e Minha Governança '
-          'Hoteleira, com arquitetura MVVM, gerenciamento de estado via '
-          'BLoC/Cubit e integração a APIs REST via Dio. Criação de '
-          'biblioteca de componentes baseada no Design System corporativo '
-          'e de biblioteca própria para configuração de dispositivos Smart '
-          'POS. Configuração e manutenção de pipelines de CI/CD, com '
-          'ajustes que reduziram o tempo de execução, e configuração de '
-          'acesso a bibliotecas privadas de dependência para os testes '
-          'automatizados. Publicação e distribuição das aplicações para '
-          'Android, iOS e diferentes modelos de Smart POS.',
-      'en': 'Defined and adopted Flutter as the mobile development '
-          'platform, playing a key role in structuring a team of 3 and '
-          'defining the architecture and technical standards. Developed '
-          'and evolved the Minha Comanda Eletrônica and Minha Governança '
-          'Hoteleira apps, with MVVM architecture, '
-          'state management via BLoC/Cubit, and REST API integration via '
-          'Dio. Built a component library based on the corporate Design '
-          'System and a proprietary library for configuring Smart POS '
-          'devices. Configured and maintained CI/CD pipelines, with '
-          'adjustments that reduced execution time, and set up access to '
-          'private dependency libraries for automated tests. Published '
-          'and distributed the applications for Android, iOS, and various '
-          'Smart POS models.',
+      'pt': 'Definição e adoção do Flutter como plataforma de desenvolvimento '
+          'mobile, contribuindo na estruturação da equipe e na definição de '
+          'arquitetura e padrões técnicos. Desenvolvimento e evolução dos '
+          'aplicativos Minha Comanda Eletrônica e Minha Governança Hoteleira, '
+          'utilizando MVVM, BLoC/Cubit, Repository Pattern e APIs REST com '
+          'Dio. Implementação de estratégias Offline First, utilizando SQLite '
+          'e SharedPreferences para persistência local. Criação de biblioteca '
+          'de componentes baseada no Design System corporativo, promovendo '
+          'padronização e reutilização entre aplicações. Desenvolvimento de '
+          'biblioteca para configuração e integração com dispositivos Smart '
+          'POS, utilizando Platform Channels. Configuração e manutenção de '
+          'pipelines de CI/CD, com otimizações para redução do tempo de '
+          'execução. Configuração de bibliotecas privadas para execução de '
+          'testes unitários e widget tests. Publicação e distribuição de '
+          'aplicações para Android, iOS e diferentes modelos de Smart POS.',
+      'en': 'Defined and adopted Flutter as the mobile development platform, '
+          'contributing to structuring the team and defining the architecture '
+          'and technical standards. Developed and evolved the Minha Comanda '
+          'Eletrônica and Minha Governança Hoteleira apps, using MVVM, '
+          'BLoC/Cubit, the Repository Pattern and REST APIs with Dio. '
+          'Implemented Offline First strategies, using SQLite and '
+          'SharedPreferences for local persistence. Built a component library '
+          'based on the corporate Design System, promoting standardization and '
+          'reuse across applications. Developed a library for configuring and '
+          'integrating with Smart POS devices, using Platform Channels. '
+          'Configured and maintained CI/CD pipelines, with optimizations to '
+          'reduce execution time. Set up private libraries for running unit '
+          'and widget tests. Published and distributed applications for '
+          'Android, iOS and various Smart POS models.',
     },
   ),
   CvExperienceItem(
     company: 'TOTVS',
-    period: 'Dez/2021 - Abr/2022',
+    period: 'Dez/2021 - Fev/2022',
     role: {
-      'pt': 'Desenvolvedor Front End Pleno',
+      'pt': 'Desenvolvedor Front-End Pleno',
       'en': 'Mid-Level Front-End Developer',
     },
     description: {
       'pt': 'Evolução de aplicação Angular para hotelaria, com desenvolvimento '
           'de funcionalidades, correção de bugs, melhorias contínuas e '
-          'ampliação da cobertura de testes automatizados.',
+          'ampliação da cobertura de testes automatizados. Otimização de '
+          'pipelines de CI/CD no Azure DevOps, reduzindo o tempo de execução '
+          'dos processos. Utilização do GitHub Copilot como apoio ao '
+          'desenvolvimento, refatoração e manutenção de código.',
       'en': 'Evolved an Angular application for the hospitality industry, '
           'developing features, fixing bugs, delivering continuous '
-          'improvements, and expanding automated test coverage.',
+          'improvements, and expanding automated test coverage. Optimized '
+          'CI/CD pipelines on Azure DevOps, reducing process execution time. '
+          'Used GitHub Copilot to support development, refactoring and code '
+          'maintenance.',
     },
   ),
   CvExperienceItem(
     company: 'Setfin',
     period: 'Set/2022 - Out/2023',
     role: {
-      'pt': 'Engenheiro de Software Móvel Flutter Sênior · Freelance',
-      'en': 'Senior Flutter Mobile Software Engineer · Freelance',
+      'pt': 'Desenvolvedor de Software - Flutter | Freelance',
+      'en': 'Software Developer - Flutter | Freelance',
     },
     description: {
-      'pt':
-          'Definição da arquitetura da aplicação Flutter e desenvolvimento do '
-              'MVP, conduzindo a evolução do produto até sua segunda versão, '
-              'com arquitetura MVVM e gerenciamento de estado via BLoC/Cubit. '
-              'Implementação de integrações com APIs REST via Dio e '
-              'publicação da aplicação nas plataformas Android e iOS.',
-      'en': "Defined the Flutter application's architecture and developed the "
-          'MVP, leading the product through its second version, with MVVM '
-          'architecture and state management via BLoC/Cubit. Implemented '
-          'REST API integrations via Dio and published the app on Android '
-          'and iOS.',
+      'pt': 'Condução autônoma do desenvolvimento da aplicação Flutter, desde '
+          'a definição da arquitetura e desenvolvimento do MVP até a segunda '
+          'versão, utilizando MVVM, BLoC/Cubit e GetIt. Desenvolvimento de '
+          'integrações com APIs REST via Dio, utilizando Git para controle de '
+          'versão, e publicação da aplicação para Android e iOS.',
+      'en': 'Independently led the development of the Flutter application, '
+          'from defining the architecture and building the MVP through the '
+          'second version, using MVVM, BLoC/Cubit and GetIt. Developed REST '
+          'API integrations via Dio, using Git for version control, and '
+          'published the app for Android and iOS.',
     },
   ),
   CvExperienceItem(
     company: 'Setfin',
-    period: 'Set/2021 - Set/2022',
+    period: 'Set/2021 - Ago/2022',
     role: {
-      'pt': 'Desenvolvedor Front End Sênior · Freelance',
-      'en': 'Senior Front-End Developer · Freelance',
+      'pt': 'Desenvolvedor Front-End - React | Freelance',
+      'en': 'Front-End Developer - React | Freelance',
     },
     description: {
-      'pt': 'Definição da arquitetura inicial da aplicação React, '
-          'desenvolvimento do MVP e estabelecimento da estrutura e dos '
-          'padrões técnicos do projeto.',
-      'en': "Defined the React application's initial architecture, developed "
-          "the MVP, and established the project's structure and "
-          'technical standards.',
+      'pt': 'Condução autônoma do desenvolvimento da aplicação React, desde a '
+          'definição da arquitetura e desenvolvimento do MVP até o '
+          'estabelecimento da estrutura e dos padrões técnicos do projeto. '
+          'Desenvolvimento de interfaces utilizando React, TypeScript, HTML5 '
+          'e CSS3, com versionamento via Git.',
+      'en': 'Independently led the development of the React application, from '
+          'defining the architecture and building the MVP to establishing '
+          "the project's structure and technical standards. Built interfaces "
+          'using React, TypeScript, HTML5 and CSS3, with version control via '
+          'Git.',
     },
   ),
   CvExperienceItem(
     company: 'Ilog Tecnologia',
     period: 'Dez/2020 - Dez/2021',
     role: {
-      'pt': 'Desenvolvedor Front End Pleno',
-      'en': 'Mid-Level Front-End Developer',
+      'pt': 'Desenvolvedor Front End',
+      'en': 'Front-End Developer',
     },
     description: {
       'pt': 'Evolução e manutenção de aplicações AngularJS, com '
-          'desenvolvimento de novas funcionalidades, introdução do React '
-          'em projeto utilizando arquitetura de Micro Frontends e '
-          'desenvolvimento de interfaces personalizadas para clientes.',
+          'desenvolvimento de novas funcionalidades e melhorias contínuas. '
+          'Introdução do React com TypeScript em projeto utilizando arquitetura de Micro '
+          'Frontends, contribuindo para a evolução da arquitetura da '
+          'aplicação. Desenvolvimento de interfaces personalizadas de acordo '
+          'com as necessidades de diferentes clientes.',
       'en': 'Evolved and maintained AngularJS applications, developing new '
-          'features, introducing React into a project using a Micro '
-          'Frontends architecture, and building custom interfaces for '
-          'clients.',
+          'features and delivering continuous improvements. Introduced React '
+          'into a project using a Micro Frontends architecture, contributing '
+          "to the evolution of the application's architecture. Built custom "
+          'interfaces tailored to the needs of different clients.',
     },
   ),
   CvExperienceItem(
@@ -222,55 +336,52 @@ const cvExperienceList = [
     role: {'pt': 'Designer', 'en': 'Designer'},
     description: {
       'pt': 'Desenvolvimento e manutenção do site institucional em PHP, '
-          'com foco em SEO, contribuindo para o aumento do tráfego '
-          'orgânico e da visibilidade da marca.',
+          'com foco em SEO e otimização da visibilidade e do tráfego '
+          'orgânico.',
       'en': 'Developed and maintained the company website in PHP, with a '
-          'focus on SEO, contributing to increased organic traffic and '
-          'brand visibility.',
+          'focus on SEO and optimizing visibility and organic traffic.',
     },
   ),
   CvExperienceItem(
     company: 'Comptask Soluções Digitais',
     period: 'Jun/2014 - Jul/2016',
     role: {
-      'pt': 'Desenvolvedor Full Stack Junior',
-      'en': 'Junior Full Stack Developer',
+      'pt': 'Desenvolvedor Full Stack',
+      'en': 'Full Stack Developer',
     },
     description: {
-      'pt': 'Atuação em diferentes projetos de sistemas e aplicações '
-          'móveis, com experiência em múltiplas tecnologias e '
-          'metodologias de desenvolvimento, proporcionando uma visão '
-          'abrangente de arquitetura e do ciclo de vida de software. '
-          'Liderança no desenvolvimento da segunda versão de uma '
-          'aplicação mobile híbrida com PhoneGap, com responsabilidade '
-          'por todo o ciclo do produto, desde a concepção e definição da '
-          'arquitetura até a implementação e publicação nas lojas Apple e '
-          'Google.',
-      'en': 'Worked across different systems and mobile application '
-          'projects, gaining experience with multiple technologies and '
-          'development methodologies and a broad view of architecture '
-          'and the software lifecycle. Led development of the second '
-          'version of a PhoneGap hybrid mobile app, owning the full '
-          'product cycle from conception and architecture definition '
-          'through implementation and publishing on the Apple and Google '
-          'stores.',
+      'pt': 'Desenvolvimento de sistemas web e aplicações mobile híbridas com '
+          'PhoneGap, AngularJS, SQLite, PHP e MySQL. Atuação autônoma no '
+          'desenvolvimento de projetos mobile, desde a implementação até a '
+          'publicação para Android e iOS. Desenvolvimento da segunda versão de '
+          'aplicação mobile com PhoneGap e AngularJS, incluindo definição da '
+          'arquitetura e evolução da solução. Desenvolvimento de APIs em PHP '
+          'com CodeIgniter para integração com a aplicação mobile. Publicação '
+          'e distribuição de aplicações nas lojas Google Play e App Store.',
+      'en': 'Developed web systems and hybrid mobile applications with '
+          'PhoneGap, AngularJS, SQLite, PHP and MySQL. Worked independently on '
+          'mobile projects, from implementation to publishing for Android and '
+          'iOS. Developed the second version of a mobile app with PhoneGap and '
+          'AngularJS, including defining the architecture and evolving the '
+          'solution. Developed PHP APIs with CodeIgniter for integration with '
+          'the mobile app. Published and distributed apps on Google Play and '
+          'the App Store.',
     },
   ),
   CvExperienceItem(
     company: 'Genesis Network GN1',
     period: 'Abr/2013 - Jun/2014',
     role: {
-      'pt': 'Desenvolvedor Full Stack Junior',
-      'en': 'Junior Full Stack Developer',
+      'pt': 'Desenvolvedor Full Stack',
+      'en': 'Full Stack Developer',
     },
     description: {
-      'pt': 'Início da carreira em desenvolvimento de sistemas web, '
-          'atuando na implementação e manutenção de diferentes '
-          'aplicações, com experiência em liderança técnica de projeto '
-          'dedicado a um cliente específico.',
-      'en': 'Started my career in web systems development, working on the '
-          'implementation and maintenance of different applications, with '
-          'experience leading a project dedicated to a specific client.',
+      'pt': 'Desenvolvimento e manutenção de dois sistemas web utilizando ASP '
+          'e JavaScript. Liderança técnica na conclusão e entrega de projeto '
+          'ao cliente.',
+      'en': 'Developed and maintained two web systems using ASP and '
+          'JavaScript. Provided technical leadership in completing and '
+          'delivering a project to the client.',
     },
   ),
 ];
@@ -278,30 +389,65 @@ const cvExperienceList = [
 const cvProjectList = [
   CvProjectItem(
     title: 'Rppay',
-    tech: ['Flutter', 'MVVM', 'BLoC/Cubit', 'SOLID', 'Material 3'],
+    tech: [
+      'Flutter',
+      'Feature-First',
+      'MVVM',
+      'BLoC/Cubit',
+      'Repository Pattern',
+      'SOLID',
+      'CI/CD',
+    ],
     url: 'https://github.com/ronipaschoal/rppay',
     description: {
-      'pt': 'Aplicação fictícia de pagamentos usada como estudo de '
-          'arquitetura feature-first, MVVM, BLoC/Cubit, SOLID e Material '
-          '3. Projeto pessoal de estudo, sem uso em produção.',
-      'en': 'Fictional payments app used to study feature-first '
-          'architecture, MVVM, BLoC/Cubit, SOLID, and Material 3. A '
-          'personal study project, not used in production.',
+      'pt': 'Aplicação fictícia de pagamentos desenvolvida como estudo de '
+          'arquitetura em Flutter, com organização Feature-First em camadas '
+          '(presentation, domain e data), MVVM, BLoC/Cubit, Repository '
+          'Pattern, Injeção de Dependência, princípios SOLID e Material 3. '
+          'Navegação dinâmica a partir de API simulada, com integração de '
+          'WebView por meio de pacote próprio. Testes unitários (bloc_test) e '
+          'de widget, executados no pipeline de CI/CD do GitHub Actions '
+          'com deploy web automatizado. Desenvolvimento assistido por IA com '
+          'Claude Code e Gemini. Projeto pessoal de estudo, sem uso em '
+          'produção.',
+      'en': 'Fictional payments app built as a Flutter architecture study, '
+          'with a Feature-First organization in layers (presentation, domain '
+          'and data), MVVM, BLoC/Cubit, Repository Pattern, Dependency '
+          'Injection, SOLID principles and Material 3. Dynamic navigation '
+          'driven by a simulated API, with WebView integration through an '
+          'in-house package. Unit (bloc_test) and widget tests, run in a '
+          'GitHub Actions CI/CD pipeline with automated web deployment. '
+          'AI-assisted development with Claude Code and Gemini. A personal '
+          'study project, not used in production.',
     },
   ),
   CvProjectItem(
     title: 'Portfólio Pessoal',
-    tech: ['Flutter', 'CI/CD', 'GitHub Actions'],
+    tech: [
+      'Flutter Web',
+      'BLoC/Cubit',
+      'go_router',
+      'i18n',
+      'Accessibility',
+      'CI/CD',
+    ],
     url: 'https://github.com/ronipaschoal/site_2_0',
     description: {
-      'pt': 'Este site pessoal e portfólio, construído em Flutter com '
-          'deploy automatizado via CI/CD no GitHub Actions. Diferente dos '
-          'demais projetos pessoais, está em produção e é mantido e '
-          'atualizado continuamente.',
-      'en': 'This personal website and portfolio, built with Flutter and '
-          'deployed automatically via GitHub Actions CI/CD. Unlike the '
-          'other personal projects, it is in production and continuously '
-          'maintained and updated.',
+      'pt': 'Site pessoal e portfólio em produção, desenvolvido com Flutter '
+          'Web e Dart, utilizando BLoC/Cubit, go_router, internacionalização '
+          '(PT/EN), tema claro/escuro e geração de currículo em PDF. '
+          'Acessibilidade baseada nas diretrizes WCAG, com semântica para '
+          'leitores de tela, navegação por teclado e contraste AA, extraída '
+          'para o pacote próprio a11y_kit. Testes de widget e de '
+          'acessibilidade, com deploy automatizado via CI/CD no GitHub '
+          'Actions.',
+      'en': 'Personal website and portfolio in production, built with '
+          'Flutter Web and Dart, using BLoC/Cubit, go_router, '
+          'internationalization (PT/EN), light/dark theme and PDF résumé '
+          'generation. Accessibility based on WCAG guidelines, with screen '
+          'reader semantics, keyboard navigation and AA contrast, extracted '
+          'into the in-house a11y_kit package. Widget and accessibility '
+          'tests, with automated deployment via GitHub Actions CI/CD.',
     },
   ),
 ];
@@ -313,7 +459,7 @@ const cvCertificationList = [
     date: 'Abr/2026',
   ),
   CvCertificationItem(
-    title: 'TDC São Paulo - Trilha Flutter',
+    title: 'TDC São Paulo: Trilha Flutter',
     issuer: 'Globalcode',
     date: 'Set/2024',
   ),
@@ -328,7 +474,7 @@ const cvCertificationList = [
     date: 'Jan/2024',
   ),
   CvCertificationItem(
-    title: 'TDC Innovation - Trilha Flutter',
+    title: 'TDC Innovation: Trilha Flutter',
     issuer: 'Globalcode',
     date: 'Jun/2023',
   ),
@@ -346,23 +492,29 @@ const cvCertificationList = [
 
 const cvEducationList = [
   CvEducationItem(
-    institution: 'IFSP',
-    course: 'Pós-graduação · Aplicações para Dispositivos Móveis',
-    period: '2017 - 2019',
+    institution: 'USP',
+    course: 'MBA em Engenharia de Software',
+    period: 'Previsão de conclusão: Out/2026',
   ),
   CvEducationItem(
     institution: 'IFSP',
-    course: 'Graduação · Tecnólogo em Programação de Computadores',
-    period: '2014 - 2016',
+    course:
+        'Especialização em Desenvolvimento de Aplicações para Dispositivos Móveis',
+    period: '2019',
+  ),
+  CvEducationItem(
+    institution: 'IFSP',
+    course: 'Tecnologia em Sistemas para Internet',
+    period: '2016',
   ),
   CvEducationItem(
     institution: 'IFSP',
     course: 'Técnico em Desenvolvimento de Sistemas',
-    period: '2011 - 2013',
+    period: '2013',
   ),
   CvEducationItem(
     institution: 'UFRJ',
-    course: 'Graduação · Bacharel em Design e Artes Aplicadas',
-    period: '2004 - 2009',
+    course: 'Bacharel em Design e Artes Aplicadas',
+    period: '2009',
   ),
 ];

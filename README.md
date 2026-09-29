@@ -27,7 +27,7 @@ Currently, the project includes:
   - Page chrome (app bar, scrollbar, background) spans the window; content is capped to a 1200px column
 - **Résumé** (`/cv`)
   - On-screen résumé: contact, skills, languages, age, experience, projects, certifications, education
-  - PDF download, built from the same content as the on-screen version
+  - PDF download in two layouts, both built from the same content as the on-screen version: **modern** (two columns, like the page) and **classic** (one column in the conventional Brazilian order — objective, summary, education, experience grouped by company with one bullet per achievement, courses, additional info — in plain black type)
   - Also reachable as a dismissible overlay dialog from the home menu, without leaving the page
 
 New sections and improvements are added as the site evolves.
@@ -75,8 +75,7 @@ lib/
 │   ├── theme.dart                             # RpColors (ThemeExtension), text styles, spacing, content width
 │   ├── profile.dart                           # Personal figures/flags (years, open-to-work, source URL, build hash)
 │   ├── hyperlink_helper.dart                  # Opens external links / mailto
-│   ├── media_query_helper.dart                # Small-screen/breakpoint extension on BuildContext
-│   └── semantic_links/                        # Web-only guard for accessibility-DOM links (see Accessibility)
+│   └── media_query_helper.dart                # Small-screen/breakpoint extension on BuildContext
 │
 ├── cubits/
 │   └── app/
@@ -113,14 +112,15 @@ lib/
 │       ├── cv_data.dart                       # Résumé content (shared by screen + PDF)
 │       ├── cv_content_widget.dart             # On-screen résumé layout
 │       ├── cv_dialog_widget.dart              # Résumé opened as an overlay dialog
-│       ├── cv_pdf_builder.dart                # Builds/prints the résumé as a PDF
+│       ├── cv_pdf_builder.dart                # Builds/shares the résumé PDF (modern layout + layout switch)
+│       ├── cv_pdf_classic_builder.dart        # Classic single-column PDF layout
+│       ├── cv_download_button.dart            # Download menu offering both layouts
 │       ├── cv_route.dart                      # GoRoute registration
 │       └── cv_screen.dart                     # Full-page résumé screen
 │
 ├── widgets/                                   # 🧩 Shared, reusable widgets
 │   ├── ambient_background_widget.dart         # Paints shaders/ambient.frag behind the page
 │   ├── command_palette_widget.dart            # ⌘K / Ctrl+K command palette
-│   ├── tappable_widget.dart                   # Accessible custom link/button (focus, keyboard, <a href>)
 │   ├── signature_widget.dart                  # Hand-written name "written" on reveal
 │   ├── rp_app_bar.dart                        # Site-standard AppBar chrome (optionally column-aligned)
 │   ├── scroll_progress_mixin.dart             # Shared "0..1 progress from a ScrollController" logic
@@ -128,6 +128,9 @@ lib/
 │   └── ...                                    # Logo, banner, decode text, locale/theme buttons, ...
 │
 └── main.dart                                  # 🎬 Application entry point
+
+packages/
+└── a11y_kit/                                  # ♿ Reusable accessibility kit (web, Android, iOS) — see its README
 
 shaders/
 └── ambient.frag                               # Fragment shader for the ambient background
@@ -166,7 +169,7 @@ This organization favors keeping each page self-contained while sharing only wha
 | url_launcher | Opening external links / mailto |
 | pdf / printing | Résumé PDF export and direct download |
 | shared_preferences | Persisting the light/dark theme preference across visits |
-| web | Web-only DOM access (guarding accessibility links) |
+| a11y_kit (local package) | Accessible links/buttons, headings, reduce motion, announcements, Flutter Web semantics fixes |
 | Fragment shaders (`FragmentProgram`) | Ambient page background |
 | Space Grotesk · Inter · IBM Plex Mono · Inkburrow | Headings · body · labels · signature (Space Grotesk under OFL, `assets/fonts/SpaceGrotesk-OFL.txt`) |
 | Claude Code | Development support with AI |
@@ -243,7 +246,9 @@ Widget tests pump real widgets through `WidgetTester`, via the shared `test/help
 
 - `test/widgets/` — `ThemeButtonWidget`/`LocaleButtonWidget` (icon/label reflects the current theme/locale, tapping fires the callback with the right value), `RpAppBar` (menu color; with `maxContentWidth`, spans the window while aligning its content to the column), `RpScrollProgressWidget` (bar width tracks scroll position), `RpRevealOnScrollWidget` (child stays hidden until scrolled near the viewport, then fades in), `RpCommandPaletteWidget` (search filtering, arrow-key selection, Enter runs the command).
 - `test/pages/` — `HomeMenuButtonWidget` (label recolors once `HomeCubit` marks its section active), `AboutSection` (bento tiles in a row share one height), `ContactSection` (copy email hits the clipboard and confirms), and `HomeScreen` on a simulated notched phone (hero scroll cue inside the visible area; pinned gallery cards fill the band between title and progress).
-- `test/a11y/` — `RpTappableWidget` (named link with its URL, Tab + Enter/Space, repeated activations collapsed), section titles as `<h2>` headings, the gallery's projects all exposed as links (including cards scrubbed off-screen), and the résumé (an `<h1>`, links, and no unlabelled text fields). Also runs Flutter's `labeledTapTargetGuideline` and `textContrastGuideline`.
+- `test/a11y/` — section titles as `<h2>` headings, decode text jumping to its final state when reduce motion is switched on mid-visit, the gallery's projects all exposed as links (including cards scrubbed off-screen), and the résumé (an `<h1>`, links, and `expectMeetsA11yGuidelines` from `a11y_kit`: labels, contrast, 48/44px tap targets, no unlabelled text fields).
+
+The accessibility primitives themselves (`A11yTappable`, headings, announcements, the web link guard, …) are tested inside `packages/a11y_kit/` — `flutter test` there, plus `flutter test --platform chrome test/link_guard_web_test.dart` for the DOM guard.
 
 Run the suite with:
 
@@ -262,15 +267,16 @@ A GitHub Actions workflow (`.github/workflows/main.yaml`) builds and deploys the
 
 ## ♿ Accessibility
 
-Flutter Web draws to a canvas and exposes content to assistive tech through a separate accessibility DOM. A few things keep that DOM useful:
+The accessibility building blocks live in a local package, [`packages/a11y_kit`](packages/a11y_kit/), built to be reused across Flutter projects on web, Android and iOS. The site uses it like this:
 
-- **Semantics always on** — `SemanticsBinding.instance.ensureSemantics()` on web, so screen readers don't land on an empty page behind Flutter's hidden "Enable accessibility" button.
-- **Language** — the semantics tree carries the app's locale (`pt`/`en`), not the browser's, so voices match the copy; Portuguese-only résumé entries are tagged `pt` even in English.
-- **Structure** — one `<h1>`, `<h2>` per section, `<h3>` for sub-sections/companies; decorative glyphs (`[01]`, `/`, `“`, `↗`) are excluded; content hidden until scrolled into view stays in the tree.
-- **Links and keyboard** — custom links/buttons go through `RpTappableWidget` (Tab-focusable, Enter/Space, visible focus ring, real `<a href>`). `lib/core/semantic_links/` cancels the browser's own navigation on those anchors, since the widget already opens the page in a new tab.
-- **Gallery** — its cards get translated off-screen, so keyboard/screen-reader users go through always-present semantic proxies; focusing one scrubs the gallery to that card.
-- **Contrast** — `RpColors.accentTextColor` is the brand hue tuned to WCAG AA for small text and focus rings; the raw brand color is kept for large type and decoration.
-- **Motion** — every animation honors the platform's reduce-motion setting.
+- **Semantics always on (web)** — `A11y.ensureInitialized()`, so screen readers don't land on an empty page behind Flutter's hidden "Enable accessibility" button; it also stops semantic `<a href>` links from navigating the tab away on top of opening a new one.
+- **Language** — `A11yLocale.appBuilder` gives the semantics tree the app's locale (`pt`/`en`), not the device/browser's, so voices match the copy; Portuguese-only résumé entries are tagged `pt` even in English.
+- **Structure** — one `<h1>`, `<h2>` per section, `<h3>` for sub-sections/companies (`A11yHeading`); the résumé's columns are read whole (`A11yReadingGroup`); decorative glyphs (`[01]`, `/`, `“`, `↗`) are excluded; content hidden until scrolled into view stays in the tree; uppercase labels are read in natural case (`A11yCapsText`).
+- **Links and keyboard** — custom links/buttons go through `A11yTappable` (Tab-focusable, Enter/Space, visible focus ring, real `<a href>` on web); small icon links get a 48×48 target.
+- **Gallery** — its cards get translated off-screen, so keyboard/screen-reader users go through always-present semantic proxies (`A11yPointerPassThrough` lets clicks reach the cards underneath); focusing one scrubs the gallery to that card.
+- **Announcements** — "Copied" is spoken on web/iOS (`A11yAnnouncer`) and through a live region on Android, which deprecated announcements.
+- **Contrast** — `RpColors.accentTextColor` is the brand hue tuned to WCAG AA for small text and focus rings (wired in as `A11yTheme.focusColor`); the raw brand color is kept for large type and decoration.
+- **Motion** — every animation honors the platform's reduce-motion setting through `context.reduceMotion`, and reacts if it's switched on while the page is open.
 
 ## 🌐 API and data
 

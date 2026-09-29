@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ronip/widgets/logo_widget.dart';
 import 'package:ronip/widgets/scroll_progress_mixin.dart';
@@ -47,8 +48,7 @@ class _RpLogoScrollTransitionWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     final t = reduceMotion ? 1.0 : Curves.easeOutCubic.transform(progress);
     final size = MediaQuery.sizeOf(context);
 

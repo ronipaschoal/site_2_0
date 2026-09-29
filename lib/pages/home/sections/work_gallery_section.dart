@@ -11,7 +11,7 @@ import 'package:ronip/pages/home/widgets/home_section_title_widget.dart';
 import 'package:ronip/core/theme.dart';
 import 'package:ronip/widgets/image_widget.dart';
 import 'package:ronip/widgets/logo_widget.dart';
-import 'package:ronip/widgets/tappable_widget.dart';
+import 'package:a11y_kit/a11y_kit.dart';
 
 /// "Pin and scrub" gallery: the section reserves a tall block of vertical
 /// scroll space, but pins itself to the viewport for that whole distance
@@ -143,8 +143,7 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
 
     final sectionTop = controller.offset + box.localToGlobal(Offset.zero).dy;
     final target = sectionTop + (index * step).clamp(0.0, travelDistance);
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     reduceMotion
         ? controller.jumpTo(target)
         : controller.animateTo(
@@ -176,7 +175,7 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
       top: top,
       width: width,
       height: height,
-      child: _PointerTransparent(
+      child: A11yPointerPassThrough(
         child: FocusTraversalGroup(
           policy: OrderedTraversalPolicy(),
           child: Semantics(
@@ -189,7 +188,7 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
                       order: NumericFocusOrder(i.toDouble()),
                       child: Semantics(
                         sortKey: OrdinalSortKey(i.toDouble()),
-                        child: RpTappableWidget(
+                        child: A11yTappable(
                           url: _urlFor(context, works[i]),
                           semanticsLabel: _labelFor(works[i], locale),
                           onTap: () =>
@@ -231,8 +230,7 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
 
   @override
   Widget build(BuildContext context) {
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     final isSmallScreen = context.isSmallScreen;
     final viewportSize = MediaQuery.sizeOf(context);
     final cardCount = WorkGallerySection._workList.length;
@@ -516,8 +514,7 @@ class _GalleryCardState extends State<_GalleryCard> {
     final work = widget.work;
     final colors = context.rpColors;
     final locale = Localizations.localeOf(context);
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     final duration =
         reduceMotion ? Duration.zero : const Duration(milliseconds: 260);
     final parallax =
@@ -531,7 +528,7 @@ class _GalleryCardState extends State<_GalleryCard> {
       onEnter: (_) => setState(() => _hovering = true),
       onExit: (_) => setState(() => _hovering = false),
       onHover: _onHover,
-      child: RpTappableWidget(
+      child: A11yTappable(
         url: url,
         semanticsLabel: _labelFor(work, locale),
         onTap: () => HyperlinkHelper.open(url),
@@ -774,20 +771,4 @@ class _DotGridPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_DotGridPainter oldDelegate) => oldDelegate.color != color;
-}
-
-/// Lets pointer events fall through to whatever is underneath while keeping
-/// the child's semantics and focus intact — unlike [IgnorePointer], which
-/// also blocks semantic actions such as a screen reader's "activate".
-class _PointerTransparent extends SingleChildRenderObjectWidget {
-  const _PointerTransparent({required super.child});
-
-  @override
-  RenderObject createRenderObject(BuildContext context) =>
-      _RenderPointerTransparent();
-}
-
-class _RenderPointerTransparent extends RenderProxyBox {
-  @override
-  bool hitTest(BoxHitTestResult result, {required Offset position}) => false;
 }

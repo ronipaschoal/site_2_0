@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/core/theme.dart';
@@ -43,8 +44,7 @@ class _HomeQuoteBandWidgetState extends State<HomeQuoteBandWidget>
   Widget build(BuildContext context) {
     final isSmallScreen = context.isSmallScreen;
     final colors = context.rpColors;
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
     final lit = reduceMotion ? 1.0 : progress;
 
     final words = widget.text.split(' ');

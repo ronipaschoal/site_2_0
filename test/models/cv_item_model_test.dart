@@ -47,7 +47,7 @@ void main() {
       expect(single.durationFor('pt'), '1 ano e 1 mês');
       expect(single.durationFor('en'), '1 yr 1 mo');
 
-      expect(withPeriod('Dez/2021 - Abr/2022').durationFor('pt'), '5 meses');
+      expect(withPeriod('Dez/2021 - Mar/2022').durationFor('pt'), '4 meses');
       expect(withPeriod('Jul/2025 - Jun/2026').durationFor('pt'), '1 ano');
     });
 
@@ -82,6 +82,29 @@ void main() {
     test('languageFor and levelFor resolve the requested language', () {
       expect(item.languageFor('en'), 'English');
       expect(item.levelFor('en'), 'Fluent');
+    });
+  });
+
+  group('CvCompanyGroup', () {
+    CvExperienceItem job(String period) => CvExperienceItem(
+          company: 'Acme',
+          period: period,
+          role: const {'pt': 'Dev'},
+          description: const {'pt': 'Fez algo.'},
+        );
+
+    test('spans all its roles and reports the total tenure', () {
+      final group = CvCompanyGroup.groupByCompany([
+        job('Mar/2022 - Abr/2025'),
+        job('Dez/2021 - Fev/2022'),
+      ]).single;
+
+      expect(group.hasMultipleRoles, isTrue);
+      expect(
+        group.periodWithDurationFor('pt'),
+        'Dez/2021 - Abr/2025 · 3 anos e 5 meses',
+      );
+      expect(group.durationFor('en'), '3 yrs 5 mos');
     });
   });
 }

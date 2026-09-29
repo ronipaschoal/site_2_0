@@ -6,10 +6,10 @@ import 'package:flutter/widgets.dart';
 /// time its top edge scrolls within [revealAtFraction] of the viewport
 /// height from the top of the screen.
 ///
-/// Tracking isn't started automatically (call [startRevealTracking] from
-/// `initState`) since a caller may skip it entirely — e.g. under reduced
-/// motion, where the widget can just start already revealed. [stopRevealTracking]
-/// is always safe to call from `dispose`, tracking or not.
+/// Tracking isn't started automatically: call [startRevealTracking] from
+/// `initState`. A caller can end it early — e.g. under reduced motion,
+/// setting [revealed] from `didChangeDependencies` and calling
+/// [stopRevealTracking], which is always safe to call, tracking or not.
 mixin ScrollRevealMixin<T extends StatefulWidget> on State<T> {
   final revealAnchorKey = GlobalKey();
   bool revealed = false;

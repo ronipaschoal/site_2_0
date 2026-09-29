@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class _RpAmbientBackgroundWidgetState extends State<RpAmbientBackgroundWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _reduceMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    _reduceMotion = context.reduceMotion;
     if (_reduceMotion) {
       _ticker?.stop();
     } else {

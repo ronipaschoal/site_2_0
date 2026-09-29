@@ -1,3 +1,4 @@
+import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
@@ -73,11 +74,15 @@ class HomeMenu {
   /// by the nav buttons and the command palette.
   void goTo() {
     drawerKey.currentState?.closeDrawer();
-    scrollController.animateTo(
-      sectionPosition,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
+    // Jump instead of gliding under reduced motion.
+    final duration = A11yMotion.duration(const Duration(milliseconds: 500));
+    duration == Duration.zero
+        ? scrollController.jumpTo(sectionPosition)
+        : scrollController.animateTo(
+            sectionPosition,
+            duration: duration,
+            curve: Curves.easeInOut,
+          );
   }
 }
 

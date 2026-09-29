@@ -4,7 +4,21 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:ronip/models/cv_item_model.dart';
+import 'package:ronip/models/localized_map.dart';
 import 'package:ronip/pages/cv/cv_data.dart';
+import 'package:ronip/pages/cv/cv_pdf_classic_builder.dart';
+
+/// The résumé's printable layouts.
+enum CvPdfLayout {
+  /// Two columns, mirroring the on-screen résumé: contact and skills in a
+  /// sidebar, brand-colored accents.
+  modern,
+
+  /// One column in the conventional Brazilian order (objective, summary,
+  /// education, experience, courses, additional info), plain black type —
+  /// see [CvPdfClassicBuilder].
+  classic,
+}
 
 /// Builds the résumé as a paginated PDF — from the same content as
 /// `CvContentWidget` in `cv_data.dart` — and hands it to the platform's
@@ -28,7 +42,7 @@ import 'package:ronip/pages/cv/cv_data.dart';
 /// Mirrors the on-screen two-column shape: a sidebar with contact info and
 /// skills, painted full-height via [pw.PageTheme.buildBackground] on every
 /// generated page, with the flowing main column
-/// (summary/experience/certifications/education) padded clear of it. Both
+/// (objective/summary/experience/certifications/education) padded clear of it. Both
 /// columns stay white — print-friendly, no ink-heavy fills — separated by
 /// a thin rule instead of a color block. The sidebar's own content is only
 /// drawn on page 1 — it's short enough to always fit there — later pages
@@ -52,9 +66,10 @@ sealed class CvPdfBuilder {
   // no BuildContext to read AppLocalizations from.
   static const _labels = {
     'pt': {
-      'role': 'Engenheiro de Software Flutter',
+      'role': 'Desenvolvedor de Software Mobile Flutter',
       'contact': 'Contato',
       'skills': 'Competências',
+      'objective': 'Objetivo',
       'summary': 'Resumo',
       'experience': 'Experiência Profissional',
       'projects': 'Projetos Pessoais',
@@ -68,9 +83,10 @@ sealed class CvPdfBuilder {
       'age': 'anos',
     },
     'en': {
-      'role': 'Flutter Software Engineer',
+      'role': 'Flutter Mobile Software Developer',
       'contact': 'Contact',
       'skills': 'Skills',
+      'objective': 'Objective',
       'summary': 'Summary',
       'experience': 'Professional Experience',
       'projects': 'Personal Projects',
@@ -85,27 +101,47 @@ sealed class CvPdfBuilder {
     },
   };
 
-  /// Builds the résumé rendered in [languageCode] ('pt' or 'en') and hands
-  /// it to the platform's share/save sheet as a ready file — a direct
-  /// download on web. The suggested file name is date-stamped
-  /// (`_yyyy_mm_dd`) so successive exports don't collide/overwrite one
-  /// another on disk.
-  static Future<void> download(String languageCode) async {
+  /// Builds the résumé rendered in [languageCode] ('pt' or 'en') in
+  /// [layout] and hands it to the platform's share/save sheet as a ready
+  /// file — a direct download on web. The suggested file name is
+  /// date-stamped (`_yyyy_mm_dd`) so successive exports don't
+  /// collide/overwrite one another on disk.
+  static Future<void> download(
+    String languageCode, {
+    CvPdfLayout layout = CvPdfLayout.modern,
+  }) async {
     final now = DateTime.now();
     final datestamp = '${now.year}'
         '_${now.month.toString().padLeft(2, '0')}'
         '_${now.day.toString().padLeft(2, '0')}';
 
-    final bytes = await _build(languageCode, PdfPageFormat.a4);
+    final bytes = await build(languageCode, layout: layout);
 
     final filename = languageCode == 'pt'
-        ? 'Engenheiro_de_Software_Mobile_Flutter'
-        : 'Flutter_Mobile_Software_Engineer';
+        ? 'Desenvolvedor_de_Software_Flutter'
+        : 'Flutter_Software_Developer';
+    // Tells the two versions apart in a downloads folder.
+    final suffix = switch (layout) {
+      CvPdfLayout.modern => languageCode == 'pt' ? '_Moderno' : '_Modern',
+      CvPdfLayout.classic => '',
+    };
 
     await Printing.sharePdf(
       bytes: bytes,
-      filename: 'Roni_Paschoal_${filename}_$datestamp.pdf',
+      filename: 'Roni_Paschoal_$filename${suffix}_$datestamp.pdf',
     );
+  }
+
+  /// The PDF bytes for [layout], without sharing them.
+  static Future<Uint8List> build(
+    String languageCode, {
+    CvPdfLayout layout = CvPdfLayout.modern,
+    PdfPageFormat format = PdfPageFormat.a4,
+  }) {
+    return switch (layout) {
+      CvPdfLayout.modern => _build(languageCode, format),
+      CvPdfLayout.classic => CvPdfClassicBuilder.build(languageCode, format),
+    };
   }
 
   static Future<Uint8List> _build(
@@ -138,29 +174,25 @@ sealed class CvPdfBuilder {
       ),
     );
 
+    final experienceGroups = CvCompanyGroup.groupByCompany(cvExperienceList);
+
     doc.addPage(
       pw.MultiPage(
         pageTheme: pageTheme,
         build: (context) => [
           _main(_header(l)),
           _main(pw.SizedBox(height: 20)),
+          _main(_sectionTitle(l['objective']!)),
+          _main(_paragraph(cvObjective[languageCode] ?? cvObjective['pt']!)),
+          _main(pw.SizedBox(height: 18)),
           _main(_sectionTitle(l['summary']!)),
-          _main(
-            pw.Text(
-              cvSummary[languageCode] ?? cvSummary['pt']!,
-              textAlign: pw.TextAlign.justify,
-              style: const pw.TextStyle(
-                fontSize: 10,
-                color: _ink,
-                lineSpacing: 3,
-              ),
-            ),
-          ),
+          _main(_paragraph(cvSummary[languageCode] ?? cvSummary['pt']!)),
           _main(pw.SizedBox(height: 18)),
           _main(_sectionTitle(l['experience']!)),
-          for (var i = 0; i < cvExperienceList.length; i++) ...[
-            _main(_experience(cvExperienceList[i], languageCode)),
-            if (i != cvExperienceList.length - 1)
+          for (var i = 0; i < experienceGroups.length; i++) ...[
+            for (final widget in _company(experienceGroups[i], languageCode))
+              _main(widget),
+            if (i != experienceGroups.length - 1)
               _main(
                 pw.Padding(
                   padding: const pw.EdgeInsets.symmetric(vertical: 4),
@@ -262,14 +294,25 @@ sealed class CvPdfBuilder {
           style: const pw.TextStyle(fontSize: 7, color: _muted),
         ),
         pw.SizedBox(height: 2),
-        pw.Text(
-          cvLanguageList
-              .map(
-                (item) => '${item.languageFor(languageCode)} '
-                    '(${item.levelFor(languageCode)})',
-              )
-              .join(', '),
-          style: const pw.TextStyle(fontSize: 8.5, color: _ink),
+        pw.RichText(
+          text: pw.TextSpan(
+            style: const pw.TextStyle(fontSize: 8.5, color: _ink),
+            children: [
+              for (final (i, item) in cvLanguageList.indexed) ...[
+                if (i > 0) const pw.TextSpan(text: ', '),
+                pw.TextSpan(
+                  text: item.languageFor(languageCode),
+                  style: const pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                ),
+                pw.TextSpan(
+                  text: [
+                    ' (${item.levelFor(languageCode)})',
+                    if (item.usageFor(languageCode) case final usage?) usage,
+                  ].join(' - '),
+                ),
+              ],
+            ],
+          ),
         ),
       ],
     );
@@ -287,6 +330,14 @@ sealed class CvPdfBuilder {
           letterSpacing: 1,
         ),
       ),
+    );
+  }
+
+  static pw.Widget _paragraph(String text) {
+    return pw.Text(
+      text,
+      textAlign: pw.TextAlign.justify,
+      style: const pw.TextStyle(fontSize: 10, color: _ink, lineSpacing: 3),
     );
   }
 
@@ -341,44 +392,119 @@ sealed class CvPdfBuilder {
     );
   }
 
-  static pw.Widget _experience(CvExperienceItem item, String languageCode) {
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
+  /// A company block — heading with the whole tenure, the company's
+  /// description and contractor line when there are any, then each role held there — as separate widgets
+  /// so a long block can still break across pages.
+  static List<pw.Widget> _company(CvCompanyGroup group, String languageCode) {
+    final description =
+        cvCompanyDescriptions[group.company]?.resolve(languageCode);
+    final contractor =
+        cvCompanyContractors[group.company]?.resolve(languageCode);
+
+    return [
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Text(
+            group.company,
+            style: const pw.TextStyle(
+              fontSize: 11.5,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          pw.Text(
+            group.periodWithDurationFor(languageCode),
+            style: const pw.TextStyle(fontSize: 9, color: _muted),
+          ),
+        ],
+      ),
+      pw.SizedBox(height: 1),
+      for (final note in [description, contractor].nonNulls)
+        pw.Text(
+          note,
+          style: const pw.TextStyle(
+            fontSize: 9.5,
+            color: _muted,
+            fontStyle: pw.FontStyle.italic,
+          ),
+        ),
+      for (var i = 0; i < group.roles.length; i++) ...[
+        if (i > 0) pw.SizedBox(height: 6),
+        ..._role(
+          group.roles[i],
+          languageCode,
+          showPeriod: group.hasMultipleRoles,
+        ),
+      ],
+    ];
+  }
+
+  /// A role's title, then its description as one bullet per sentence, as
+  /// separate widgets so a long role can break across pages; [showPeriod]
+  /// adds the role's own dates when the company heading spans several
+  /// roles.
+  static List<pw.Widget> _role(
+    CvExperienceItem item,
+    String languageCode, {
+    required bool showPeriod,
+  }) {
+    const roleStyle = pw.TextStyle(
+      fontSize: 9.5,
+      color: _brand,
+      fontWeight: pw.FontWeight.bold,
+    );
+
+    return [
+      if (showPeriod)
         pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           children: [
-            pw.Text(
-              item.company,
-              style: const pw.TextStyle(
-                fontSize: 11.5,
-                fontWeight: pw.FontWeight.bold,
-              ),
+            pw.Expanded(
+              child: pw.Text(item.roleFor(languageCode), style: roleStyle),
             ),
             pw.Text(
               item.periodWithDurationFor(languageCode),
               style: const pw.TextStyle(fontSize: 9, color: _muted),
             ),
           ],
-        ),
-        pw.SizedBox(height: 1),
-        pw.Text(
-          item.roleFor(languageCode),
-          style: const pw.TextStyle(
-            fontSize: 9.5,
-            color: _brand,
-            fontWeight: pw.FontWeight.bold,
-          ),
-        ),
-        pw.SizedBox(height: 3),
-        pw.Text(
-          item.descriptionFor(languageCode),
-          textAlign: pw.TextAlign.justify,
-          style: const pw.TextStyle(fontSize: 9.5, color: _ink, lineSpacing: 2),
-        ),
-      ],
-    );
+        )
+      else
+        pw.Text(item.roleFor(languageCode), style: roleStyle),
+      pw.SizedBox(height: 3),
+      for (final highlight in item.highlightsFor(languageCode))
+        _bullet(highlight),
+    ];
   }
+
+  /// A bullet line; the dot is drawn (not typed as `•`) because the
+  /// standard Helvetica face only covers Latin-1.
+  static pw.Widget _bullet(String text) => pw.Padding(
+        padding: const pw.EdgeInsets.only(bottom: 1.5),
+        child: pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Container(
+              width: 2.5,
+              height: 2.5,
+              margin: const pw.EdgeInsets.only(top: 4.2, right: 6),
+              decoration: const pw.BoxDecoration(
+                color: _ink,
+                shape: pw.BoxShape.circle,
+              ),
+            ),
+            pw.Expanded(
+              child: pw.Text(
+                text,
+                style: const pw.TextStyle(
+                  fontSize: 9.5,
+                  color: _ink,
+                  lineSpacing: 2,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
 
   static pw.Widget _certification(CvCertificationItem item) {
     return pw.Padding(
@@ -389,7 +515,11 @@ sealed class CvPdfBuilder {
           pw.Expanded(
             child: pw.Text(
               item.title,
-              style: const pw.TextStyle(fontSize: 9.5, color: _ink),
+              style: const pw.TextStyle(
+                fontSize: 9.5,
+                color: _ink,
+                fontWeight: pw.FontWeight.bold,
+              ),
             ),
           ),
           pw.Text(
@@ -408,9 +538,17 @@ sealed class CvPdfBuilder {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Expanded(
-            child: pw.Text(
-              '${item.institution} · ${item.course}',
-              style: const pw.TextStyle(fontSize: 9.5, color: _ink),
+            child: pw.RichText(
+              text: pw.TextSpan(
+                style: const pw.TextStyle(fontSize: 9.5, color: _ink),
+                children: [
+                  pw.TextSpan(text: '${item.institution} · '),
+                  pw.TextSpan(
+                    text: item.course,
+                    style: const pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ),
           pw.Text(
