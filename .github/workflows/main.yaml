@@ -29,14 +29,27 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      # A failing test stops the pipeline before anything is built or deployed.
+      - name: Run Tests
+        run: flutter test
+
+      - name: Run a11y_kit Tests
+        working-directory: packages/a11y_kit
+        run: flutter test
+
       - name: Start Web Release Build
         run: flutter build web --release --dart-define=GIT_SHA=${GITHUB_SHA::7} --dart-define=GA_MEASUREMENT_ID=${{ vars.GA_MEASUREMENT_ID }}
+
+      - name: Add SEO Content to index.html
+        run: dart run tool/seo_content.dart build/web/index.html
 
       - name: Upload Web Build Files
         uses: actions/upload-artifact@v4
         with:
           name: web-release
           path: ./build/web
+          # Keeps web/.htaccess, which serves index.html for path URLs.
+          include-hidden-files: true
 
   web-deploy:
     name: 🎉 Deploy
@@ -48,6 +61,11 @@ jobs:
         with:
           name: web-release
           path: ./build/web
+
+      # Path URLs (`/cv`) 404 on the server without it; fails loudly if the
+      # artifact round-trip ever drops hidden files again.
+      - name: 🔎 Check .htaccess
+        run: test -f ./build/web/.htaccess
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
