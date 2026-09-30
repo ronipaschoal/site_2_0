@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
+import 'package:ronip/models/locale_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -16,7 +17,7 @@ void main() {
       final copy = state.copyWith();
 
       expect(copy.brightness, Brightness.dark);
-      expect(copy.locale, isNull);
+      expect(copy.locale, LocaleEnum.pt.locale);
     });
 
     test('== compares by value', () {
@@ -31,6 +32,13 @@ void main() {
   });
 
   group('AppCubit', () {
+    test('starts in Portuguese regardless of the browser language', () {
+      final cubit = AppCubit();
+
+      expect(cubit.state.locale, LocaleEnum.pt.locale);
+      cubit.close();
+    });
+
     test('starts with the given initial brightness', () {
       final cubit = AppCubit(initialBrightness: Brightness.light);
 
