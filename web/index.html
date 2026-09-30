@@ -1,13 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+
+  <title>Roni Paschoal - Desenvolvedor de Software Mobile Flutter</title>
   <meta name="description"
     content="Desenvolvedor de software com mais de 8 anos de experiência, especializado em Flutter para apps mobile Android e iOS. Pós-graduado em Dispositivos Móveis pelo IFSP.">
+  <meta name="author" content="Roni Paschoal">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#07080f">
+
+  <!-- Open Graph / Twitter: the preview shown when the link is shared -->
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Roni Paschoal">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:url" content="https://ronipaschoal.com.br/">
+  <meta property="og:title" content="Roni Paschoal - Desenvolvedor de Software Mobile Flutter">
+  <meta property="og:description"
+    content="Mais de 8 anos de experiência em desenvolvimento de software, especializado em Flutter para apps Android e iOS.">
+  <meta property="og:image" content="https://ronipaschoal.com.br/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Roni Paschoal - Desenvolvedor de Software Mobile Flutter">
+  <meta property="profile:first_name" content="Roni">
+  <meta property="profile:last_name" content="Paschoal">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Roni Paschoal - Desenvolvedor de Software Mobile Flutter">
+  <meta name="twitter:description"
+    content="Mais de 8 anos de experiência em desenvolvimento de software, especializado em Flutter para apps Android e iOS.">
+  <meta name="twitter:image" content="https://ronipaschoal.com.br/og-image.png">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -17,10 +43,55 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <link rel="icon" type="image/png" href="favicon.png" />
-
-  <title>Roni Paschoal - Desenvolvedor de Software MobileFlutter</title>
   <link rel="manifest" href="manifest.json">
 
+  <script>
+    // Links from before the switch to path URLs (`/#/cv`) keep working:
+    // turn the hash route into the real path before Flutter reads it.
+    if (location.hash.startsWith('#/')) {
+      history.replaceState(null, '', location.hash.slice(1));
+    }
+
+    // Every route is served by this same file, so the canonical URL is set
+    // per request rather than hard-coded to the home page.
+    (function () {
+      var canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      canonical.href = location.origin + location.pathname;
+      document.head.appendChild(canonical);
+    })();
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Roni Paschoal",
+    "jobTitle": "Desenvolvedor de Software Mobile Flutter",
+    "description": "Desenvolvedor de software com mais de 8 anos de experiência, especializado em Flutter para apps mobile Android e iOS.",
+    "url": "https://ronipaschoal.com.br/",
+    "image": "https://ronipaschoal.com.br/og-image.png",
+    "email": "mailto:ronipaschoal@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Santo André",
+      "addressRegion": "SP",
+      "addressCountry": "BR"
+    },
+    "alumniOf": [
+      { "@type": "CollegeOrUniversity", "name": "Universidade de São Paulo (USP)" },
+      { "@type": "CollegeOrUniversity", "name": "Instituto Federal de São Paulo (IFSP)" }
+    ],
+    "knowsAbout": [
+      "Flutter", "Dart", "Android", "iOS", "BLoC", "MVVM", "Clean Architecture",
+      "React", "TypeScript", "Node.js", "Angular", "Go"
+    ],
+    "sameAs": [
+      "https://www.linkedin.com/in/roni-paschoal/",
+      "https://github.com/ronipaschoal"
+    ]
+  }
+  </script>
 </head>
 
 <body style="background-color: #07080f;">
@@ -28,8 +99,34 @@
   <img class="logo" src="assets/icon.png" />
   <div class="logo-loader"></div>
 
+  <!-- Filled at build time by tool/seo_content.dart with the résumé as plain
+       HTML, for crawlers and link previews that don't run Flutter. Visually
+       hidden, and removed once Flutter paints so screen readers don't hear
+       the content twice. -->
+  <main id="seo-content" class="visually-hidden">
+    <!-- seo-content -->
+  </main>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var content = document.getElementById('seo-content');
+      if (content) content.remove();
+    });
+  </script>
+
   <script src="flutter_bootstrap.js" async></script>
   <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     body {
       display: flex;
       margin: 0;

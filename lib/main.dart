@@ -2,6 +2,7 @@ import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:ronip/app/routes.dart';
 import 'package:ronip/core/analytics/analytics.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
@@ -15,6 +16,11 @@ Future<void> main() async {
   // button between screen readers and the page) and semantic links that
   // don't also navigate the tab away. A no-op on Android and iOS.
   A11y.ensureInitialized();
+
+  // Real paths (`/cv`) instead of hash URLs (`/#/cv`), so search engines
+  // index each route as its own page. `web/.htaccess` serves index.html for
+  // them. A no-op on Android and iOS.
+  usePathUrlStrategy();
 
   RpAnalytics.init(RpRoutes.router);
 

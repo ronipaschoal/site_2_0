@@ -15,8 +15,8 @@ void loadGtag(String measurementId) {
       ..text = 'window.dataLayer = window.dataLayer || [];'
           'function gtag(){dataLayer.push(arguments);}'
           "gtag('js', new Date());"
-          // Page views are sent by hand on each route change: the app uses
-          // hash URLs, which gtag's automatic page views would miss.
+          // Page views are sent by hand on each route change (see
+          // RpAnalytics.init) rather than left to gtag's history tracking.
           "gtag('config', '$measurementId', {send_page_view: false});",
   );
   head.append(

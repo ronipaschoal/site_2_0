@@ -34,8 +34,8 @@ sealed class RpAnalytics {
   static void _pageView(String path) {
     if (path.isEmpty || path == _lastPath) return;
     _lastPath = path;
-    // Reported as a regular path (`/cv`) rather than the hash URL (`/#/cv`),
-    // so GA's page reports tell the routes apart.
+    // Built from the route rather than the browser URL, so query strings
+    // and fragments don't split one page into several in GA's reports.
     _event('page_view', {
       'page_location': '${Uri.base.origin}$path',
     });

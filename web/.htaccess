@@ -1,0 +1,8 @@
+# Flutter uses path URLs (`/cv`), which only exist inside the app: serve
+# index.html for any path that isn't a real file or folder, so deep links
+# and reloads work.
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
