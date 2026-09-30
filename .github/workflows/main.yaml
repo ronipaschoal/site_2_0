@@ -30,7 +30,7 @@ jobs:
         run: flutter pub get
 
       - name: Start Web Release Build
-        run: flutter build web --release --dart-define=GIT_SHA=${GITHUB_SHA::7}
+        run: flutter build web --release --dart-define=GIT_SHA=${GITHUB_SHA::7} --dart-define=GA_MEASUREMENT_ID=${{ vars.GA_MEASUREMENT_ID }}
 
       - name: Upload Web Build Files
         uses: actions/upload-artifact@v4

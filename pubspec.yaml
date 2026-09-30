@@ -21,6 +21,7 @@ dependencies:
   pdf: ^3.13.0
   printing: ^5.15.0
   shared_preferences: ^2.3.2
+  web: ^1.1.0
 
   a11y_kit:
     path: packages/a11y_kit

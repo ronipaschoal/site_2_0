@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ronip/core/analytics/analytics.dart';
 import 'package:ronip/core/theme.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/cv/cv_pdf_builder.dart';
@@ -19,8 +20,10 @@ class CvDownloadButton extends StatelessWidget {
         Icons.download_outlined,
         color: context.rpColors.textHighlightColor,
       ),
-      onSelected: (layout) =>
-          CvPdfBuilder.download(languageCode, layout: layout),
+      onSelected: (layout) {
+        RpAnalytics.cvDownload(layout: layout.name, language: languageCode);
+        CvPdfBuilder.download(languageCode, layout: layout);
+      },
       itemBuilder: (context) => [
         PopupMenuItem(
           value: CvPdfLayout.modern,
