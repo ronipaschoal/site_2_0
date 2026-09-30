@@ -120,10 +120,13 @@ class _FactBento extends StatelessWidget {
       _Fact(RpProfile.yearsOfExperience, l10n.factExperience),
       _Fact(RpProfile.yearsHybridMobile, l10n.factHybridMobile),
       _Fact(RpProfile.yearsFlutter, l10n.factFlutter),
-      _Fact(cvSkillGroups['mobile']!.join(' · '), l10n.factStack),
+      _Fact(cvHomeSkillGroups['mobile']!.join(' · '), l10n.factStack),
       _Fact('Android · iOS · Smart POS', l10n.factPlatforms),
-      _Fact(cvSkillGroups['fullstack']!.join(' · '), l10n.factSecondaryStack),
-      _Fact(cvSkillGroups['tools']!.join(' · '), l10n.cvSkillsTools),
+      _Fact(
+        cvHomeSkillGroups['fullstack']!.join(' · '),
+        l10n.factSecondaryStack,
+      ),
+      _Fact(cvHomeSkillGroups['tools']!.join(' · '), l10n.cvSkillsTools),
       _Fact(l10n.nowText, l10n.nowTitle, live: true, wide: true),
     ];
 

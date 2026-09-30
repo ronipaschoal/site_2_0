@@ -76,25 +76,70 @@ const cvContactList = [
 const cvSkillGroupOrder = ['mobile', 'architecture', 'fullstack', 'tools'];
 
 // Grouped by kind: packages the apps depend on sit under "mobile", workflow
-// tools under "tools" — shared by the résumé, its PDF and the home bento.
+// tools under "tools" — shared by the résumé and its modern PDF; the home
+// bento uses the condensed [cvHomeSkillGroups].
 const cvSkillGroups = <String, List<String>>{
-  'mobile': ['Flutter', 'Dart', 'BLoC', 'Dio', 'get_it'],
+  'mobile': [
+    'Flutter',
+    'Dart',
+    'Android',
+    'iOS',
+    'BLoC/Cubit',
+    'Dio',
+    'get_it',
+    'Platform Channels',
+    'Offline First',
+    'SQLite',
+    'SharedPreferences',
+    'Deep Linking',
+    'WebView',
+  ],
   'architecture': [
-    'BLoC',
     'MVVM',
     'Clean Architecture',
+    'Repository Pattern',
     'SOLID',
     'Design Patterns',
+    'Dependency Injection',
     'REST',
-    'Automated Testing',
+    'Unit Testing',
+    'Widget Testing',
+    'Design Systems',
   ],
-  'fullstack': ['TypeScript', 'Angular', 'React', 'Go'],
+  'fullstack': [
+    'TypeScript',
+    'React',
+    'Node.js',
+    'Angular',
+    'AngularJS',
+    'Go',
+  ],
+  'tools': [
+    'Git',
+    'GitHub',
+    'GitHub Actions',
+    'CI/CD',
+    'Claude Code',
+    'ChatGPT',
+    'Cursor',
+    'GitHub Copilot',
+    'Prompt Engineering',
+    'App Store',
+    'Google Play',
+  ],
+};
+
+/// The home bento's condensed take on [cvSkillGroups] — each fact tile holds
+/// a single short line, so it keeps only the headline items.
+const cvHomeSkillGroups = <String, List<String>>{
+  'mobile': ['Flutter', 'Dart', 'BLoC', 'Dio', 'get_it'],
+  'fullstack': ['TypeScript', 'React', 'Node.js', 'Angular', 'Go'],
   'tools': ['Git', 'GitHub', 'GitHub Actions', 'CI/CD', 'Claude'],
 };
 
 /// The classic PDF's "Technical skills" list — broader and grouped
-/// differently from [cvSkillGroups], which feeds the on-screen résumé, the
-/// modern PDF and the home bento.
+/// differently from [cvSkillGroups], which feeds the on-screen résumé and the
+/// modern PDF.
 const cvClassicSkillGroups = [
   (
     label: {'pt': 'Mobile', 'en': 'Mobile'},
@@ -128,8 +173,8 @@ const cvClassicSkillGroups = [
   (
     label: {'pt': 'Web', 'en': 'Web'},
     items: {
-      'pt': 'React, TypeScript, Angular, AngularJS, Go.',
-      'en': 'React, TypeScript, Angular, AngularJS, Go.',
+      'pt': 'React, TypeScript, Node.js, Angular, AngularJS, Go.',
+      'en': 'React, TypeScript, Node.js, Angular, AngularJS, Go.',
     },
   ),
   (
@@ -197,13 +242,17 @@ const cvExperienceList = [
     description: {
       'pt': 'Evolução do backoffice para gestão de conteúdo do aplicativo, '
           'com atuação em React e Go. '
-          'Desenvolvimento de testes unitários para garantir a qualidade e a '
-          'confiabilidade das aplicações. Utilização de Claude Code, ChatGPT '
+          'Desenvolvimento de BFF em Node.js para integração do backoffice '
+          'com APIs em Go. '
+          'Implementação de testes unitários com Jest, ampliando a cobertura '
+          'e a confiabilidade das aplicações. Utilização de Claude Code, ChatGPT '
           'e Cursor como apoio ao desenvolvimento, refatoração de código e '
           'automação de tarefas.',
       'en': 'Evolution of the backoffice for app content management, working '
-          'with React and Go. Development of unit tests to ensure the quality and '
-          'reliability of the applications. Use of Claude Code, ChatGPT and '
+          'with React and Go. Development of a BFF in Node.js to integrate '
+          'the backoffice with Go APIs. Implementation of unit tests with '
+          'Jest, expanding the coverage and reliability of the applications. '
+          'Use of Claude Code, ChatGPT and '
           'Cursor to support development, code refactoring and task '
           'automation.',
     },
@@ -300,13 +349,14 @@ const cvExperienceList = [
       'pt': 'Condução autônoma do desenvolvimento da aplicação React, desde a '
           'definição da arquitetura e desenvolvimento do MVP até o '
           'estabelecimento da estrutura e dos padrões técnicos do projeto. '
-          'Desenvolvimento de interfaces utilizando React, TypeScript, HTML5 '
-          'e CSS3, com versionamento via Git.',
+          'Desenvolvimento de interfaces com React e TypeScript, além de APIs '
+          'e funcionalidades back-end com Node.js, utilizando HTML5, CSS3 e '
+          'Git.',
       'en': 'Independently led the development of the React application, from '
           'defining the architecture and building the MVP to establishing '
           "the project's structure and technical standards. Built interfaces "
-          'using React, TypeScript, HTML5 and CSS3, with version control via '
-          'Git.',
+          'with React and TypeScript, as well as back-end APIs and features '
+          'with Node.js, using HTML5, CSS3 and Git.',
     },
   ),
   CvExperienceItem(

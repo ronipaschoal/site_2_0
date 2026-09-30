@@ -263,6 +263,15 @@ class _CvMainColumnWidget extends StatelessWidget {
         ),
         RpTheme.spacerLargeX,
         HomeSectionTitleWidget(
+          title: AppLocalizations.of(context)!.cvEducation,
+          scrollController: scrollController,
+        ),
+        for (final education in cvEducationList) ...[
+          _portuguese(_CvEducationRowWidget(item: education)),
+          RpTheme.spacerMedium,
+        ],
+        RpTheme.spacerLarge,
+        HomeSectionTitleWidget(
           title: AppLocalizations.of(context)!.cvExperience,
           scrollController: scrollController,
         ),
@@ -290,15 +299,6 @@ class _CvMainColumnWidget extends StatelessWidget {
         ),
         for (final certification in cvCertificationList) ...[
           _portuguese(_CvCertificationRowWidget(item: certification)),
-          RpTheme.spacerMedium,
-        ],
-        RpTheme.spacerLarge,
-        HomeSectionTitleWidget(
-          title: AppLocalizations.of(context)!.cvEducation,
-          scrollController: scrollController,
-        ),
-        for (final education in cvEducationList) ...[
-          _portuguese(_CvEducationRowWidget(item: education)),
           RpTheme.spacerMedium,
         ],
       ],

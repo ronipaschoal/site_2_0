@@ -188,6 +188,9 @@ sealed class CvPdfBuilder {
           _main(_sectionTitle(l['summary']!)),
           _main(_paragraph(cvSummary[languageCode] ?? cvSummary['pt']!)),
           _main(pw.SizedBox(height: 18)),
+          _main(_sectionTitle(l['education']!)),
+          for (final education in cvEducationList) _main(_education(education)),
+          _main(pw.SizedBox(height: 18)),
           _main(_sectionTitle(l['experience']!)),
           for (var i = 0; i < experienceGroups.length; i++) ...[
             for (final widget in _company(experienceGroups[i], languageCode))
@@ -208,9 +211,6 @@ sealed class CvPdfBuilder {
           _main(_sectionTitle(l['certifications']!)),
           for (final certification in cvCertificationList)
             _main(_certification(certification)),
-          _main(pw.SizedBox(height: 18)),
-          _main(_sectionTitle(l['education']!)),
-          for (final education in cvEducationList) _main(_education(education)),
         ],
       ),
     );

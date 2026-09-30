@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ronip/pages/cv/cv_data.dart';
 import 'package:ronip/pages/home/sections/about_section.dart';
 
 import '../helpers/pump_app.dart';
@@ -34,9 +35,9 @@ void main() {
         );
 
     // 3-column row: "Core stack", "Platforms shipped", "Secondary stacks".
-    final secondary = tileOf('TypeScript · Angular · React · Go');
+    final secondary = tileOf(cvHomeSkillGroups['fullstack']!.join(' · '));
     expect(
-      tileOf('Flutter · Dart · BLoC · Dio · get_it').height,
+      tileOf(cvHomeSkillGroups['mobile']!.join(' · ')).height,
       secondary.height,
     );
     expect(tileOf('Android · iOS · Smart POS').height, secondary.height);
