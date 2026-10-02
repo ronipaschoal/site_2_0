@@ -6,3 +6,10 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]
+
+# The WebAssembly build (`flutter build web --wasm`) fails to start unless
+# .wasm is served as application/wasm and .mjs as JavaScript; spelled out
+# here so it doesn't depend on the host's mime.types.
+AddType application/wasm .wasm
+AddType text/javascript .mjs
+AddType image/webp .webp
