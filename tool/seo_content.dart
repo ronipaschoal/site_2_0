@@ -41,7 +41,6 @@ String buildSeoContent() {
     ..writeln('<nav>')
     ..writeln('<a href="/">Início</a>')
     ..writeln('<a href="/cv">Currículo</a>')
-    ..writeln('<a href="/insura">Insura</a>')
     ..writeln('</nav>')
     ..writeln('<section><h2>Resumo</h2>')
     ..writeln('<p>${e.convert(cvSummary.resolve(_language))}</p></section>')

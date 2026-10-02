@@ -8,7 +8,7 @@ Unlike a study lab, this project runs in production and is maintained and update
 
 ## 📱 About the project
 
-The site is a single-page personal portfolio (`/`) plus a dedicated résumé page (`/cv`), both available in Portuguese and English. It also hosts `/insura`, a standalone UI mockup (an insurance lookup screen) with its own hardcoded look, outside the site's theme.
+The site is a single-page personal portfolio (`/`) plus a dedicated résumé page (`/cv`), both available in Portuguese and English.
 
 Currently, the project includes:
 
@@ -110,18 +110,16 @@ lib/
 │   │   ├── home_route.dart                    # GoRoute registration
 │   │   └── home_screen.dart                   # Page scaffold
 │   │
-│   ├── cv/                                    # 📄 Résumé ("/cv")
-│   │   ├── cv_data.dart                       # Résumé content (shared by screen, PDF and SEO HTML)
-│   │   ├── cv_content_widget.dart             # On-screen résumé layout
-│   │   ├── cv_dialog_widget.dart              # Résumé opened as an overlay dialog
-│   │   ├── cv_pdf_builder.dart                # Builds/shares the résumé PDF (modern layout + layout switch)
-│   │   ├── cv_pdf_classic_builder.dart        # Classic single-column PDF layout
-│   │   ├── cv_pdf_layout.dart                 # The PDF layout enum (kept apart from the deferred builder)
-│   │   ├── cv_download_button.dart            # Download menu offering both layouts; loads the PDF builder on demand
-│   │   ├── cv_route.dart                      # GoRoute registration
-│   │   └── cv_screen.dart                     # Full-page résumé screen
-│   │
-│   └── insura/                                # 🛡️ Standalone UI mockup ("/insura")
+│   └── cv/                                    # 📄 Résumé ("/cv")
+│       ├── cv_data.dart                       # Résumé content (shared by screen, PDF and SEO HTML)
+│       ├── cv_content_widget.dart             # On-screen résumé layout
+│       ├── cv_dialog_widget.dart              # Résumé opened as an overlay dialog
+│       ├── cv_pdf_builder.dart                # Builds/shares the résumé PDF (modern layout + layout switch)
+│       ├── cv_pdf_classic_builder.dart        # Classic single-column PDF layout
+│       ├── cv_pdf_layout.dart                 # The PDF layout enum (kept apart from the deferred builder)
+│       ├── cv_download_button.dart            # Download menu offering both layouts; loads the PDF builder on demand
+│       ├── cv_route.dart                      # GoRoute registration
+│       └── cv_screen.dart                     # Full-page résumé screen
 │
 ├── widgets/                                   # 🧩 Shared, reusable widgets
 │   ├── ambient_background_widget.dart         # Paints shaders/ambient.frag behind the page

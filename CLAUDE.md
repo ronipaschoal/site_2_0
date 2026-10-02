@@ -32,7 +32,7 @@ CI (`.github/workflows/main.yaml`) runs analyze → tests → a11y_kit tests →
 
 There's no backend, so there's no repository/data layer. Content is static Dart, organized by route.
 
-- **Routing**: `lib/app/routes.dart` combines one `GoRoute` per page folder (`pages/<page>/<page>_route.dart`): `/`, `/cv` and `/insura`. `/insura` is a standalone UI mockup with hardcoded colors that doesn't use the site theme. The app uses path URLs (`usePathUrlStrategy`), and `web/.htaccess` rewrites unknown paths to `index.html`. That file also sets the `.wasm`/`.mjs` MIME types. Any new route must also be added to `web/sitemap.xml`.
+- **Routing**: `lib/app/routes.dart` combines one `GoRoute` per page folder (`pages/<page>/<page>_route.dart`): `/` and `/cv`. The app uses path URLs (`usePathUrlStrategy`), and `web/.htaccess` rewrites unknown paths to `index.html`. That file also sets the `.wasm`/`.mjs` MIME types. Any new route must also be added to `web/sitemap.xml`.
 - **State**: there are only two Cubits. `AppCubit` (`lib/cubits/app/`) holds the locale and brightness, and persists brightness with `shared_preferences`. `main()` loads the saved brightness *before* `runApp` so the first frame already uses the right theme. `HomeCubit` holds the active nav section and is driven by `HomeScreen._onScroll`. Everything else is local `ScrollController`/`AnimationController` state.
 - **Theme**: read colors with `context.rpColors` (a `ThemeExtension` in `lib/core/theme.dart`), never through globals. `RpTheme.brandColor` is only for large text and decoration. Small text and focus rings use `accentTextColor`, which is tuned for WCAG AA.
 - **Localization has two separate mechanisms**:
