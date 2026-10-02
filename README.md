@@ -8,7 +8,7 @@ Unlike a study lab, this project runs in production and is maintained and update
 
 ## 📱 About the project
 
-The site is a single-page personal portfolio (`/`) plus a dedicated résumé page (`/cv`), both available in Portuguese and English.
+The site is a single-page personal portfolio (`/`) plus a dedicated résumé page (`/cv`), both available in Portuguese and English. It also hosts `/insura`, a standalone UI mockup (an insurance lookup screen) with its own hardcoded look, outside the site's theme.
 
 Currently, the project includes:
 
@@ -29,6 +29,7 @@ Currently, the project includes:
   - On-screen résumé: contact, skills, languages, age, experience, projects, certifications, education
   - PDF download in two layouts, both built from the same content as the on-screen version: **modern** (two columns, like the page) and **classic** (one column in the conventional Brazilian order — objective, summary, education, experience grouped by company with one bullet per achievement, courses, additional info — in plain black type)
   - Also reachable as a dismissible overlay dialog from the home menu, without leaving the page
+- **SEO** — real path URLs (`/cv`) instead of hash URLs, meta tags, a sitemap, and the résumé injected as hidden plain HTML into `index.html` at build time for crawlers and link previews that don't run Flutter
 
 New sections and improvements are added as the site evolves.
 
@@ -56,7 +57,7 @@ State management is handled using:
 - BLoC
 - Cubit
 
-Two small, page-scoped Cubits exist today:
+Two small Cubits exist today:
 
 - `AppCubit` — the app-wide current locale and light/dark theme (persisted via `shared_preferences`, defaulting to the system/browser brightness on first visit).
 - `HomeCubit` — which menu/section is currently active, used to highlight the nav item in sync with scrolling.
@@ -72,6 +73,7 @@ lib/
 │   └── routes_helper.dart                     # Shared page-transition builder
 │
 ├── core/                                      # 🎨 Cross-cutting design system + utilities
+│   ├── analytics/                             # Google Analytics 4 (web only, opt-in via --dart-define)
 │   ├── theme.dart                             # RpColors (ThemeExtension), text styles, spacing, content width
 │   ├── profile.dart                           # Personal figures/flags (years, open-to-work, source URL, build hash)
 │   ├── hyperlink_helper.dart                  # Opens external links / mailto
@@ -108,15 +110,18 @@ lib/
 │   │   ├── home_route.dart                    # GoRoute registration
 │   │   └── home_screen.dart                   # Page scaffold
 │   │
-│   └── cv/                                    # 📄 Résumé ("/cv")
-│       ├── cv_data.dart                       # Résumé content (shared by screen + PDF)
-│       ├── cv_content_widget.dart             # On-screen résumé layout
-│       ├── cv_dialog_widget.dart              # Résumé opened as an overlay dialog
-│       ├── cv_pdf_builder.dart                # Builds/shares the résumé PDF (modern layout + layout switch)
-│       ├── cv_pdf_classic_builder.dart        # Classic single-column PDF layout
-│       ├── cv_download_button.dart            # Download menu offering both layouts
-│       ├── cv_route.dart                      # GoRoute registration
-│       └── cv_screen.dart                     # Full-page résumé screen
+│   ├── cv/                                    # 📄 Résumé ("/cv")
+│   │   ├── cv_data.dart                       # Résumé content (shared by screen, PDF and SEO HTML)
+│   │   ├── cv_content_widget.dart             # On-screen résumé layout
+│   │   ├── cv_dialog_widget.dart              # Résumé opened as an overlay dialog
+│   │   ├── cv_pdf_builder.dart                # Builds/shares the résumé PDF (modern layout + layout switch)
+│   │   ├── cv_pdf_classic_builder.dart        # Classic single-column PDF layout
+│   │   ├── cv_pdf_layout.dart                 # The PDF layout enum (kept apart from the deferred builder)
+│   │   ├── cv_download_button.dart            # Download menu offering both layouts; loads the PDF builder on demand
+│   │   ├── cv_route.dart                      # GoRoute registration
+│   │   └── cv_screen.dart                     # Full-page résumé screen
+│   │
+│   └── insura/                                # 🛡️ Standalone UI mockup ("/insura")
 │
 ├── widgets/                                   # 🧩 Shared, reusable widgets
 │   ├── ambient_background_widget.dart         # Paints shaders/ambient.frag behind the page
@@ -135,11 +140,19 @@ packages/
 shaders/
 └── ambient.frag                               # Fragment shader for the ambient background
 
+assets/fonts/
+├── *.ttf                                      # Bundled fonts — generated subsets, don't edit
+└── source/                                    # Full original fonts (not bundled)
+
+tool/
+├── seo_content.dart                           # Injects the résumé as plain HTML into the built index.html
+└── subset_fonts.py                            # Regenerates the font subsets from assets/fonts/source/
+
 test/
 ├── a11y/                                      # Screen reader / keyboard / contrast checks
 ├── cubits/                                    # AppCubit/HomeCubit + their states
 ├── models/                                    # Résumé/work-item localization fallback logic
-├── pages/                                     # Page-scoped widget tests (incl. notched-phone layout)
+├── pages/                                     # Page-scoped widget tests (incl. notched-phone layout, PDF builders)
 ├── widgets/                                   # Shared-widget tests
 └── helpers/                                   # pump_app.dart — shared MaterialApp test harness
 ```
@@ -169,9 +182,12 @@ This organization favors keeping each page self-contained while sharing only wha
 | url_launcher | Opening external links / mailto |
 | pdf / printing | Résumé PDF export and direct download |
 | shared_preferences | Persisting the light/dark theme preference across visits |
+| web (package:web) | Browser APIs for the web-only bits (analytics, a11y link guard) |
+| Google Analytics 4 | Page views and résumé downloads, web build only |
+| WebAssembly (skwasm) | Production web renderer, with the JS build as automatic fallback |
 | a11y_kit (local package) | Accessible links/buttons, headings, reduce motion, announcements, Flutter Web semantics fixes |
 | Fragment shaders (`FragmentProgram`) | Ambient page background |
-| Space Grotesk · Inter · IBM Plex Mono · Inkburrow | Headings · body · labels · signature (Space Grotesk under OFL, `assets/fonts/SpaceGrotesk-OFL.txt`) |
+| Space Grotesk · Inter · IBM Plex Mono · Inkburrow | Headings · body · labels · signature (Space Grotesk under OFL, `assets/fonts/SpaceGrotesk-OFL.txt`), bundled as Latin subsets via `fontTools` |
 | Claude Code | Development support with AI |
 | Dart/Flutter MCP | Claude Code plugin (`dart-flutter`) providing analysis, hot reload/restart, LSP, and runtime error inspection tools |
 
@@ -221,6 +237,15 @@ flutter run -d chrome
 
 `flutter gen-l10n` runs automatically on `pub get`/build thanks to `generate: true` in `pubspec.yaml` — no separate step is normally needed after editing the ARB files under `lib/l10n/`.
 
+### Fonts
+
+The bundled fonts are subsets covering Latin, common punctuation, arrows, box drawing and every non-ASCII character found in `lib/`. If new copy adds characters outside that set, regenerate them from the originals in `assets/fonts/source/`:
+
+```
+pip install fonttools
+python3 tool/subset_fonts.py
+```
+
 ### Dart/Flutter MCP (optional, for Claude Code)
 
 This project can be assisted by the Dart/Flutter MCP server via the `dart-flutter` Claude Code plugin, which provides tools for analysis, hot reload/restart, LSP, pub, and runtime error inspection. It is installed at the user scope (not committed to this repo). To install it:
@@ -245,7 +270,7 @@ Unit tests cover the pieces of logic that don't require a running widget tree:
 Widget tests pump real widgets through `WidgetTester`, via the shared `test/helpers/pump_app.dart` harness (the app's theme + localizations, so anything reading `context.rpColors` or `AppLocalizations.of(context)` behaves as it does at runtime):
 
 - `test/widgets/` — `ThemeButtonWidget`/`LocaleButtonWidget` (icon/label reflects the current theme/locale, tapping fires the callback with the right value), `RpAppBar` (menu color; with `maxContentWidth`, spans the window while aligning its content to the column), `RpScrollProgressWidget` (bar width tracks scroll position), `RpRevealOnScrollWidget` (child stays hidden until scrolled near the viewport, then fades in), `RpCommandPaletteWidget` (search filtering, arrow-key selection, Enter runs the command).
-- `test/pages/` — `HomeMenuButtonWidget` (label recolors once `HomeCubit` marks its section active), `AboutSection` (bento tiles in a row share one height), `ContactSection` (copy email hits the clipboard and confirms), and `HomeScreen` on a simulated notched phone (hero scroll cue inside the visible area; pinned gallery cards fill the band between title and progress).
+- `test/pages/` — `HomeMenuButtonWidget` (label recolors once `HomeCubit` marks its section active), `AboutSection` (bento tiles in a row share one height), `ContactSection` (copy email hits the clipboard and confirms), `HomeScreen` on a simulated notched phone (hero scroll cue inside the visible area; pinned gallery cards fill the band between title and progress), and the PDF export (roles grouped by employer for the classic layout, descriptions split into bullets, a PDF built in each language).
 - `test/a11y/` — section titles as `<h2>` headings, decode text jumping to its final state when reduce motion is switched on mid-visit, the gallery's projects all exposed as links (including cards scrubbed off-screen), and the résumé (an `<h1>`, links, and `expectMeetsA11yGuidelines` from `a11y_kit`: labels, contrast, 48/44px tap targets, no unlabelled text fields).
 
 The accessibility primitives themselves (`A11yTappable`, headings, announcements, the web link guard, …) are tested inside `packages/a11y_kit/` — `flutter test` there, plus `flutter test --platform chrome test/link_guard_web_test.dart` for the DOM guard.
@@ -256,14 +281,23 @@ Run the suite with:
 flutter test
 ```
 
+A single file or test:
+
+```
+flutter test test/widgets/reveal_on_scroll_widget_test.dart
+flutter test --plain-name 'reveals its child only once scrolled'
+```
+
 Integration tests aren't in place yet — see the roadmap below.
 
 ## 🔄 CI/CD
 
-A GitHub Actions workflow (`.github/workflows/main.yaml`) builds and deploys the site on every push/PR to `main`:
+A GitHub Actions workflow (`.github/workflows/main.yaml`) runs on every push/PR to `main` (and on manual runs):
 
-1. **Build** — `flutter build web --release --dart-define=GIT_SHA=<short sha>` (the hash shown in the site footer), uploaded as a build artifact.
-2. **Deploy** — on push to `main`, the artifact is synced via FTP to the production host.
+1. **Check** — `flutter analyze`, then the app's tests and `packages/a11y_kit`'s tests; any failure stops the pipeline.
+2. **Build** — `flutter build web --release --wasm`, passing `GIT_SHA` (the hash shown in the site footer) and `GA_MEASUREMENT_ID` via `--dart-define`. Browsers with WasmGC get the WebAssembly build; the rest fall back to the JS build shipped alongside it.
+3. **SEO** — `dart run tool/seo_content.dart` writes the résumé as hidden plain HTML into the built `index.html`.
+4. **Deploy** — on a push to `main` or a manual run (never on a pull request), the build (including `web/.htaccess`, which serves `index.html` for path URLs and sets the `.wasm` MIME type) is synced via FTP to the production host.
 
 ## ♿ Accessibility
 
@@ -280,7 +314,7 @@ The accessibility building blocks live in a local package, [`packages/a11y_kit`]
 
 ## 🌐 API and data
 
-The project runs entirely client-side, with no backend or external API. Personal and résumé content lives directly in the codebase (model classes and page-level data files like `cv_data.dart`), rather than being fetched from a remote source.
+The project runs entirely client-side, with no backend or external API (apart from the optional Google Analytics tag on the web build). Personal and résumé content lives directly in the codebase (model classes and page-level data files like `cv_data.dart`), rather than being fetched from a remote source.
 
 ## 💡 Technical decisions
 
@@ -294,6 +328,7 @@ Some points that may be documented in the future:
 - The fragment-shader background and its reduced-motion fallback
 - Sharing résumé content between the on-screen view and the PDF export
 - The CI/CD deploy pipeline (GitHub Actions + FTP)
+- Web load-size choices: deferred PDF code, WebP images, subset fonts, the Wasm build
 
 ## 🗺️ Roadmap
 
