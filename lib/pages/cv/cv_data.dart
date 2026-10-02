@@ -35,19 +35,20 @@ const cvSummary = {
       'mais de 5 anos em desenvolvimento mobile. Atuação no desenvolvimento e '
       'evolução de aplicações mobile e web, com definição de arquitetura, '
       'componentes reutilizáveis e Design Systems. Sólidos conhecimentos em '
-      'Flutter, Dart, BLoC/Cubit, MVVM, APIs REST e testes automatizados. '
-      'Vivência em desenvolvimento fullstack, publicação de aplicações e '
-      'integração com recursos nativos. Experiência na criação de bibliotecas '
-      'compartilhadas e no uso de IA para apoiar o desenvolvimento e a '
-      'qualidade do código.',
+      'Flutter, Dart, BLoC/Cubit, MVVM, APIs REST, testes automatizados e '
+      'integração com recursos nativos. Experiência com SmartPOS, Offline '
+      'First, CI/CD, publicação de aplicações e criação de bibliotecas '
+      'compartilhadas. Vivência em desenvolvimento fullstack e uso de IA para '
+      'apoiar o desenvolvimento, automação e qualidade do código.',
   'en': 'Software Developer with more than 8 years of experience, including '
       'over 5 years in mobile development. Develops and evolves mobile and '
       'web applications, defining architecture, reusable components and '
       'Design Systems. Solid knowledge of Flutter, Dart, BLoC/Cubit, MVVM, '
-      'REST APIs and automated testing. Hands-on experience with fullstack '
-      'development, app publishing and native feature integration. '
-      'Experienced in building shared libraries and using AI to support '
-      'development and code quality.',
+      'REST APIs, automated testing and native feature integration. '
+      'Experienced with SmartPOS, Offline First, CI/CD, app publishing and '
+      'building shared libraries. Hands-on experience with fullstack '
+      'development and using AI to support development, automation and code '
+      'quality.',
 };
 
 const cvContactList = [
@@ -84,9 +85,12 @@ const cvSkillGroups = <String, List<String>>{
     'Dart',
     'Android',
     'iOS',
+    'SmartPOS',
     'BLoC/Cubit',
     'Dio',
+    'http',
     'get_it',
+    'GoRouter',
     'Platform Channels',
     'Offline First',
     'SQLite',
@@ -101,6 +105,9 @@ const cvSkillGroups = <String, List<String>>{
     'SOLID',
     'Design Patterns',
     'Dependency Injection',
+    'Dependency Inversion',
+    'DTOs',
+    'Value Objects',
     'REST',
     'Unit Testing',
     'Widget Testing',
@@ -119,6 +126,9 @@ const cvSkillGroups = <String, List<String>>{
     'GitHub',
     'GitHub Actions',
     'CI/CD',
+    'Fastlane',
+    'Flavors',
+    'Firebase',
     'Claude Code',
     'ChatGPT',
     'Cursor',
@@ -126,6 +136,7 @@ const cvSkillGroups = <String, List<String>>{
     'Prompt Engineering',
     'App Store',
     'Google Play',
+    'TestFlight',
   ],
 };
 
@@ -144,30 +155,36 @@ const cvClassicSkillGroups = [
   (
     label: {'pt': 'Mobile', 'en': 'Mobile'},
     items: {
-      'pt': 'Flutter, Dart, Android, iOS, State Management (BLoC/Cubit), '
-          'MVVM, Repository Pattern, Platform Channels, Offline First, '
-          'SQLite, SharedPreferences, Deep Linking, WebView.',
-      'en': 'Flutter, Dart, Android, iOS, State Management (BLoC/Cubit), '
-          'MVVM, Repository Pattern, Platform Channels, Offline First, '
-          'SQLite, SharedPreferences, Deep Linking, WebView.',
+      'pt': 'Flutter, Dart, Android, iOS, SmartPOS, State Management '
+          '(BLoC/Cubit), MVVM, Repository Pattern, Platform Channels, Offline '
+          'First, SQLite, SharedPreferences, GoRouter, Deep Linking, WebView.',
+      'en': 'Flutter, Dart, Android, iOS, SmartPOS, State Management '
+          '(BLoC/Cubit), MVVM, Repository Pattern, Platform Channels, Offline '
+          'First, SQLite, SharedPreferences, GoRouter, Deep Linking, WebView.',
     },
   ),
   (
-    label: {'pt': 'Arquitetura e qualidade', 'en': 'Architecture and quality'},
+    label: {
+      'pt': 'Arquitetura e qualidade de código',
+      'en': 'Architecture and code quality',
+    },
     items: {
       'pt': 'Software Architecture, SOLID, Design Patterns, Dependency '
-          'Injection (GetIt), Unit Testing, Widget Testing, Design Systems, '
-          'componentes reutilizáveis.',
+          'Injection (GetIt), Dependency Inversion, DTOs, Value Objects, Unit '
+          'Testing, Widget Testing, Design Systems, componentes '
+          'reutilizáveis.',
       'en': 'Software Architecture, SOLID, Design Patterns, Dependency '
-          'Injection (GetIt), Unit Testing, Widget Testing, Design Systems, '
-          'reusable components.',
+          'Injection (GetIt), Dependency Inversion, DTOs, Value Objects, Unit '
+          'Testing, Widget Testing, Design Systems, Reusable Components.',
     },
   ),
   (
     label: {'pt': 'APIs e desenvolvimento', 'en': 'APIs and development'},
     items: {
-      'pt': 'REST APIs, Dio, Git, CI/CD, GitHub Actions.',
-      'en': 'REST APIs, Dio, Git, CI/CD, GitHub Actions.',
+      'pt': 'REST APIs, Dio, HTTP, Git, CI/CD, GitHub Actions, Fastlane, '
+          'Flavors, Firebase.',
+      'en': 'REST APIs, Dio, HTTP, Git, CI/CD, GitHub Actions, Fastlane, '
+          'Flavors, Firebase.',
     },
   ),
   (
@@ -180,7 +197,7 @@ const cvClassicSkillGroups = [
   (
     label: {
       'pt': 'IA aplicada ao desenvolvimento',
-      'en': 'AI applied to development',
+      'en': 'AI-assisted development',
     },
     items: {
       'pt': 'Claude Code, ChatGPT, Cursor, GitHub Copilot, AI-assisted '
@@ -190,10 +207,13 @@ const cvClassicSkillGroups = [
     },
   ),
   (
-    label: {'pt': 'Publicação', 'en': 'Publishing'},
+    label: {
+      'pt': 'Publicação e distribuição',
+      'en': 'Publishing and distribution',
+    },
     items: {
-      'pt': 'App Store, Google Play.',
-      'en': 'App Store, Google Play.',
+      'pt': 'App Store, Google Play, TestFlight, SmartPOS.',
+      'en': 'App Store, Google Play, TestFlight, SmartPOS.',
     },
   ),
 ];
@@ -355,16 +375,42 @@ const cvExperienceList = [
       'en': 'Software Developer - Flutter | Freelance',
     },
     description: {
-      'pt': 'Condução autônoma do desenvolvimento da aplicação Flutter, desde '
-          'a definição da arquitetura e desenvolvimento do MVP até a segunda '
-          'versão, utilizando MVVM, BLoC/Cubit e GetIt. Desenvolvimento de '
-          'integrações com APIs REST via Dio, utilizando Git para controle de '
-          'versão, e publicação da aplicação para Android e iOS.',
-      'en': 'Independently led the development of the Flutter application, '
-          'from defining the architecture and building the MVP through the '
-          'second version, using MVVM, BLoC/Cubit and GetIt. Developed REST '
-          'API integrations via Dio, using Git for version control, and '
-          'published the app for Android and iOS.',
+      'pt': 'Condução autônoma do desenvolvimento da aplicação mobile de '
+          'gestão financeira e fiscal para MEIs, desde a definição da '
+          'arquitetura e desenvolvimento do MVP até a evolução para a segunda '
+          'versão, utilizando Flutter/Dart e com publicação para Android e '
+          'iOS. '
+          'Implementação de funcionalidades utilizando BLoC/Cubit para '
+          'gerenciamento de estado, com separação entre UI, estado e serviços '
+          'responsáveis pelas integrações com APIs REST. '
+          'Desenvolvimento de integrações com APIs REST, utilizando http, além '
+          'de aplicação de padrões como inversão de dependência, DTOs, Value '
+          'Objects e componentes compartilhados. '
+          'Desenvolvimento de navegação com GoRouter e deep links, além de '
+          'configuração de ambientes DEV, STG e PROD utilizando '
+          '--dart-define. '
+          'Implementação de recursos com Firebase, incluindo Crashlytics, '
+          'Remote Config, Analytics e Firebase Cloud Messaging. '
+          'Configuração e manutenção de pipelines de CI/CD com GitHub Actions '
+          'e Fastlane, automatizando builds e a publicação da aplicação iOS no '
+          'TestFlight.',
+      'en': 'Independently led the development of the mobile financial and '
+          'tax management app for MEIs (Brazilian micro-entrepreneurs), from '
+          'defining the architecture and building the MVP through its '
+          'evolution into the second version, using Flutter/Dart and '
+          'publishing for Android and iOS. '
+          'Implemented features using BLoC/Cubit for state management, '
+          'separating UI, state and the services responsible for REST API '
+          'integrations. '
+          'Built REST API integrations using http, applying patterns such as '
+          'dependency inversion, DTOs, Value Objects and shared components. '
+          'Built navigation with GoRouter and deep links, and configured DEV, '
+          'STG and PROD environments using --dart-define. '
+          'Implemented Firebase features, including Crashlytics, Remote '
+          'Config, Analytics and Firebase Cloud Messaging. '
+          'Configured and maintained CI/CD pipelines with GitHub Actions and '
+          'Fastlane, automating builds and the publishing of the iOS app to '
+          'TestFlight.',
     },
   ),
   CvExperienceItem(
@@ -407,18 +453,6 @@ const cvExperienceList = [
           'into a project using a Micro Frontends architecture, contributing '
           "to the evolution of the application's architecture. Built custom "
           'interfaces tailored to the needs of different clients.',
-    },
-  ),
-  CvExperienceItem(
-    company: 'Realiplasticos',
-    period: 'Ago/2016 - Mar/2020',
-    role: {'pt': 'Designer', 'en': 'Designer'},
-    description: {
-      'pt': 'Desenvolvimento e manutenção do site institucional em PHP, '
-          'com foco em SEO e otimização da visibilidade e do tráfego '
-          'orgânico.',
-      'en': 'Developed and maintained the company website in PHP, with a '
-          'focus on SEO and optimizing visibility and organic traffic.',
     },
   ),
   CvExperienceItem(

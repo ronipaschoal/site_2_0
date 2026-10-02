@@ -10,7 +10,7 @@ void main() {
       (tester) async {
     // Tall enough that every section title has scrolled past its reveal
     // point, so contrast is measured on the final text.
-    tester.view.physicalSize = const Size(1400, 6000);
+    tester.view.physicalSize = const Size(1400, 8000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
 
