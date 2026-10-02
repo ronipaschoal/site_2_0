@@ -132,9 +132,6 @@ lib/
 │
 └── main.dart                                  # 🎬 Application entry point
 
-packages/
-└── a11y_kit/                                  # ♿ Reusable accessibility kit (web, Android, iOS) — see its README
-
 shaders/
 └── ambient.frag                               # Fragment shader for the ambient background
 
@@ -271,7 +268,7 @@ Widget tests pump real widgets through `WidgetTester`, via the shared `test/help
 - `test/pages/` — `HomeMenuButtonWidget` (label recolors once `HomeCubit` marks its section active), `AboutSection` (bento tiles in a row share one height), `ContactSection` (copy email hits the clipboard and confirms), `HomeScreen` on a simulated notched phone (hero scroll cue inside the visible area; pinned gallery cards fill the band between title and progress), and the PDF export (roles grouped by employer for the classic layout, descriptions split into bullets, a PDF built in each language).
 - `test/a11y/` — section titles as `<h2>` headings, decode text jumping to its final state when reduce motion is switched on mid-visit, the gallery's projects all exposed as links (including cards scrubbed off-screen), and the résumé (an `<h1>`, links, and `expectMeetsA11yGuidelines` from `a11y_kit`: labels, contrast, 48/44px tap targets, no unlabelled text fields).
 
-The accessibility primitives themselves (`A11yTappable`, headings, announcements, the web link guard, …) are tested inside `packages/a11y_kit/` — `flutter test` there, plus `flutter test --platform chrome test/link_guard_web_test.dart` for the DOM guard.
+The accessibility primitives themselves (`A11yTappable`, headings, announcements, the web link guard, …) are tested in the [`a11y_kit`](https://github.com/ronipaschoal/a11y_kit) repo — `flutter test` there, plus `flutter test --platform chrome test/link_guard_web_test.dart` for the DOM guard.
 
 Run the suite with:
 
@@ -292,14 +289,14 @@ Integration tests aren't in place yet — see the roadmap below.
 
 A GitHub Actions workflow (`.github/workflows/main.yaml`) runs on every push/PR to `main` (and on manual runs):
 
-1. **Check** — `flutter analyze`, then the app's tests and `packages/a11y_kit`'s tests; any failure stops the pipeline.
+1. **Check** — `flutter analyze`, then the app's tests; any failure stops the pipeline.
 2. **Build** — `flutter build web --release --wasm`, passing `GIT_SHA` (the hash shown in the site footer) and `GA_MEASUREMENT_ID` via `--dart-define`. Browsers with WasmGC get the WebAssembly build; the rest fall back to the JS build shipped alongside it.
 3. **SEO** — `dart run tool/seo_content.dart` writes the résumé as hidden plain HTML into the built `index.html`.
 4. **Deploy** — only on a push to `main` (never on a pull request or a manual run), one deploy at a time, the build (including `web/.htaccess`, which serves `index.html` for path URLs and sets the `.wasm` MIME type) is synced via FTP to the production host.
 
 ## ♿ Accessibility
 
-The accessibility building blocks live in a local package, [`packages/a11y_kit`](packages/a11y_kit/), built to be reused across Flutter projects on web, Android and iOS. The site uses it like this:
+The accessibility building blocks live in the [`a11y_kit`](https://github.com/ronipaschoal/a11y_kit) package, its own repo (a git dependency pinned to a release tag), built to be reused across Flutter projects on web, Android and iOS. The site uses it like this:
 
 - **Semantics always on (web)** — `A11y.ensureInitialized()`, so screen readers don't land on an empty page behind Flutter's hidden "Enable accessibility" button; it also stops semantic `<a href>` links from navigating the tab away on top of opening a new one.
 - **Language** — `A11yLocale.appBuilder` gives the semantics tree the app's locale (`pt`/`en`), not the device/browser's, so voices match the copy; Portuguese-only résumé entries are tagged `pt` even in English.

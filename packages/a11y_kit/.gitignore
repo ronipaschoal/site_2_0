@@ -1,4 +1,0 @@
-.dart_tool/
-build/
-# Libraries don't commit their lockfile.
-pubspec.lock

@@ -4,9 +4,11 @@ packages:
   a11y_kit:
     dependency: "direct main"
     description:
-      path: "packages/a11y_kit"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.1.0"
+      resolved-ref: "76d7cc649ab5d7cfa8174ef1ad4aa403ae6bb5e2"
+      url: "https://github.com/ronipaschoal/a11y_kit.git"
+    source: git
     version: "0.1.0"
   archive:
     dependency: transitive

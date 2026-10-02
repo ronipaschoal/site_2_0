@@ -4,7 +4,7 @@ The full fonts in `assets/fonts/source/` (not bundled — pubspec only lists
 the files in `assets/fonts/`) cover hundreds of scripts the site never
 renders. This keeps Latin (Portuguese and English, with room to spare),
 common punctuation, arrows and box drawing, plus every non-ASCII character
-found in `lib/` and `packages/a11y_kit/lib/`, and writes the result to
+found in `lib/` and `../a11y_kit/lib/`, and writes the result to
 `assets/fonts/`. Inter's optical-size axis is pinned to its default, since
 the app never sets `opsz`.
 
@@ -45,7 +45,7 @@ def used_codepoints():
     codepoints = set()
     for start, end in BASE_RANGES:
         codepoints.update(range(start, end + 1))
-    patterns = ['lib/**/*.dart', 'lib/**/*.arb', 'packages/a11y_kit/lib/**/*.dart']
+    patterns = ['lib/**/*.dart', 'lib/**/*.arb', '../a11y_kit/lib/**/*.dart']
     for pattern in patterns:
         for path in glob.glob(os.path.join(ROOT, pattern), recursive=True):
             with open(path, encoding='utf-8') as f:

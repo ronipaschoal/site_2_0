@@ -14,9 +14,9 @@ flutter test                    # app tests
 flutter test test/widgets/reveal_on_scroll_widget_test.dart          # single file
 flutter test --plain-name 'reveals its child only once scrolled'     # single test by name
 
-# Local package — CI runs its tests too
-(cd packages/a11y_kit && flutter test)
-(cd packages/a11y_kit && flutter test --platform chrome test/link_guard_web_test.dart)  # DOM link guard, needs Chrome
+# a11y_kit lives in its own repo (github.com/ronipaschoal/a11y_kit); these assume a clone at ../a11y_kit
+(cd ../a11y_kit && flutter test)
+(cd ../a11y_kit && flutter test --platform chrome test/link_guard_web_test.dart)  # DOM link guard, needs Chrome
 
 # Production build, as CI does it (Wasm/skwasm with the JS build as fallback)
 flutter build web --release --wasm --dart-define=GIT_SHA=<sha> --dart-define=GA_MEASUREMENT_ID=<id>
@@ -26,7 +26,7 @@ dart run tool/seo_content.dart build/web/index.html   # must run after every web
 pip install fonttools && python3 tool/subset_fonts.py
 ```
 
-CI (`.github/workflows/main.yaml`) runs analyze → tests → a11y_kit tests → wasm build → SEO injection, then deploys `build/web` over FTP on every push to `main` (one deploy at a time). PRs and manual runs only check and build; a push to `main` goes to production.
+CI (`.github/workflows/main.yaml`) runs analyze → tests → wasm build → SEO injection, then deploys `build/web` over FTP on every push to `main` (one deploy at a time). PRs and manual runs only check and build; a push to `main` goes to production.
 
 ## Architecture
 
@@ -50,9 +50,9 @@ There's no backend, so there's no repository/data layer. Content is static Dart,
 - **Ambient background**: `shaders/ambient.frag` is painted by `RpAmbientBackgroundWidget`. A ticker drives a `ChangeNotifier` that is used as the painter's `repaint`, so frames repaint without rebuilding widgets. Repaints are throttled to about 30 fps while idle. Shader uniforms are set in order in `_AmbientPainter.paint`, so the order must match the `uniform` declarations in the `.frag` file.
 - **Analytics**: `lib/core/analytics/` uses a conditional import (`analytics_stub.dart` / `analytics_web.dart`). It's a no-op unless `GA_MEASUREMENT_ID` is passed with `--dart-define`.
 
-## Accessibility (`packages/a11y_kit`)
+## Accessibility (`a11y_kit`)
 
-Accessibility primitives live in the local `a11y_kit` package, with its own README and tests. The decision log is in `a11y.md`, written in Portuguese. Conventions used across the app:
+Accessibility primitives live in the `a11y_kit` package, its own repo at github.com/ronipaschoal/a11y_kit, with its own README and tests. `pubspec.yaml` pins it as a git dependency by tag (`ref: v0.1.0`); to bump it, tag a release there, change `ref` and run `flutter pub get`. To work on it alongside the app, a gitignored `pubspec_overrides.yaml` can point it at `path: ../a11y_kit`, but that also rewrites `pubspec.lock`, so don't commit the lock in that state. The decision log is in `a11y.md`, written in Portuguese. Conventions used across the app:
 
 - Use `A11yTappable` for custom links and buttons; on web it produces a real `<a href>`, plus focus ring and Enter/Space. Headings use `A11yHeading` or `A11ySelectableText(headingLevel:)`: one `<h1>` per page, `<h2>` per section.
 - Gate every animation on `context.reduceMotion` / `context.motionDuration(...)`. Read them in `didChangeDependencies`, not `initState`, so toggling the setting mid-visit still applies.

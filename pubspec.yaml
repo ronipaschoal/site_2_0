@@ -25,8 +25,12 @@ dependencies:
   shared_preferences: ^2.3.2
   web: ^1.1.0
 
+  # Develop it side by side with a pubspec_overrides.yaml (gitignored) that
+  # points a11y_kit at `path: ../a11y_kit`.
   a11y_kit:
-    path: packages/a11y_kit
+    git:
+      url: https://github.com/ronipaschoal/a11y_kit.git
+      ref: v0.1.0
 
 dev_dependencies:
   flutter_test:

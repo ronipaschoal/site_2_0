@@ -48,3 +48,5 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+# Local override to develop a11y_kit from ../a11y_kit
+pubspec_overrides.yaml

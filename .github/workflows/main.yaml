@@ -31,10 +31,6 @@ jobs:
       - name: Run Tests
         run: flutter test
 
-      - name: Run a11y_kit Tests
-        working-directory: packages/a11y_kit
-        run: flutter test
-
       # --wasm ships the WebAssembly (skwasm) build to browsers that support
       # it, with the regular JS build alongside as the automatic fallback.
       - name: Start Web Release Build
