@@ -7,18 +7,9 @@ import 'package:ronip/models/cv_item_model.dart';
 import 'package:ronip/models/localized_map.dart';
 import 'package:ronip/pages/cv/cv_data.dart';
 import 'package:ronip/pages/cv/cv_pdf_classic_builder.dart';
+import 'package:ronip/pages/cv/cv_pdf_layout.dart';
 
-/// The résumé's printable layouts.
-enum CvPdfLayout {
-  /// Two columns, mirroring the on-screen résumé: contact and skills in a
-  /// sidebar, brand-colored accents.
-  modern,
-
-  /// One column in the conventional Brazilian order (objective, summary,
-  /// education, experience, courses, additional info), plain black type —
-  /// see [CvPdfClassicBuilder].
-  classic,
-}
+export 'package:ronip/pages/cv/cv_pdf_layout.dart';
 
 /// Builds the résumé as a paginated PDF — from the same content as
 /// `CvContentWidget` in `cv_data.dart` — and hands it to the platform's

@@ -45,7 +45,7 @@ class WorkGallerySection extends StatefulWidget {
           'https://play.google.com/store/apps/details?id=com.totvs.thex.minhacomanda',
       urlApple:
           'https://apps.apple.com/br/app/minha-comanda-eletr%C3%B4nica/id6474201107',
-      image: 'assets/images/photos/minha-comanda.png',
+      image: 'assets/images/photos/minha-comanda.webp',
     ),
     WorkItem(
       title: {'pt': 'Rppay, Flutter Web', 'en': 'Rppay, Flutter Web'},
@@ -57,7 +57,7 @@ class WorkGallerySection extends StatefulWidget {
             'Fictional payments app to study feature-first architecture, MVVM, Bloc/Cubit, SOLID and Material 3.',
       },
       url: 'https://rppay.ronipaschoal.com.br/',
-      image: 'assets/images/photos/rppay.png',
+      image: 'assets/images/photos/rppay.webp',
     ),
     WorkItem(
       title: {'pt': 'Este site, Flutter Web', 'en': 'This site, Flutter Web'},
@@ -83,7 +83,7 @@ class WorkGallerySection extends StatefulWidget {
             'Study of native animations and Bloc/Cubit state management, in Flutter.',
       },
       url: 'https://eremitaflutter.ronipaschoal.com.br/',
-      image: 'assets/images/photos/flutter-o-eremita-do-iceberg.png',
+      image: 'assets/images/photos/flutter-o-eremita-do-iceberg.webp',
     ),
     WorkItem(
       title: {'pt': 'Roni Paschoal (V1)', 'en': 'Roni Paschoal (V1)'},
@@ -93,7 +93,7 @@ class WorkGallerySection extends StatefulWidget {
         'en': 'Previous site developed in AngularJS.',
       },
       url: 'https://angular.ronipaschoal.com.br/',
-      image: 'assets/images/photos/site-roni-paschoal-angularjs.png',
+      image: 'assets/images/photos/site-roni-paschoal-angularjs.webp',
     ),
     WorkItem(
       title: {'pt': 'Reali Plásticos', 'en': 'Reali Plásticos'},
@@ -105,7 +105,7 @@ class WorkGallerySection extends StatefulWidget {
             "Development in PHP, creation of 3D images, UX and SEO of the company's institutional website.",
       },
       url: 'https://www.realiplasticos.com.br/',
-      image: 'assets/images/photos/site-reali-plasticos.png',
+      image: 'assets/images/photos/site-reali-plasticos.webp',
     ),
   ];
 
