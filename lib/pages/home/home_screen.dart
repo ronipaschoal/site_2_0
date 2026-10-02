@@ -322,9 +322,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _onScroll(double controllerHeight) {
     for (var menu in _menuList) {
-      if (controllerHeight >= menu.sectionPosition &&
-          controllerHeight < menu.sectionPosition + menu.sectionSize) {
+      // Each read walks the render tree, so read it once per section and
+      // stop at the first match (the ranges don't overlap).
+      final position = menu.sectionPosition;
+      if (controllerHeight >= position &&
+          controllerHeight < position + menu.sectionSize) {
         _homeCubit.activeMenu(menu.section);
+        break;
       }
     }
   }

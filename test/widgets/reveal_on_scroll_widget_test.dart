@@ -31,7 +31,15 @@ void main() {
       ),
     );
 
-    double opacity() => tester.widget<Opacity>(find.byType(Opacity)).opacity;
+    double opacity() => tester
+        .widget<FadeTransition>(
+          find.descendant(
+            of: find.byType(RpRevealOnScrollWidget),
+            matching: find.byType(FadeTransition),
+          ),
+        )
+        .opacity
+        .value;
 
     // Starts out of view, so it hasn't revealed yet.
     expect(opacity(), 0.0);

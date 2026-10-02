@@ -284,6 +284,52 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
         ? rowPadTop
         : rowPadTop + (viewportSize.height - rowPadTop - cardHeight) / 2;
 
+    // Everything that doesn't move with the scroll is built once per build
+    // and reused as the same widget instances in every scroll frame below,
+    // so Flutter skips rebuilding the cards, title and proxies and only
+    // updates the pinned position, row translation and progress readout.
+    final cardRow = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(width: edgePadding),
+        for (var i = 0; i < cardCount; i++) ...[
+          _GalleryCard(
+            focused: _focusedIndex == i,
+            work: WorkGallerySection._workList[i],
+            index: i,
+            width: cardWidth,
+            height: cardHeight,
+            compact: isSmallScreen,
+          ),
+          if (i != cardCount - 1) SizedBox(width: cardGap),
+        ],
+        SizedBox(width: edgePadding),
+      ],
+    );
+    final title = Positioned(
+      left: edgePadding,
+      // Bounded on the right so a long title wraps on phones instead of
+      // running off-screen.
+      right: edgePadding,
+      top: titleTop,
+      child: KeyedSubtree(
+        key: _titleKey,
+        child: HomeSectionTitleWidget(
+          index: 2,
+          title: HomeSectionEnum.programs.title(context),
+          scrollController: widget.scrollController,
+        ),
+      ),
+    );
+    final proxies = _proxies(
+      left: edgePadding,
+      top: cardRowTop,
+      width: cardWidth,
+      height: cardHeight,
+      step: cardWidth + cardGap,
+      travelDistance: travelDistance,
+    );
+
     return Center(
       child: SizedBox(
         key: _anchorKey,
@@ -332,47 +378,14 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
                                   // stay tappable instead of only the portion that
                                   // was visible before any translation.
                                   offset: Offset(-progress * travelDistance, 0),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(width: edgePadding),
-                                      for (var i = 0; i < cardCount; i++) ...[
-                                        _GalleryCard(
-                                          focused: _focusedIndex == i,
-                                          work: WorkGallerySection._workList[i],
-                                          index: i,
-                                          width: cardWidth,
-                                          height: cardHeight,
-                                          compact: isSmallScreen,
-                                        ),
-                                        if (i != cardCount - 1)
-                                          SizedBox(width: cardGap),
-                                      ],
-                                      SizedBox(width: edgePadding),
-                                    ],
-                                  ),
+                                  child: cardRow,
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      Positioned(
-                        left: edgePadding,
-                        // Bounded on the right so a long title wraps on
-                        // phones instead of running off-screen.
-                        right: edgePadding,
-                        top: titleTop,
-                        child: KeyedSubtree(
-                          key: _titleKey,
-                          child: HomeSectionTitleWidget(
-                            index: 2,
-                            title: HomeSectionEnum.programs.title(context),
-                            scrollController: widget.scrollController,
-                          ),
-                        ),
-                      ),
+                      title,
                       Positioned(
                         right: edgePadding,
                         bottom: progressBottom,
@@ -385,14 +398,7 @@ class _WorkGallerySectionState extends State<WorkGallerySection> {
                           ),
                         ),
                       ),
-                      _proxies(
-                        left: edgePadding,
-                        top: cardRowTop,
-                        width: cardWidth,
-                        height: cardHeight,
-                        step: cardWidth + cardGap,
-                        travelDistance: travelDistance,
-                      ),
+                      proxies,
                     ],
                   ),
                 ),

@@ -96,12 +96,22 @@ class _RpDecodeTextWidgetState extends State<RpDecodeTextWidget>
         builder: (context, _) => Opacity(
           opacity: revealed ? 1.0 : 0.0,
           alwaysIncludeSemantics: true,
-          child: SelectableText(
-            revealed ? _scrambledAt(_controller.value) : widget.text,
-            semanticsLabel: widget.text,
-            textAlign: widget.textAlign,
-            style: widget.style,
-          ),
+          // A plain Text while scrambling: SelectableText builds a whole
+          // EditableText, too heavy to rebuild on every animation frame,
+          // and selecting text that changes each frame is moot anyway.
+          child: revealed && _controller.isAnimating
+              ? Text(
+                  _scrambledAt(_controller.value),
+                  semanticsLabel: widget.text,
+                  textAlign: widget.textAlign,
+                  style: widget.style,
+                )
+              : SelectableText(
+                  widget.text,
+                  semanticsLabel: widget.text,
+                  textAlign: widget.textAlign,
+                  style: widget.style,
+                ),
         ),
       ),
     );

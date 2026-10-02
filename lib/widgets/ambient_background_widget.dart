@@ -43,6 +43,12 @@ class _RpAmbientBackgroundWidgetState extends State<RpAmbientBackgroundWidget>
   Ticker? _ticker;
   Offset? _mouseTarget;
   bool _reduceMotion = false;
+  Duration _lastPaint = Duration.zero;
+
+  /// While nothing but the slow drift is moving, repaint at most this often
+  /// (~30 fps) — half the GPU work of a full-screen shader, with no visible
+  /// difference at drift speed. Cursor and scroll still repaint every frame.
+  static const _idleFrameInterval = Duration(microseconds: 33333);
 
   @override
   void initState() {
@@ -92,6 +98,14 @@ class _RpAmbientBackgroundWidgetState extends State<RpAmbientBackgroundWidget>
     }
     final targetStrength = target == null ? 0.0 : 1.0;
     _frame.mouseStrength += (targetStrength - _frame.mouseStrength) * 0.08;
+
+    final mouse = _frame.mouse;
+    final settled = (targetStrength - _frame.mouseStrength).abs() < 0.001 &&
+        (target == null ||
+            mouse == null ||
+            (mouse - target).distanceSquared < 0.25);
+    if (settled && elapsed - _lastPaint < _idleFrameInterval) return;
+    _lastPaint = elapsed;
     _frame.notify();
   }
 
@@ -147,6 +161,7 @@ class _AmbientPainter extends CustomPainter {
   final Color background;
   final Color grid;
   final Color brand;
+  final _paint = Paint();
 
   _AmbientPainter({
     required this.shader,
@@ -180,7 +195,7 @@ class _AmbientPainter extends CustomPainter {
     setColor(grid);
     setColor(brand);
 
-    canvas.drawRect(Offset.zero & size, Paint()..shader = shader);
+    canvas.drawRect(Offset.zero & size, _paint..shader = shader);
   }
 
   @override

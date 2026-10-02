@@ -67,20 +67,20 @@ class _RpRevealOnScrollWidgetState extends State<RpRevealOnScrollWidget>
   Widget build(BuildContext context) {
     return KeyedSubtree(
       key: revealAnchorKey,
-      child: AnimatedBuilder(
-        animation: _animation,
+      // Transitions rather than an AnimatedBuilder: each frame only updates
+      // the opacity and transform layers, without rebuilding anything.
+      child: FadeTransition(
+        opacity: _animation,
         // alwaysIncludeSemantics: a not-yet-revealed (fully transparent)
         // child must still be reachable by screen readers, which navigate
         // the whole page without scrolling it into view first.
-        builder: (context, child) => Opacity(
-          opacity: _animation.value,
-          alwaysIncludeSemantics: true,
-          child: Transform.translate(
-            offset: Offset(0, (1 - _animation.value) * widget.offsetY),
-            child: child,
-          ),
+        alwaysIncludeSemantics: true,
+        child: MatrixTransition(
+          animation: _animation,
+          onTransform: (value) =>
+              Matrix4.translationValues(0, (1 - value) * widget.offsetY, 0),
+          child: widget.child,
         ),
-        child: widget.child,
       ),
     );
   }
