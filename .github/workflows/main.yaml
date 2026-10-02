@@ -54,9 +54,13 @@ jobs:
   web-deploy:
     name: 🎉 Deploy
     needs: [build]
-    # PRs only build and test; production is updated by pushes to main (or a
-    # manual run), never by a pull request.
-    if: github.event_name != 'pull_request'
+    # Only a push to main publishes. PRs (and manual runs, which can target
+    # any branch) stop after the tests and build.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Two quick pushes would otherwise run overlapping FTP syncs.
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code

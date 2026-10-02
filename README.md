@@ -295,7 +295,7 @@ A GitHub Actions workflow (`.github/workflows/main.yaml`) runs on every push/PR 
 1. **Check** — `flutter analyze`, then the app's tests and `packages/a11y_kit`'s tests; any failure stops the pipeline.
 2. **Build** — `flutter build web --release --wasm`, passing `GIT_SHA` (the hash shown in the site footer) and `GA_MEASUREMENT_ID` via `--dart-define`. Browsers with WasmGC get the WebAssembly build; the rest fall back to the JS build shipped alongside it.
 3. **SEO** — `dart run tool/seo_content.dart` writes the résumé as hidden plain HTML into the built `index.html`.
-4. **Deploy** — on a push to `main` or a manual run (never on a pull request), the build (including `web/.htaccess`, which serves `index.html` for path URLs and sets the `.wasm` MIME type) is synced via FTP to the production host.
+4. **Deploy** — only on a push to `main` (never on a pull request or a manual run), one deploy at a time, the build (including `web/.htaccess`, which serves `index.html` for path URLs and sets the `.wasm` MIME type) is synced via FTP to the production host.
 
 ## ♿ Accessibility
 

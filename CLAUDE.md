@@ -26,7 +26,7 @@ dart run tool/seo_content.dart build/web/index.html   # must run after every web
 pip install fonttools && python3 tool/subset_fonts.py
 ```
 
-CI (`.github/workflows/main.yaml`) runs analyze → tests → a11y_kit tests → wasm build → SEO injection, then deploys `build/web` over FTP on every push to `main`. A push to `main` goes to production.
+CI (`.github/workflows/main.yaml`) runs analyze → tests → a11y_kit tests → wasm build → SEO injection, then deploys `build/web` over FTP on every push to `main` (one deploy at a time). PRs and manual runs only check and build; a push to `main` goes to production.
 
 ## Architecture
 
