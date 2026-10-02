@@ -25,9 +25,15 @@ void installSemanticLinkGuard() {
   web.document.addEventListener(
     'click',
     ((web.Event event) {
+      // `is` can't tell JS types apart (it's always true for interop types,
+      // so a Text node target would throw on `closest`); `isA` checks the
+      // real DOM type.
       final target = event.target;
-      if (target is! web.Element) return;
-      if (target.closest(semanticLinkSelector) != null) event.preventDefault();
+      if (target == null || !target.isA<web.Element>()) return;
+      final element = target as web.Element;
+      if (element.closest(semanticLinkSelector) != null) {
+        event.preventDefault();
+      }
     }).toJS,
     true.toJS,
   );

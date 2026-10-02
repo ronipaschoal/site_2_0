@@ -107,19 +107,18 @@ class _InsuraScreenState extends State<InsuraScreen> {
 
 class _InsuraLogo extends StatelessWidget {
   final Color color;
-  final bool compact;
 
-  const _InsuraLogo({required this.color, this.compact = false});
+  const _InsuraLogo({required this.color});
 
   @override
   Widget build(BuildContext context) {
-    final iconSize = compact ? 22.0 : 32.0;
-    final fontSize = compact ? 11.0 : 15.0;
+    const iconSize = 32.0;
+    const fontSize = 15.0;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
+        const Icon(
           Icons.shield_outlined,
           color: _InsuraScreenState._accentColor,
           size: iconSize,

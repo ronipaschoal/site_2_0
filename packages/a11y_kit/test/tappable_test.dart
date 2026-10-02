@@ -26,7 +26,7 @@ void main() {
     onTap: onTap,
     activationDebounce: debounce,
     minTapTargetSize: minSize,
-    builder: (_, __) =>
+    builder: (_, _) =>
         const Padding(padding: EdgeInsets.all(16.0), child: Text('LINKEDIN ↗')),
   );
 
@@ -48,7 +48,7 @@ void main() {
     final handle = tester.ensureSemantics();
     await pump(
       tester,
-      A11yTappable(onTap: () {}, builder: (_, __) => const Text('Open résumé')),
+      A11yTappable(onTap: () {}, builder: (_, _) => const Text('Open résumé')),
     );
 
     final data = tester
@@ -123,7 +123,7 @@ void main() {
       semanticsLabel: 'Copy',
       onTap: () => taps++,
       minTapTargetSize: minSize,
-      builder: (_, __) => const Icon(Icons.copy, size: 16.0),
+      builder: (_, _) => const Icon(Icons.copy, size: 16.0),
     );
 
     await pump(tester, icon());
@@ -159,7 +159,7 @@ void main() {
         semanticsLabel: 'Proxy',
         onTap: () {},
         passThroughPointer: true,
-        builder: (_, __) => const SizedBox.square(dimension: 48.0),
+        builder: (_, _) => const SizedBox.square(dimension: 48.0),
       ),
     );
 

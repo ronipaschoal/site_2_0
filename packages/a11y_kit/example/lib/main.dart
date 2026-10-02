@@ -77,7 +77,7 @@ class _ExamplePageState extends State<ExamplePage> {
               semanticsLabel: _copies == 0 ? 'Copy' : 'Copied',
               minTapTargetSize: const Size.square(kMinInteractiveDimension),
               onTap: _copy,
-              builder: (_, __) => const Icon(Icons.copy, size: 16.0),
+              builder: (_, _) => const Icon(Icons.copy, size: 16.0),
             ),
           ),
           const SizedBox(height: 24.0),
