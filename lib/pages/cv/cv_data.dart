@@ -20,14 +20,8 @@ const cvPhone = CvContactItem(
 /// The résumé's content, shared by the on-screen [CvContentWidget] and the
 /// PDF export (`CvPdfBuilder`) so both stay in sync from one source.
 const cvObjective = {
-  'pt': 'Atuar como Desenvolvedor Mobile Flutter, contribuindo no '
-      'desenvolvimento e evolução de aplicações Android e iOS, utilizando '
-      'Dart, arquitetura de software, gerenciamento de estado, APIs REST, '
-      'testes automatizados e boas práticas de desenvolvimento.',
-  'en': 'To work as a Flutter Mobile Developer, contributing to the '
-      'development and evolution of Android and iOS applications, using '
-      'Dart, software architecture, state management, REST APIs, automated '
-      'testing and development best practices.',
+  'pt': 'Atuar como Desenvolvedor Mobile Flutter.',
+  'en': 'To work as a Flutter Mobile Developer.',
 };
 
 const cvSummary = {
@@ -264,13 +258,18 @@ const cvExperienceList = [
           'com atuação em React e Go. '
           'Desenvolvimento de BFF em Node.js para integração do backoffice '
           'com APIs em Go. '
+          'Apoio a outros membros da equipe por meio de pair programming e '
+          'code review, auxiliando no desenvolvimento e na refatoração do '
+          'front-end. '
           'Implementação de testes unitários com Jest, ampliando a cobertura '
           'e a confiabilidade das aplicações. Utilização de Claude Code, ChatGPT '
           'e Cursor como apoio ao desenvolvimento, refatoração de código e '
           'automação de tarefas.',
       'en': 'Evolution of the backoffice for app content management, working '
           'with React and Go. Development of a BFF in Node.js to integrate '
-          'the backoffice with Go APIs. Implementation of unit tests with '
+          'the backoffice with Go APIs. Support for other team members through '
+          'pair programming and code review, helping with front-end '
+          'development and refactoring. Implementation of unit tests with '
           'Jest, expanding the coverage and reliability of the applications. '
           'Use of Claude Code, ChatGPT and '
           'Cursor to support development, code refactoring and task '
@@ -285,9 +284,14 @@ const cvExperienceList = [
       'en': 'Senior Mobile Developer - Flutter',
     },
     description: {
-      'pt': 'Definição e adoção do Flutter como plataforma de desenvolvimento '
-          'mobile, contribuindo para a estruturação da equipe, definição da '
-          'arquitetura e estabelecimento de padrões técnicos. '
+      'pt': 'Referência técnica na equipe mobile de 3 desenvolvedores, '
+          'conduzindo a análise comparativa entre Flutter, React Native, Ionic '
+          'e Xamarin que levou à adoção do Flutter como plataforma de '
+          'desenvolvimento mobile. Definição da arquitetura, das bibliotecas e '
+          'dos padrões técnicos, incluindo decisões alinhadas em reuniões com '
+          'outras equipes. Apoio ao time por meio de pair programming e code '
+          'review, além de participação no refinamento e nas estimativas junto '
+          'ao PO. '
           'Desenvolvimento e evolução dos aplicativos Minha Comanda Eletrônica '
           'e Minha Governança Hoteleira para Android, iOS e SmartPOS, '
           'utilizando MVVM, BLoC/Cubit, Repository Pattern e APIs REST com '
@@ -316,9 +320,13 @@ const cvExperienceList = [
           'unitários e widget tests. '
           'Publicação e distribuição das aplicações para Android, iOS e '
           'diferentes modelos de SmartPOS.',
-      'en': 'Defined and adopted Flutter as the mobile development platform, '
-          'contributing to structuring the team, defining the architecture '
-          'and establishing technical standards. '
+      'en': 'Technical reference on a 3-developer mobile team, leading the '
+          'comparative analysis of Flutter, React Native, Ionic and Xamarin '
+          'that led to adopting Flutter as the mobile development platform. '
+          'Defined the architecture, libraries and technical standards, '
+          'including decisions aligned in meetings with other teams. Supported '
+          'the team through pair programming and code review, and took part '
+          'in refinement and estimation with the PO. '
           'Developed and evolved the Minha Comanda Eletrônica and Minha '
           'Governança Hoteleira apps for Android, iOS and SmartPOS, using '
           'MVVM, BLoC/Cubit, the Repository Pattern and REST APIs with Dio. '
@@ -355,13 +363,15 @@ const cvExperienceList = [
     description: {
       'pt': 'Evolução de aplicação Angular para hotelaria, com desenvolvimento '
           'de funcionalidades, correção de bugs, melhorias contínuas e '
-          'ampliação da cobertura de testes automatizados. Otimização de '
+          'ampliação da cobertura de testes automatizados. Atuação em pair '
+          'programming com a equipe. Otimização de '
           'pipelines de CI/CD no Azure DevOps, reduzindo o tempo de execução '
           'dos processos. Utilização do GitHub Copilot como apoio ao '
           'desenvolvimento, refatoração e manutenção de código.',
       'en': 'Evolved an Angular application for the hospitality industry, '
           'developing features, fixing bugs, delivering continuous '
-          'improvements, and expanding automated test coverage. Optimized '
+          'improvements, and expanding automated test coverage. Worked in pair '
+          'programming with the team. Optimized '
           'CI/CD pipelines on Azure DevOps, reducing process execution time. '
           'Used GitHub Copilot to support development, refactoring and code '
           'maintenance.',
@@ -470,7 +480,13 @@ const cvExperienceList = [
           'aplicação mobile com PhoneGap e AngularJS, incluindo definição da '
           'arquitetura e evolução da solução. Desenvolvimento de APIs em PHP '
           'com CodeIgniter para integração com a aplicação mobile. Publicação '
-          'e distribuição de aplicações nas lojas Google Play e App Store.',
+          'e distribuição de aplicações nas lojas Google Play e App Store. '
+          'Participação no desenvolvimento de aplicação desktop em C# para '
+          'monitoramento pulmonar por tomografia por impedância elétrica '
+          '(EIT), integrada via USB a uma cinta torácica, com captura das '
+          'leituras, exibição em tempo real das áreas ventiladas do pulmão e '
+          'histórico de leituras, atuando na implementação de testes '
+          'unitários e de novos parâmetros na tela utilizando polimorfismo.',
       'en': 'Developed web systems and hybrid mobile applications with '
           'PhoneGap, AngularJS, SQLite, PHP and MySQL. Worked independently on '
           'mobile projects, from implementation to publishing for Android and '
@@ -478,23 +494,12 @@ const cvExperienceList = [
           'AngularJS, including defining the architecture and evolving the '
           'solution. Developed PHP APIs with CodeIgniter for integration with '
           'the mobile app. Published and distributed apps on Google Play and '
-          'the App Store.',
-    },
-  ),
-  CvExperienceItem(
-    company: 'Genesis Network GN1',
-    period: 'Abr/2013 - Jun/2014',
-    role: {
-      'pt': 'Desenvolvedor Full Stack',
-      'en': 'Full Stack Developer',
-    },
-    description: {
-      'pt': 'Desenvolvimento e manutenção de dois sistemas web utilizando ASP '
-          'e JavaScript. Liderança técnica na conclusão e entrega de projeto '
-          'ao cliente.',
-      'en': 'Developed and maintained two web systems using ASP and '
-          'JavaScript. Provided technical leadership in completing and '
-          'delivering a project to the client.',
+          'the App Store. Took part in developing a C# desktop application for '
+          'lung monitoring with Electrical Impedance Tomography (EIT), '
+          'connected over USB to a chest belt, capturing readings, showing the '
+          'ventilated areas of the lungs in real time and keeping a history of '
+          'readings, including writing unit tests and adding new on-screen '
+          'parameters using polymorphism.',
     },
   ),
 ];
@@ -513,25 +518,16 @@ const cvProjectList = [
     ],
     url: 'https://github.com/ronipaschoal/rppay',
     description: {
-      'pt': 'Aplicação fictícia de pagamentos desenvolvida como estudo de '
-          'arquitetura em Flutter, com organização Feature-First em camadas '
-          '(presentation, domain e data), MVVM, BLoC/Cubit, Repository '
-          'Pattern, Injeção de Dependência, princípios SOLID e Material 3. '
-          'Navegação dinâmica a partir de API simulada, com integração de '
-          'WebView por meio de pacote próprio. Testes unitários (bloc_test) e '
-          'de widget, executados no pipeline de CI/CD do GitHub Actions '
-          'com deploy web automatizado. Desenvolvimento assistido por IA com '
-          'Claude Code e Gemini. Projeto pessoal de estudo, sem uso em '
-          'produção.',
-      'en': 'Fictional payments app built as a Flutter architecture study, '
-          'with a Feature-First organization in layers (presentation, domain '
-          'and data), MVVM, BLoC/Cubit, Repository Pattern, Dependency '
-          'Injection, SOLID principles and Material 3. Dynamic navigation '
-          'driven by a simulated API, with WebView integration through an '
-          'in-house package. Unit (bloc_test) and widget tests, run in a '
-          'GitHub Actions CI/CD pipeline with automated web deployment. '
-          'AI-assisted development with Claude Code and Gemini. A personal '
-          'study project, not used in production.',
+      'pt': 'App fictício de pagamentos (estudo de arquitetura Flutter): '
+          'Feature-First, MVVM, BLoC/Cubit, Repository Pattern, '
+          'Injeção de Dependência e SOLID. Navegação dinâmica via API mock, '
+          'WebView com pacote próprio, testes unitários e de widget, CI/CD '
+          '(GitHub Actions) e IA (Claude Code, Gemini).',
+      'en': 'Fictional payments app (Flutter architecture study): layered '
+          'Feature-First, MVVM, BLoC/Cubit, Repository Pattern, Dependency '
+          'Injection and SOLID. Dynamic navigation from a mock '
+          'API, WebView via an in-house package, unit and widget tests, '
+          'GitHub Actions CI/CD and AI (Claude Code, Gemini).',
     },
   ),
   CvProjectItem(
@@ -546,21 +542,16 @@ const cvProjectList = [
     ],
     url: 'https://github.com/ronipaschoal/site_2_0',
     description: {
-      'pt': 'Site pessoal e portfólio em produção, desenvolvido com Flutter '
-          'Web e Dart, utilizando BLoC/Cubit, go_router, internacionalização '
-          '(PT/EN), tema claro/escuro e geração de currículo em PDF. '
-          'Acessibilidade baseada nas diretrizes WCAG, com semântica para '
-          'leitores de tela, navegação por teclado e contraste AA, extraída '
-          'para o pacote próprio a11y_kit. Testes de widget e de '
-          'acessibilidade, com deploy automatizado via CI/CD no GitHub '
-          'Actions.',
-      'en': 'Personal website and portfolio in production, built with '
-          'Flutter Web and Dart, using BLoC/Cubit, go_router, '
-          'internationalization (PT/EN), light/dark theme and PDF résumé '
-          'generation. Accessibility based on WCAG guidelines, with screen '
-          'reader semantics, keyboard navigation and AA contrast, extracted '
-          'into the in-house a11y_kit package. Widget and accessibility '
-          'tests, with automated deployment via GitHub Actions CI/CD.',
+      'pt': 'Site pessoal e portfólio em produção com Flutter Web e Dart: '
+          'BLoC/Cubit, go_router, i18n (PT/EN), tema claro/escuro e currículo '
+          'em PDF. Acessibilidade WCAG (leitores de tela, teclado, contraste '
+          'AA) no pacote próprio a11y_kit, com testes de widget e '
+          'acessibilidade e CI/CD no GitHub Actions.',
+      'en': 'Personal site and portfolio in production with Flutter Web and '
+          'Dart: BLoC/Cubit, go_router, i18n (PT/EN), light/dark theme and PDF '
+          'résumé. WCAG accessibility (screen readers, keyboard, AA contrast) '
+          'in the in-house a11y_kit package, with widget and accessibility '
+          'tests and GitHub Actions CI/CD.',
     },
   ),
 ];
@@ -607,7 +598,7 @@ const cvEducationList = [
   CvEducationItem(
     institution: 'USP',
     course: 'MBA em Engenharia de Software',
-    period: 'Previsão de conclusão: Out/2026',
+    period: 'Previsão de conclusão: 10/2028',
   ),
   CvEducationItem(
     institution: 'IFSP',
