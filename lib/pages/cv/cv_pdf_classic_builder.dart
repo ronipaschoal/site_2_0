@@ -37,8 +37,6 @@ sealed class CvPdfClassicBuilder {
       'experience': 'Experiência Profissional',
       'courses': 'Cursos e Qualificações',
       'additional': 'Informações Adicionais',
-      'skills': 'Competências técnicas',
-      'projects': 'Projetos pessoais',
       'age': 'anos',
       'travel': 'Disponibilidade para viagens.',
     },
@@ -49,8 +47,6 @@ sealed class CvPdfClassicBuilder {
       'experience': 'Professional Experience',
       'courses': 'Courses and Qualifications',
       'additional': 'Additional Information',
-      'skills': 'Technical skills',
-      'projects': 'Personal projects',
       'age': 'years old',
       'travel': 'Available to travel.',
     },
@@ -316,22 +312,14 @@ sealed class CvPdfClassicBuilder {
     ];
   }
 
-  /// Travel availability, then technical skills and personal projects, each
-  /// under its own bold heading — relevant for a developer but with no
-  /// dedicated section in this layout.
+  /// Travel availability, then the personal projects — relevant for a
+  /// developer but with no dedicated section in this layout.
   static List<pw.Widget> _additional(
     Map<String, String> l,
     String languageCode,
   ) {
     return [
       _bullet(l['travel']!),
-      _subheading(l['skills']!),
-      for (final group in cvClassicSkillGroups)
-        _bullet(
-          group.items.resolve(languageCode),
-          boldLead: '${group.label.resolve(languageCode)}: ',
-        ),
-      _subheading(l['projects']!),
       for (final project in cvProjectList)
         _bullet(
           ': ${project.descriptionFor(languageCode)}',
@@ -340,17 +328,4 @@ sealed class CvPdfClassicBuilder {
         ),
     ];
   }
-
-  /// A bold heading inside a section, e.g. "Competências técnicas".
-  static pw.Widget _subheading(String text) => pw.Padding(
-        padding: const pw.EdgeInsets.only(top: 6, bottom: 3),
-        child: pw.Text(
-          text,
-          style: const pw.TextStyle(
-            fontSize: 10,
-            color: _ink,
-            fontWeight: pw.FontWeight.bold,
-          ),
-        ),
-      );
 }
