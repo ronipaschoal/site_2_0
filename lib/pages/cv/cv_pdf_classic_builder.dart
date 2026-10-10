@@ -91,6 +91,15 @@ sealed class CvPdfClassicBuilder {
               ' - ${item.issuer} - ${item.date.split('/').last}',
               boldLead: item.title,
             ),
+          for (final item in cvLanguageList)
+            _bullet(
+              '${[
+                item.levelFor(languageCode),
+                if (item.usageFor(languageCode) case final usage?)
+                  usage.replaceRange(0, 1, usage[0].toLowerCase()),
+              ].join(' - ')}.',
+              boldLead: '${item.languageFor(languageCode)}: ',
+            ),
           _section(l['additional']!),
           ..._additional(l, languageCode),
         ],
@@ -242,7 +251,7 @@ sealed class CvPdfClassicBuilder {
         ),
       );
 
-  /// "Company - start - end", then each role: with its own period when the
+  /// "Company - MM/yyyy - MM/yyyy (duration)", then each role: with its own period when the
   /// company had more than one, and its description as bullets.
   static List<pw.Widget> _company(
     CvCompanyGroup group,
@@ -259,7 +268,8 @@ sealed class CvPdfClassicBuilder {
         // The first company sits right under the section heading.
         padding: pw.EdgeInsets.only(top: isFirst ? 6 : 16, bottom: 2),
         child: pw.Text(
-          '${group.company} - ${group.period}',
+          '${group.company} - '
+          '${group.numericPeriodWithDurationFor(languageCode)}',
           style: const pw.TextStyle(
             fontSize: 10.5,
             fontWeight: pw.FontWeight.bold,
@@ -283,12 +293,21 @@ sealed class CvPdfClassicBuilder {
           // Bottom leaves one blank 10pt line before the bullets; a later
           // role at the same company gets extra room above it.
           padding: pw.EdgeInsets.only(top: i == 0 ? 2 : 10, bottom: 14),
-          child: pw.Text(
-            group.hasMultipleRoles
-                ? '${role.roleFor(languageCode)} - '
-                    '${role.period}'
-                : role.roleFor(languageCode),
-            style: const pw.TextStyle(fontSize: 10, color: _ink),
+          child: pw.RichText(
+            text: pw.TextSpan(
+              style: const pw.TextStyle(fontSize: 10, color: _ink),
+              children: [
+                pw.TextSpan(
+                  text: role.roleFor(languageCode),
+                  style: const pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                ),
+                if (group.hasMultipleRoles)
+                  pw.TextSpan(
+                    text: ' - '
+                        '${role.numericPeriodWithDurationFor(languageCode)}',
+                  ),
+              ],
+            ),
           ),
         ),
         for (final highlight in role.highlightsFor(languageCode))
@@ -297,14 +316,15 @@ sealed class CvPdfClassicBuilder {
     ];
   }
 
-  /// Technical skills and personal projects, each under its own bold
-  /// heading, then languages and travel availability — relevant for a
-  /// developer but with no dedicated section in this layout.
+  /// Travel availability, then technical skills and personal projects, each
+  /// under its own bold heading — relevant for a developer but with no
+  /// dedicated section in this layout.
   static List<pw.Widget> _additional(
     Map<String, String> l,
     String languageCode,
   ) {
     return [
+      _bullet(l['travel']!),
       _subheading(l['skills']!),
       for (final group in cvClassicSkillGroups)
         _bullet(
@@ -318,17 +338,6 @@ sealed class CvPdfClassicBuilder {
           boldLead: project.title,
           boldLeadUrl: project.url,
         ),
-      pw.SizedBox(height: 8),
-      for (final item in cvLanguageList)
-        _bullet(
-          '${[
-            item.levelFor(languageCode),
-            if (item.usageFor(languageCode) case final usage?)
-              usage.replaceRange(0, 1, usage[0].toLowerCase()),
-          ].join(' - ')}.',
-          boldLead: '${item.languageFor(languageCode)}: ',
-        ),
-      _bullet(l['travel']!),
     ];
   }
 

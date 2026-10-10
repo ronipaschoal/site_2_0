@@ -138,6 +138,25 @@ mixin CvPeriod {
     final duration = durationFor(languageCode);
     return duration == null ? period : '$period · $duration';
   }
+
+  /// [period] with each month as a two-digit number, e.g.
+  /// `'07/2025 - 06/2026'`. A free-form period comes back unchanged.
+  String get numericPeriod {
+    final bounds = period.split('-').map(_parseMonth).toList();
+    if (bounds.length != 2 || bounds.contains(null)) return period;
+
+    return bounds.map((month) {
+      final number = (month! % 12 + 1).toString().padLeft(2, '0');
+      return '$number/${month ~/ 12}';
+    }).join(' - ');
+  }
+
+  /// [numericPeriod] followed by its duration in parentheses, e.g.
+  /// `'07/2025 - 06/2026 (1 ano)'`.
+  String numericPeriodWithDurationFor(String languageCode) {
+    final duration = durationFor(languageCode);
+    return duration == null ? numericPeriod : '$numericPeriod ($duration)';
+  }
 }
 
 /// A personal/study project entry. `description` carries one value per

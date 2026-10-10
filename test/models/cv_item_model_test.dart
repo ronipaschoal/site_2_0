@@ -58,6 +58,18 @@ void main() {
       );
       expect(item.periodWithDurationFor('pt'), '2020 - 2021');
     });
+
+    test('numericPeriodWithDurationFor uses two-digit months', () {
+      expect(
+        withPeriod('Dez/2020 - Mar/2022').numericPeriodWithDurationFor('pt'),
+        '12/2020 - 03/2022 (1 ano e 4 meses)',
+      );
+      expect(
+        withPeriod('Sep/2021 - Aug/2022').numericPeriodWithDurationFor('en'),
+        '09/2021 - 08/2022 (1 yr)',
+      );
+      expect(item.numericPeriodWithDurationFor('pt'), '2020 - 2021');
+    });
   });
 
   group('CvProjectItem', () {
