@@ -42,7 +42,8 @@ There's no backend, so there's no repository/data layer. Content is static Dart,
   - the on-screen résumé (`cv_content_widget.dart`);
   - the two PDF layouts (`cv_pdf_builder.dart` for modern, `cv_pdf_classic_builder.dart` for classic);
   - the home "About" timeline;
-  - `tool/seo_content.dart`, which writes it as hidden HTML into the `<!-- seo-content -->` slot of `web/index.html` for crawlers.
+  - `tool/seo_content.dart`, which writes it as hidden HTML into the `<!-- seo-content -->` slot of `web/index.html` for crawlers. It also writes `cv.html`, a copy with the résumé's own title/description/OG tags that `web/.htaccess` serves at `/cv`, because link previews don't run JS. Its CV title and description mirror `metaTitleCv`/`metaDescriptionCv` in the ARB files; keep them in sync.
+- **Per-route metadata**: wrap each route's page in `RpPageMeta` (`lib/core/page_meta/`), which sets `document.title` and the description/OG tags via `package:web` for the current locale.
 
   Change content only in `cv_data.dart`.
 - **PDF code is a deferred library**: `cv_download_button.dart` imports `cv_pdf_builder.dart` as `deferred` so `pdf`/`printing` stay out of `main.dart.js`. Never import `cv_pdf_builder.dart` eagerly from app code. Types the UI needs, like `CvPdfLayout`, live in separate non-deferred files (`cv_pdf_layout.dart`).

@@ -53,11 +53,13 @@
     }
 
     // Every route is served by this same file, so the canonical URL is set
-    // per request rather than hard-coded to the home page.
+    // per request rather than hard-coded to the home page. The origin is
+    // fixed, so www/http copies (also redirected in .htaccess) never claim
+    // to be canonical themselves.
     (function () {
       var canonical = document.createElement('link');
       canonical.rel = 'canonical';
-      canonical.href = location.origin + location.pathname;
+      canonical.href = 'https://ronipaschoal.com.br' + location.pathname;
       document.head.appendChild(canonical);
     })();
   </script>
