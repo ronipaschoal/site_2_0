@@ -72,5 +72,9 @@
     "commandOpen": "Open {name}",
     "commandToggleTheme": "Toggle light/dark theme",
     "commandChangeLanguage": "Mudar para português",
-    "commandOpenCv": "Open résumé"
+    "commandOpenCv": "Open résumé",
+    "metaTitleHome": "Roni Paschoal - Flutter Mobile Software Developer",
+    "metaDescriptionHome": "Software developer with over 8 years of experience, specialized in Flutter for Android and iOS mobile apps. Postgraduate degree in Mobile Devices from IFSP.",
+    "metaTitleCv": "Résumé - Roni Paschoal, Flutter Developer",
+    "metaDescriptionCv": "Roni Paschoal's résumé: experience, education, skills and projects in Flutter for Android and iOS apps, with a PDF download."
 }
