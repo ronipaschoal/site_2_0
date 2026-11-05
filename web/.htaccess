@@ -1,8 +1,26 @@
+RewriteEngine On
+RewriteBase /
+
+# One host for search engines: www and plain http answer with a permanent
+# redirect to https://ronipaschoal.com.br, keeping the path. Otherwise each
+# variant is indexed as a duplicate of the same page. The X-Forwarded-Proto
+# check avoids a redirect loop if HTTPS is ever terminated by a proxy.
+RewriteCond %{HTTP_HOST} ^www\. [NC,OR]
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^ https://ronipaschoal.com.br%{REQUEST_URI} [L,R=301]
+
+# `/cv` gets cv.html, the same app page with the résumé's own title,
+# description and Open Graph tags (written by tool/seo_content.dart), so a
+# shared `/cv` link has its own preview. Asking for cv.html itself redirects
+# to `/cv`, so the page has a single URL.
+RewriteCond %{THE_REQUEST} \s/cv\.html[\s?]
+RewriteRule ^ /cv [L,R=301]
+RewriteRule ^cv$ cv.html [L]
+
 # Flutter uses path URLs (`/cv`), which only exist inside the app: serve
 # index.html for any path that isn't a real file or folder, so deep links
 # and reloads work.
-RewriteEngine On
-RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]

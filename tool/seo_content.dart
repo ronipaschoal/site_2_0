@@ -2,6 +2,11 @@
 // résumé as plain HTML, for crawlers and link previews that don't run
 // Flutter. Content comes from cv_data.dart, so it never drifts from the app.
 //
+// It also writes cv.html next to it: the same page with the résumé's own
+// title, description and Open Graph tags, served at `/cv` by web/.htaccess.
+// Link previews (LinkedIn, WhatsApp…) don't run JavaScript, so this is the
+// only way a shared `/cv` link gets its own preview.
+//
 // Usage (after `flutter build web`):
 //   dart run tool/seo_content.dart build/web/index.html
 import 'dart:convert';
@@ -12,6 +17,15 @@ import 'package:ronip/pages/cv/cv_data.dart';
 
 const _slot = '<!-- seo-content -->';
 const _language = 'pt';
+const _origin = 'https://ronipaschoal.com.br';
+
+// Same copy as `metaTitleCv` / `metaDescriptionCv` in lib/l10n/app_pt.arb,
+// which the app sets once it's running (the generated localizations need
+// Flutter, so this plain Dart tool can't read them).
+const _cvTitle = 'Currículo - Roni Paschoal, Desenvolvedor Flutter';
+const _cvDescription = 'Currículo de Roni Paschoal: experiência, formação, '
+    'competências e projetos em Flutter para apps Android e iOS, com '
+    'download em PDF.';
 
 void main(List<String> args) {
   if (args.length != 1) {
@@ -26,8 +40,52 @@ void main(List<String> args) {
     exit(1);
   }
 
-  file.writeAsStringSync(html.replaceFirst(_slot, buildSeoContent()));
+  final index = html.replaceFirst(_slot, buildSeoContent());
+  file.writeAsStringSync(index);
   stdout.writeln('SEO content written to ${file.path}.');
+
+  final cvFile = File.fromUri(file.uri.resolve('cv.html'));
+  try {
+    cvFile.writeAsStringSync(buildCvPage(index));
+  } on StateError catch (error) {
+    stderr.writeln('${error.message} (in ${file.path})');
+    exit(1);
+  }
+  stdout.writeln('Résumé page written to ${cvFile.path}.');
+}
+
+/// [indexHtml] with the résumé's title, description, URL and Open Graph /
+/// Twitter tags. Throws a [StateError] if any of those tags is missing, so
+/// an edit to web/index.html can't silently ship the home page's preview.
+String buildCvPage(String indexHtml) {
+  const attr = HtmlEscape(HtmlEscapeMode.attribute);
+  const e = HtmlEscape(HtmlEscapeMode.element);
+  var html = indexHtml;
+
+  void replace(RegExp pattern, String value, String what) {
+    if (!pattern.hasMatch(html)) throw StateError('No $what tag found.');
+    html = html.replaceFirstMapped(
+      pattern,
+      (match) => '${match[1]}$value${match[2]}',
+    );
+  }
+
+  RegExp meta(String key, String name) =>
+      RegExp('(<meta\\s+$key="${RegExp.escape(name)}"\\s+content=")[^"]*(")');
+
+  replace(RegExp('(<title>)[^<]*(</title>)'), e.convert(_cvTitle), '<title>');
+  for (final (key, name, value) in [
+    ('name', 'description', _cvDescription),
+    ('property', 'og:url', '$_origin/cv'),
+    ('property', 'og:title', _cvTitle),
+    ('property', 'og:description', _cvDescription),
+    ('property', 'og:image:alt', _cvTitle),
+    ('name', 'twitter:title', _cvTitle),
+    ('name', 'twitter:description', _cvDescription),
+  ]) {
+    replace(meta(key, name), attr.convert(value), name);
+  }
+  return html;
 }
 
 String buildSeoContent() {
