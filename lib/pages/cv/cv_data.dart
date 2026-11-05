@@ -17,33 +17,82 @@ const cvPhone = CvContactItem(
   url: 'tel:+5511981863256',
 );
 
+/// The technology the résumé is pitched at: it names the role, the
+/// objective, the header's stack line and the summary's mobile experience.
+/// `/cv?focus=híbrido` swaps it for another one (see [cvFocusFrom]); the
+/// rest of the content is unchanged.
+const cvDefaultFocus = 'Flutter';
+
+/// The focus from the `focus` query parameter, or [cvDefaultFocus] when
+/// it's missing or blank. Kept as typed: the summary uses it mid-sentence
+/// ("mobile híbrido", "mobile React Native"), titles go through
+/// [cvFocusTitle].
+String cvFocusFrom(String? value) {
+  final focus = value?.trim() ?? '';
+  return focus.isEmpty ? cvDefaultFocus : focus;
+}
+
+/// [focus] capitalized, for the role, objective and stack line.
+String cvFocusTitle(String focus) =>
+    focus[0].toUpperCase() + focus.substring(1);
+
+/// The résumé's role title, for the modern PDF and `tool/seo_content.dart`,
+/// which have no BuildContext to read AppLocalizations from. Same copy as
+/// `cvRole` in the ARB files, which the on-screen résumé uses; keep them in
+/// sync.
+String cvRoleFor(String languageCode, {String focus = cvDefaultFocus}) {
+  focus = cvFocusTitle(focus);
+  return switch (languageCode) {
+    'en' => '$focus Mobile Software Developer',
+    _ => 'Desenvolvedor de Software Mobile $focus',
+  };
+}
+
 /// The résumé's content, shared by the on-screen [CvContentWidget] and the
 /// PDF export (`CvPdfBuilder`) so both stay in sync from one source.
-const cvObjective = {
-  'pt': 'Atuar como Desenvolvedor Mobile Flutter.',
-  'en': 'To work as a Flutter Mobile Developer.',
-};
+String cvObjectiveFor(String languageCode, {String focus = cvDefaultFocus}) {
+  focus = cvFocusTitle(focus);
+  return switch (languageCode) {
+    'en' => 'To work as a $focus Mobile Developer.',
+    _ => 'Atuar como Desenvolvedor Mobile $focus.',
+  };
+}
 
-const cvSummary = {
-  'pt': 'Desenvolvedor de Software com mais de 8 anos de experiência, sendo '
-      'mais de 5 anos em desenvolvimento mobile. Atuação no desenvolvimento e '
-      'evolução de aplicações mobile e web, com definição de arquitetura, '
-      'componentes reutilizáveis e Design Systems. Sólidos conhecimentos em '
-      'Flutter, Dart, BLoC/Cubit, MVVM, APIs REST, testes automatizados e '
-      'integração com recursos nativos. Experiência com SmartPOS, Offline '
-      'First, CI/CD, publicação de aplicações e criação de bibliotecas '
-      'compartilhadas. Vivência em desenvolvimento fullstack e uso de IA para '
-      'apoiar o desenvolvimento, automação e qualidade do código.',
-  'en': 'Software Developer with more than 8 years of experience, including '
-      'over 5 years in mobile development. Develops and evolves mobile and '
-      'web applications, defining architecture, reusable components and '
-      'Design Systems. Solid knowledge of Flutter, Dart, BLoC/Cubit, MVVM, '
-      'REST APIs, automated testing and native feature integration. '
-      'Experienced with SmartPOS, Offline First, CI/CD, app publishing and '
-      'building shared libraries. Hands-on experience with fullstack '
-      'development and using AI to support development, automation and code '
-      'quality.',
-};
+/// The header's stack line. Dart only goes with Flutter, so another focus
+/// takes the place of both.
+String cvStackLineFor({String focus = cvDefaultFocus}) {
+  final stack =
+      focus == cvDefaultFocus ? 'Flutter · Dart' : cvFocusTitle(focus);
+  return '$stack · Android · iOS';
+}
+
+/// The résumé's summary, whose mobile experience names the focus: "mais
+/// de 5 anos em desenvolvimento mobile Flutter" by default, "… mobile
+/// híbrido" with `?focus=híbrido`.
+String cvSummaryFor(String languageCode, {String focus = cvDefaultFocus}) {
+  return switch (languageCode) {
+    'en' => 'Software Developer with more than 8 years of experience, '
+        'including over 5 years in $focus mobile '
+        'development. Develops and evolves mobile and '
+        'web applications, defining architecture, reusable components and '
+        'Design Systems. Solid knowledge of Flutter, Dart, BLoC/Cubit, MVVM, '
+        'REST APIs, automated testing and native feature integration. '
+        'Experienced with SmartPOS, Offline First, CI/CD, app publishing and '
+        'building shared libraries. Hands-on experience with fullstack '
+        'development and using AI to support development, automation and '
+        'code quality.',
+    _ => 'Desenvolvedor de Software com mais de 8 anos de experiência, sendo '
+        'mais de 5 anos em desenvolvimento '
+        'mobile $focus. Atuação no desenvolvimento e '
+        'evolução de aplicações mobile e web, com definição de arquitetura, '
+        'componentes reutilizáveis e Design Systems. Sólidos conhecimentos em '
+        'Flutter, Dart, BLoC/Cubit, MVVM, APIs REST, testes automatizados e '
+        'integração com recursos nativos. Experiência com SmartPOS, Offline '
+        'First, CI/CD, publicação de aplicações e criação de bibliotecas '
+        'compartilhadas. Vivência em desenvolvimento fullstack e uso de IA para '
+        'apoiar o desenvolvimento, automação e qualidade do código.',
+  };
+}
 
 const cvContactList = [
   CvContactItem(

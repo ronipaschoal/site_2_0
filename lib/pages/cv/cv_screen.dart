@@ -5,6 +5,7 @@ import 'package:ronip/cubits/app/app_cubit.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/cv/cv_content_widget.dart';
+import 'package:ronip/pages/cv/cv_data.dart';
 import 'package:ronip/pages/cv/cv_download_button.dart';
 import 'package:ronip/pages/home/home_route.dart';
 import 'package:ronip/core/theme.dart';
@@ -16,8 +17,14 @@ import 'package:ronip/widgets/theme_button_widget.dart';
 /// Full-page `/cv` route: the same [CvContentWidget] shown by
 /// `CvDialogWidget`, wrapped in the site's usual page chrome so it also
 /// works as a shareable, directly-linkable URL.
+///
+/// [focus] comes from the `focus` query parameter (`/cv?focus=Híbrido`)
+/// and replaces Flutter in the role, objective and stack line, on screen
+/// and in the PDFs.
 class CvScreen extends StatefulWidget {
-  const CvScreen({super.key});
+  final String focus;
+
+  const CvScreen({super.key, this.focus = cvDefaultFocus});
 
   @override
   State<CvScreen> createState() => _CvScreenState();
@@ -60,7 +67,7 @@ class _CvScreenState extends State<CvScreen> {
               ),
             ),
             actions: [
-              const CvDownloadButton(),
+              CvDownloadButton(focus: widget.focus),
               LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
               ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
               RpTheme.spacerMedium,
@@ -81,7 +88,10 @@ class _CvScreenState extends State<CvScreen> {
                     RpTheme.spacingLargeX2,
                   ),
                   child: SafeArea(
-                    child: CvContentWidget(scrollController: _scrollController),
+                    child: CvContentWidget(
+                      scrollController: _scrollController,
+                      focus: widget.focus,
+                    ),
                   ),
                 ),
               ),

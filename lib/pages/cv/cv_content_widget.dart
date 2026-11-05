@@ -29,7 +29,14 @@ import 'package:a11y_kit/a11y_kit.dart';
 class CvContentWidget extends StatelessWidget {
   final ScrollController scrollController;
 
-  const CvContentWidget({super.key, required this.scrollController});
+  /// What the résumé is pitched at; see [cvDefaultFocus].
+  final String focus;
+
+  const CvContentWidget({
+    super.key,
+    required this.scrollController,
+    this.focus = cvDefaultFocus,
+  });
 
   /// Without a group per column, screen readers would interleave the
   /// sidebar and the main column line by line ("Contact, Summary, email,
@@ -43,7 +50,7 @@ class CvContentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _CvHeaderWidget(),
+        _CvHeaderWidget(focus: focus),
         RpTheme.spacerLargeX,
         if (isSmallScreen)
           Column(
@@ -52,7 +59,10 @@ class CvContentWidget extends StatelessWidget {
               _column(_CvSidebarWidget(scrollController: scrollController)),
               RpTheme.spacerLargeX,
               _column(
-                _CvMainColumnWidget(scrollController: scrollController),
+                _CvMainColumnWidget(
+                  scrollController: scrollController,
+                  focus: focus,
+                ),
               ),
             ],
           )
@@ -69,7 +79,10 @@ class CvContentWidget extends StatelessWidget {
               RpTheme.spacerLargeX,
               Expanded(
                 child: _column(
-                  _CvMainColumnWidget(scrollController: scrollController),
+                  _CvMainColumnWidget(
+                    scrollController: scrollController,
+                    focus: focus,
+                  ),
                 ),
               ),
             ],
@@ -80,11 +93,14 @@ class CvContentWidget extends StatelessWidget {
 }
 
 class _CvHeaderWidget extends StatelessWidget {
-  const _CvHeaderWidget();
+  final String focus;
+
+  const _CvHeaderWidget({required this.focus});
 
   @override
   Widget build(BuildContext context) {
     final isSmallScreen = context.isSmallScreen;
+    final role = AppLocalizations.of(context)!.cvRole(cvFocusTitle(focus));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,8 +116,8 @@ class _CvHeaderWidget extends StatelessWidget {
         ),
         RpTheme.spacerSmall,
         A11ySelectableText(
-          AppLocalizations.of(context)!.cvRole.toUpperCase(),
-          semanticsLabel: AppLocalizations.of(context)!.cvRole,
+          role.toUpperCase(),
+          semanticsLabel: role,
           style: TextStyle(
             fontFamily: RpTheme.fontFamilyMono,
             fontSize: RpTheme.fontSizeRegular,
@@ -112,7 +128,7 @@ class _CvHeaderWidget extends StatelessWidget {
         ),
         RpTheme.spacerSmallX,
         A11ySelectableText(
-          'Flutter · Dart · Android · iOS',
+          cvStackLineFor(focus: focus),
           style: TextStyle(color: context.rpColors.textColor),
         ),
         RpTheme.spacerSmall,
@@ -221,8 +237,12 @@ class _CvSidebarWidget extends StatelessWidget {
 
 class _CvMainColumnWidget extends StatelessWidget {
   final ScrollController scrollController;
+  final String focus;
 
-  const _CvMainColumnWidget({required this.scrollController});
+  const _CvMainColumnWidget({
+    required this.scrollController,
+    required this.focus,
+  });
 
   /// Certification and education entries only exist in Portuguese (course
   /// and issuer names), so they're tagged `lang="pt"` on web — with the site
@@ -233,12 +253,8 @@ class _CvMainColumnWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
-    final objectiveText = cvObjective[locale.languageCode] ??
-        cvObjective['pt'] ??
-        cvObjective.values.first;
-    final summaryText = cvSummary[locale.languageCode] ??
-        cvSummary['pt'] ??
-        cvSummary.values.first;
+    final objectiveText = cvObjectiveFor(locale.languageCode, focus: focus);
+    final summaryText = cvSummaryFor(locale.languageCode, focus: focus);
     final experienceGroups = CvCompanyGroup.groupByCompany(cvExperienceList);
 
     return Column(

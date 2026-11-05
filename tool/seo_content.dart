@@ -93,17 +93,15 @@ String buildSeoContent() {
   const attr = HtmlEscape(HtmlEscapeMode.attribute);
   final out = StringBuffer()
     ..writeln('<h1>Roni Paschoal</h1>')
-    ..writeln(
-      '<p>Desenvolvedor de Software Mobile Flutter · Santo André, SP</p>',
-    )
+    ..writeln('<p>${e.convert(cvRoleFor(_language))} · Santo André, SP</p>')
     ..writeln('<nav>')
     ..writeln('<a href="/">Início</a>')
     ..writeln('<a href="/cv">Currículo</a>')
     ..writeln('</nav>')
     ..writeln('<section><h2>Resumo</h2>')
-    ..writeln('<p>${e.convert(cvSummary.resolve(_language))}</p></section>')
+    ..writeln('<p>${e.convert(cvSummaryFor(_language))}</p></section>')
     ..writeln('<section><h2>Objetivo</h2>')
-    ..writeln('<p>${e.convert(cvObjective.resolve(_language))}</p></section>');
+    ..writeln('<p>${e.convert(cvObjectiveFor(_language))}</p></section>');
 
   out.writeln('<section><h2>Formação Acadêmica</h2><ul>');
   for (final item in cvEducationList) {

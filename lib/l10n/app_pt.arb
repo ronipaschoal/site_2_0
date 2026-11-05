@@ -17,7 +17,14 @@
     "getInTouch": "Entre em contato",
     "sayHello": "Estou à disposição no que puder ajudar, é só mandar um oi!",
     "cvHeading": "Currículo",
-    "cvRole": "Desenvolvedor de Software Mobile Flutter",
+    "cvRole": "Desenvolvedor de Software Mobile {focus}",
+    "@cvRole": {
+        "placeholders": {
+            "focus": {
+                "type": "String"
+            }
+        }
+    },
     "cvAge": "{age} anos",
     "@cvAge": {
         "placeholders": {

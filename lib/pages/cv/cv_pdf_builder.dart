@@ -57,7 +57,6 @@ sealed class CvPdfBuilder {
   // no BuildContext to read AppLocalizations from.
   static const _labels = {
     'pt': {
-      'role': 'Desenvolvedor de Software Mobile Flutter',
       'contact': 'Contato',
       'skills': 'Competências',
       'objective': 'Objetivo',
@@ -74,7 +73,6 @@ sealed class CvPdfBuilder {
       'age': 'anos',
     },
     'en': {
-      'role': 'Flutter Mobile Software Developer',
       'contact': 'Contact',
       'skills': 'Skills',
       'objective': 'Objective',
@@ -100,17 +98,19 @@ sealed class CvPdfBuilder {
   static Future<void> download(
     String languageCode, {
     CvPdfLayout layout = CvPdfLayout.modern,
+    String focus = cvDefaultFocus,
   }) async {
     final now = DateTime.now();
     final datestamp = '${now.year}'
         '_${now.month.toString().padLeft(2, '0')}'
         '_${now.day.toString().padLeft(2, '0')}';
 
-    final bytes = await build(languageCode, layout: layout);
+    final bytes = await build(languageCode, layout: layout, focus: focus);
 
+    final fileFocus = cvFocusTitle(focus).replaceAll(RegExp(r'\s+'), '_');
     final filename = languageCode == 'pt'
-        ? 'Desenvolvedor_de_Software_Flutter'
-        : 'Flutter_Software_Developer';
+        ? 'Desenvolvedor_de_Software_$fileFocus'
+        : '${fileFocus}_Software_Developer';
     // Tells the two versions apart in a downloads folder.
     final suffix = switch (layout) {
       CvPdfLayout.modern => languageCode == 'pt' ? '_Moderno' : '_Modern',
@@ -128,16 +128,19 @@ sealed class CvPdfBuilder {
     String languageCode, {
     CvPdfLayout layout = CvPdfLayout.modern,
     PdfPageFormat format = PdfPageFormat.a4,
+    String focus = cvDefaultFocus,
   }) {
     return switch (layout) {
-      CvPdfLayout.modern => _build(languageCode, format),
-      CvPdfLayout.classic => CvPdfClassicBuilder.build(languageCode, format),
+      CvPdfLayout.modern => _build(languageCode, format, focus),
+      CvPdfLayout.classic =>
+        CvPdfClassicBuilder.build(languageCode, format, focus: focus),
     };
   }
 
   static Future<Uint8List> _build(
     String languageCode,
     PdfPageFormat format,
+    String focus,
   ) async {
     final l = _labels[languageCode] ?? _labels['pt']!;
 
@@ -171,13 +174,13 @@ sealed class CvPdfBuilder {
       pw.MultiPage(
         pageTheme: pageTheme,
         build: (context) => [
-          _main(_header(l)),
+          _main(_header(l, languageCode, focus)),
           _main(pw.SizedBox(height: 20)),
           _main(_sectionTitle(l['objective']!)),
-          _main(_paragraph(cvObjective[languageCode] ?? cvObjective['pt']!)),
+          _main(_paragraph(cvObjectiveFor(languageCode, focus: focus))),
           _main(pw.SizedBox(height: 18)),
           _main(_sectionTitle(l['summary']!)),
-          _main(_paragraph(cvSummary[languageCode] ?? cvSummary['pt']!)),
+          _main(_paragraph(cvSummaryFor(languageCode, focus: focus))),
           _main(pw.SizedBox(height: 18)),
           _main(_sectionTitle(l['education']!)),
           for (final education in cvEducationList) _main(_education(education)),
@@ -219,7 +222,11 @@ sealed class CvPdfBuilder {
     );
   }
 
-  static pw.Widget _header(Map<String, String> labels) {
+  static pw.Widget _header(
+    Map<String, String> labels,
+    String languageCode,
+    String focus,
+  ) {
     final age = DateTime.now().year - cvBirthYear;
 
     return pw.Column(
@@ -228,7 +235,7 @@ sealed class CvPdfBuilder {
         pw.Text('Roni Paschoal', style: const pw.TextStyle(fontSize: 24)),
         pw.SizedBox(height: 4),
         pw.Text(
-          labels['role']!.toUpperCase(),
+          cvRoleFor(languageCode, focus: focus).toUpperCase(),
           style: const pw.TextStyle(
             fontSize: 10,
             color: _brand,
@@ -238,7 +245,7 @@ sealed class CvPdfBuilder {
         ),
         pw.SizedBox(height: 2),
         pw.Text(
-          'Flutter · Dart · Android · iOS · Santo André, SP · '
+          '${cvStackLineFor(focus: focus)} · Santo André, SP · '
           '$age ${labels['age']}',
           style: const pw.TextStyle(fontSize: 9.5, color: _muted),
         ),

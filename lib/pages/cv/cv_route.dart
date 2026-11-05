@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:ronip/app/routes_helper.dart';
 import 'package:ronip/core/page_meta/page_meta.dart';
+import 'package:ronip/pages/cv/cv_data.dart';
 import 'package:ronip/pages/cv/cv_screen.dart';
 
 sealed class CvRoute {
@@ -9,11 +10,13 @@ sealed class CvRoute {
   static GoRoute route() {
     return GoRoute(
       path: cv,
-      pageBuilder: (context, __) => RoutesHelper.transitionPage(
+      pageBuilder: (context, state) => RoutesHelper.transitionPage(
         RpPageMeta(
           title: (l10n) => l10n.metaTitleCv,
           description: (l10n) => l10n.metaDescriptionCv,
-          child: const CvScreen(),
+          child: CvScreen(
+            focus: cvFocusFrom(state.uri.queryParameters['focus']),
+          ),
         ),
       ),
     );

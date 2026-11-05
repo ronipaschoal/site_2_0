@@ -52,7 +52,11 @@ sealed class CvPdfClassicBuilder {
     },
   };
 
-  static Future<Uint8List> build(String languageCode, PdfPageFormat format) {
+  static Future<Uint8List> build(
+    String languageCode,
+    PdfPageFormat format, {
+    String focus = cvDefaultFocus,
+  }) {
     final l = _labels[languageCode] ?? _labels['pt']!;
 
     final doc = pw.Document(
@@ -71,9 +75,9 @@ sealed class CvPdfClassicBuilder {
         build: (context) => [
           _header(l),
           _section(l['objective']!),
-          _paragraph(cvObjective[languageCode] ?? cvObjective['pt']!),
+          _paragraph(cvObjectiveFor(languageCode, focus: focus)),
           _section(l['summary']!),
-          _paragraph(cvSummary[languageCode] ?? cvSummary['pt']!),
+          _paragraph(cvSummaryFor(languageCode, focus: focus)),
           _section(l['education']!),
           for (final item in cvEducationList) _education(item),
           _section(l['experience']!),
