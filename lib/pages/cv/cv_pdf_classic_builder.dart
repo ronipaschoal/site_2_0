@@ -39,6 +39,7 @@ sealed class CvPdfClassicBuilder {
       'additional': 'Informações Adicionais',
       'age': 'anos',
       'travel': 'Disponibilidade para viagens.',
+      'inProgress': 'em andamento',
     },
     'en': {
       'objective': 'Objective',
@@ -49,6 +50,7 @@ sealed class CvPdfClassicBuilder {
       'additional': 'Additional Information',
       'age': 'years old',
       'travel': 'Available to travel.',
+      'inProgress': 'in progress',
     },
   };
 
@@ -77,7 +79,7 @@ sealed class CvPdfClassicBuilder {
           _section(l['objective']!),
           _paragraph(cvObjectiveFor(languageCode, focus: focus)),
           _section(l['summary']!),
-          _paragraph(cvSummaryFor(languageCode, focus: focus)),
+          _paragraph(cvSummaryFor(languageCode)),
           _section(l['education']!),
           for (final item in cvEducationList) _education(item),
           _section(l['experience']!),
@@ -317,7 +319,9 @@ sealed class CvPdfClassicBuilder {
   }
 
   /// Travel availability, then the personal projects — relevant for a
-  /// developer but with no dedicated section in this layout.
+  /// developer but with no dedicated section in this layout. Each project
+  /// takes up to two lines: its short description, then the year it was
+  /// finished (or that it's in progress).
   static List<pw.Widget> _additional(
     Map<String, String> l,
     String languageCode,
@@ -326,7 +330,8 @@ sealed class CvPdfClassicBuilder {
       _bullet(l['travel']!),
       for (final project in cvProjectList)
         _bullet(
-          ': ${project.descriptionFor(languageCode)}',
+          ': ${project.shortDescriptionFor(languageCode)} - '
+          '${project.completedYear ?? l['inProgress']}.',
           boldLead: project.title,
           boldLeadUrl: project.url,
         ),

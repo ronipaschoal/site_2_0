@@ -77,11 +77,13 @@ void main() {
       title: 'Project',
       tech: ['Flutter', 'Dart'],
       description: {'pt': 'Descrição do projeto'},
+      shortDescription: {'pt': 'Projeto'},
       url: 'https://example.com',
     );
 
     test('descriptionFor falls back when the language is missing', () {
       expect(item.descriptionFor('en'), 'Descrição do projeto');
+      expect(item.shortDescriptionFor('en'), 'Projeto');
     });
   });
 

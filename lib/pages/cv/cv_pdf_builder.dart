@@ -180,7 +180,7 @@ sealed class CvPdfBuilder {
           _main(_paragraph(cvObjectiveFor(languageCode, focus: focus))),
           _main(pw.SizedBox(height: 18)),
           _main(_sectionTitle(l['summary']!)),
-          _main(_paragraph(cvSummaryFor(languageCode, focus: focus))),
+          _main(_paragraph(cvSummaryFor(languageCode))),
           _main(pw.SizedBox(height: 18)),
           _main(_sectionTitle(l['education']!)),
           for (final education in cvEducationList) _main(_education(education)),

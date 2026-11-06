@@ -22,22 +22,6 @@ void main() {
     expect(cvRoleFor('pt'), 'Desenvolvedor de Software Mobile Flutter');
     expect(cvObjectiveFor('en'), 'To work as a Flutter Mobile Developer.');
     expect(cvStackLineFor(), 'Flutter · Dart · Android · iOS');
-    expect(
-      cvSummaryFor('pt'),
-      startsWith('Desenvolvedor de Software com mais de 8 anos de '
-          'experiência, sendo mais de 5 anos em desenvolvimento mobile Flutter. '),
-    );
-  });
-
-  test('another focus qualifies the mobile experience in the summary', () {
-    expect(
-      cvSummaryFor('pt', focus: 'híbrido'),
-      contains('mais de 5 anos em desenvolvimento mobile híbrido. '),
-    );
-    expect(
-      cvSummaryFor('en', focus: 'hybrid'),
-      contains('over 5 years in hybrid mobile development. '),
-    );
   });
 
   testWidgets('another focus replaces Flutter in the header and objective',

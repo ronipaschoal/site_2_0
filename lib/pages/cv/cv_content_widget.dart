@@ -254,7 +254,7 @@ class _CvMainColumnWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
     final objectiveText = cvObjectiveFor(locale.languageCode, focus: focus);
-    final summaryText = cvSummaryFor(locale.languageCode, focus: focus);
+    final summaryText = cvSummaryFor(locale.languageCode);
     final experienceGroups = CvCompanyGroup.groupByCompany(cvExperienceList);
 
     return Column(

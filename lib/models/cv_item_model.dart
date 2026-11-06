@@ -166,17 +166,29 @@ class CvProjectItem {
   final String title;
   final List<String> tech;
   final Map<String, String> description;
+
+  /// Up to two lines (what it is, main technologies) for the classic PDF,
+  /// which keeps each project short; [description] is the full take.
+  final Map<String, String> shortDescription;
+
+  /// Year the project was finished; null while it's still in progress.
+  final String? completedYear;
   final String url;
 
   const CvProjectItem({
     required this.title,
     required this.tech,
     required this.description,
+    required this.shortDescription,
+    this.completedYear,
     required this.url,
   });
 
   String descriptionFor(String languageCode) =>
       description.resolve(languageCode);
+
+  String shortDescriptionFor(String languageCode) =>
+      shortDescription.resolve(languageCode);
 }
 
 /// A course/certificate entry. Titles and issuers are proper names handed
