@@ -67,24 +67,37 @@ String cvStackLineFor({String focus = cvDefaultFocus}) {
 /// reads as hybrid whatever the résumé is pitched at.
 String cvSummaryFor(String languageCode) {
   return switch (languageCode) {
-    'en' => 'Software Developer with more than 8 years of experience, '
-        'including over 5 in hybrid mobile development. Works on '
-        'mobile and web applications, defining architecture, reusable '
-        'components and Design Systems. Solid knowledge of Flutter, '
-        'Dart, BLoC/Cubit, MVVM, REST APIs, automated testing and '
-        'native integration. Experienced with SmartPOS, Offline '
-        'First, CI/CD, app publishing and shared libraries. Fullstack '
-        'experience and use of AI in development, automation and code '
-        'quality.',
-    _ => 'Desenvolvedor de Software com mais de 8 anos de experiência, '
-        'sendo mais de 5 em desenvolvimento mobile híbrido. Atuação '
-        'em aplicações mobile e web, com definição de arquitetura, '
-        'componentes reutilizáveis e Design Systems. Sólidos '
-        'conhecimentos em Flutter, Dart, BLoC/Cubit, MVVM, APIs REST, '
-        'testes automatizados e integração nativa. Experiência com '
-        'SmartPOS, Offline First, CI/CD, publicação de apps e '
-        'bibliotecas compartilhadas. Vivência fullstack e uso de IA '
-        'no desenvolvimento, na automação e na qualidade de código.',
+    'en' => "I've been developing software for over 8 years, more than 5 "
+        'of them dedicated to hybrid mobile development, with experience '
+        'in Flutter, Dart and React Native. I build Android, iOS and '
+        'SmartPOS applications, from MVP to test distribution via Google '
+        'Play and TestFlight and publishing to the stores. I work with '
+        'MVVM, BLoC/Cubit, REST APIs, native features and Offline First '
+        'strategies. At TOTVS, I was invited '
+        'to help structure a mobile team, contributing to technology '
+        'decisions, architectures and development standards. I built '
+        'shared Flutter libraries for the Design System and for '
+        'integrating with payment terminals and acquirers. I also have '
+        'experience with automated testing, CI/CD and fullstack '
+        'development with React, TypeScript, Angular, Node.js and Go. I '
+        'use AI, especially Claude Code, to speed up development and '
+        'improve the quality of deliveries.',
+    _ => 'Desenvolvo software há mais de 8 anos, sendo mais de 5 '
+        'dedicados ao desenvolvimento mobile híbrido, com experiência em '
+        'Flutter, Dart e React Native. Atuo no desenvolvimento de '
+        'aplicações Android, iOS e SmartPOS, do MVP à distribuição para '
+        'testes via Google Play e TestFlight e publicação nas lojas. '
+        'Trabalho com MVVM, BLoC/Cubit, APIs REST, recursos nativos e '
+        'estratégias Offline First. Na '
+        'TOTVS, fui convidado a participar da estruturação de uma equipe '
+        'mobile, contribuindo para decisões tecnológicas, arquiteturas e '
+        'padrões de desenvolvimento. Desenvolvi em Flutter bibliotecas '
+        'compartilhadas de Design System e integração com máquinas de '
+        'pagamento e adquirentes. Também tenho experiência com testes '
+        'automatizados, CI/CD e desenvolvimento fullstack com React, '
+        'TypeScript, Angular, Node.js e Go. Utilizo IA, especialmente '
+        'Claude Code, para acelerar o desenvolvimento e melhorar a '
+        'qualidade das entregas.',
   };
 }
 
