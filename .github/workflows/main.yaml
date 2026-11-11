@@ -14,7 +14,7 @@ jobs:
     name: Create Web Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.44.0"
@@ -40,7 +40,7 @@ jobs:
         run: dart run tool/seo_content.dart build/web/index.html
 
       - name: Upload Web Build Files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: web-release
           path: ./build/web
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: web-release
           path: ./build/web
@@ -71,7 +71,7 @@ jobs:
         run: test -f ./build/web/.htaccess
 
       - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           local-dir: ./build/web/
           server: ${{ secrets.FTP_SERVER }}
