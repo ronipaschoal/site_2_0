@@ -227,49 +227,43 @@ const cvExperienceList = [
       'en': 'Software Engineer',
     },
     description: {
-      'pt': 'Evolução do backoffice de gestão de conteúdo do app '
-          '(shortcuts da home, menu e tab bar), usado por times '
-          'internos da Argentina, do Brasil e do México, com '
-          'validação das configurações cadastradas nos apps de teste '
-          'Android e iOS. CRUD de '
-          'banners de campanhas com live preview, em React e '
-          'TypeScript, com formulários em Formik e '
-          'validação com Yup. Interfaces com '
-          'internacionalização (i18n), os Design Systems internos '
-          'Andes e AndesX, SCSS e o framework interno Nordic. BFF em '
-          'Node.js (Nordic, baseado em Express) para integração REST '
-          'com as APIs em Go. Criação de endpoints em Go com '
-          'arquitetura hexagonal, MySQL e testes unitários. Testes '
-          'unitários com Jest, elevando a cobertura do front-end de 0 '
-          'para mais de 80%. CI/CD com '
-          'GitHub e Fury e monitoramento com Datadog, Kibana e '
-          'Grafana. Pair programming e code review, apoiando o time '
-          'no desenvolvimento e na refatoração do front-end, em '
-          'Kanban com Jira. Uso de Claude Code, ChatGPT e Cursor para '
-          'gerar testes, investigar bugs e criar funcionalidades, com '
-          'configuração do CLAUDE.md no front-end e plugin para Claude Code que '
-          'automatiza a atualização da URL dos shortcuts.',
-      'en': "Evolved the app's content management backoffice (home "
-          'shortcuts, menu and tab bar), used by internal teams in '
-          'Argentina, Brazil and Mexico, validating the registered '
-          'settings in the Android and iOS test apps. Campaign banner '
-          'CRUD with '
-          'live preview, in React and TypeScript, with forms in Formik '
-          'and validation with Yup. '
-          'Interfaces with internationalization (i18n), the internal '
-          'Andes and AndesX Design Systems, SCSS and the internal '
-          'Nordic framework. Node.js BFF (Nordic, based on Express) '
-          'for REST integration with the Go APIs. Built Go endpoints '
-          'with hexagonal architecture, MySQL and unit tests. Unit '
-          'tests with Jest, raising front-end coverage from 0 to over '
-          '80%. CI/CD with GitHub and '
-          'Fury, and monitoring with Datadog, Kibana and Grafana. '
-          'Pair programming and code review, supporting the team in '
-          'front-end development and refactoring, using Kanban with '
-          'Jira. Use of Claude Code, ChatGPT and Cursor to generate '
-          'tests, investigate bugs and build features, setting up the '
-          'CLAUDE.md for the front end and a Claude Code plugin that '
-          'automates updating the shortcuts URL.',
+      'pt': 'Evoluí o backoffice de gestão de conteúdo do app (shortcuts da '
+          'home, menu e tab bar), usado por times internos da Argentina, do '
+          'Brasil e do México, validando as configurações nos apps de teste '
+          'Android e iOS. Desenvolvi o CRUD de banners de campanhas com live '
+          'preview, utilizando React, TypeScript, Formik e Yup. Construí '
+          'interfaces com internacionalização (i18n), utilizando os Design '
+          'Systems internos Andes e AndesX, SCSS e o framework interno Nordic. '
+          'Integrei o front-end às APIs em Go via REST, por meio de um BFF em '
+          'Node.js (Nordic, baseado em Express). Criei endpoints em Go com '
+          'arquitetura hexagonal, MySQL e testes unitários. Implementei testes '
+          'unitários com Jest, elevando a cobertura do front-end de 0 para '
+          'mais de 80%. Entreguei via CI/CD com GitHub e Fury e monitorei as '
+          'aplicações com Datadog, Kibana e Grafana. Apoiei o time no '
+          'desenvolvimento e na refatoração do front-end com pair programming '
+          'e code review, em Kanban com Jira. Acelerei a geração de testes, a '
+          'investigação de bugs e a criação de funcionalidades com Claude '
+          'Code, ChatGPT e Cursor. Configurei o CLAUDE.md do front-end e criei '
+          'um plugin para Claude Code que automatiza a atualização da URL dos '
+          'shortcuts.',
+      'en': "Evolved the app's content management backoffice (home shortcuts, "
+          'menu and tab bar), used by internal teams in Argentina, Brazil and '
+          'Mexico, validating the settings in the Android and iOS test apps. '
+          'Built the campaign banner CRUD with live preview, using React, '
+          'TypeScript, Formik and Yup. Built interfaces with '
+          'internationalization (i18n), using the internal Andes and AndesX '
+          'Design Systems, SCSS and the internal Nordic framework. Integrated '
+          'the front end with the Go APIs over REST through a Node.js BFF '
+          '(Nordic, based on Express). Created Go endpoints with hexagonal '
+          'architecture, MySQL and unit tests. Wrote unit tests with Jest, '
+          'raising front-end coverage from 0 to over 80%. Shipped through '
+          'CI/CD with GitHub and Fury and monitored the applications with '
+          'Datadog, Kibana and Grafana. Supported the team in front-end '
+          'development and refactoring through pair programming and code '
+          'review, using Kanban with Jira. Sped up test generation, bug '
+          'investigation and feature development with Claude Code, ChatGPT and '
+          "Cursor. Set up the front end's CLAUDE.md and created a Claude Code "
+          'plugin that automates updating the shortcuts URL.',
     },
   ),
   CvExperienceItem(
@@ -280,61 +274,55 @@ const cvExperienceList = [
       'en': 'Senior Mobile Developer - Flutter',
     },
     description: {
-      'pt': 'Referência técnica na equipe mobile de 3 desenvolvedores; '
-          'conduzi a análise comparativa entre Flutter, React Native, '
-          'Ionic e Xamarin que levou à adoção do Flutter. Definição '
-          'da arquitetura, das bibliotecas e dos padrões técnicos, '
-          'alinhados com outras equipes. Pair programming, code '
-          'review via Pull Requests, refinamento e estimativas com o '
-          'PO. Apps Minha Comanda Eletrônica e Minha Governança '
-          'Hoteleira para Android, iOS e SmartPOS, com BLoC/Cubit, '
-          'arquitetura em camadas, Repository Pattern e injeção de '
-          'dependência (get_it). Offline First com Hive, SQLite e '
-          'SharedPreferences, detecção de conectividade e '
-          'sincronização posterior dos pedidos. APIs REST via Dio '
-          '(interceptors) e Dartz (Either e imutabilidade), e tempo '
-          'real via SignalR (WebSockets) para notificações de '
-          'pagamento. Biblioteca de componentes e tokens do Design '
-          'System corporativo, reutilizada entre as aplicações. '
-          'Biblioteca Flutter de integração com modelos de SmartPOS '
-          'via MethodChannel, abstraindo as particularidades de cada '
-          'dispositivo. Pagamentos com Cielo, Adyen, Getnet, '
-          'PagSeguro, Rede e SafraPay (Pix e TEF), leitura de cartões '
-          'por NFC e impressão de comprovantes e relatórios no '
-          'SmartPOS. Monitoramento com Datadog (RUM, logs e '
-          'rastreamento HTTP) e internacionalização em pt, en e es '
-          'com Crowdin. 4 ambientes e builds por adquirente via '
-          'flavors/dart-define. CI/CD no Azure DevOps com redução do '
-          'tempo de execução, lint customizado e git hooks de análise '
-          'estática. Publicação na Google Play, na App Store e em '
-          'modelos de SmartPOS.',
-      'en': 'Technical reference on a 3-developer mobile team; led the '
-          'comparative analysis of Flutter, React Native, Ionic and '
-          'Xamarin that led to adopting Flutter. Defined the '
-          'architecture, libraries and technical standards, aligned '
-          'with other teams. Pair programming, code review via Pull '
-          'Requests, refinement and estimation with the PO. Minha '
-          'Comanda Eletrônica and Minha Governança Hoteleira apps for '
-          'Android, iOS and SmartPOS, with BLoC/Cubit, layered '
-          'architecture, the Repository Pattern and dependency '
-          'injection (get_it). Offline First with Hive, SQLite and '
-          'SharedPreferences, connectivity detection and later order '
-          'synchronization. REST APIs via Dio (interceptors) and '
-          'Dartz (Either and immutability), and real-time payment '
-          'notifications via SignalR (WebSockets). Component and '
-          'token library of the corporate Design System, reused '
-          'across the applications. Flutter library integrating '
-          'SmartPOS models via MethodChannel, abstracting away each '
-          "device's specifics. Payments with Cielo, Adyen, Getnet, "
-          'PagSeguro, Rede and SafraPay (Pix and TEF), NFC card '
-          'reading and printing of receipts and reports on SmartPOS. '
-          'Monitoring with Datadog (RUM, logs and HTTP tracing) and '
-          'internationalization in pt, en and es with Crowdin. 4 '
-          'environments and per-acquirer builds via '
-          'flavors/dart-define. CI/CD on Azure DevOps with reduced '
-          'execution time, a custom lint and static-analysis git '
-          'hooks. Published to Google Play, the App Store and '
-          'SmartPOS models.',
+      'pt': 'Atuei como referência técnica de uma equipe mobile de 3 '
+          'desenvolvedores. Conduzi a avaliação comparativa entre Flutter, '
+          'React Native, Ionic e Xamarin, resultando na adoção do Flutter. '
+          'Defini a arquitetura, as bibliotecas e os padrões técnicos da '
+          'plataforma mobile, alinhados com outras equipes da organização. '
+          'Desenvolvi os aplicativos Minha Comanda Eletrônica e Minha '
+          'Governança Hoteleira para Android, iOS e SmartPOS, utilizando '
+          'Flutter, Dart, BLoC/Cubit, arquitetura em camadas, Repository '
+          'Pattern e injeção de dependências com GetIt. Implementei '
+          'funcionalidades Offline First com detecção de conectividade e '
+          'sincronização posterior de pedidos, utilizando Hive, SQLite e '
+          'SharedPreferences. Integrei APIs REST com Dio e comunicação em '
+          'tempo real via SignalR para notificações de pagamento. Desenvolvi '
+          'uma biblioteca compartilhada de componentes e tokens do Design '
+          'System corporativo, reutilizada entre as aplicações. Criei uma '
+          'biblioteca Flutter de integração com diferentes modelos de '
+          'SmartPOS, abstraindo particularidades de hardware via Platform '
+          'Channels e MethodChannel. Integrei os adquirentes Cielo, Adyen, '
+          'Getnet, PagSeguro, Rede e SafraPay, com Pix, TEF, leitura NFC e '
+          'impressão de comprovantes e relatórios. Implementei monitoramento '
+          'com Datadog e internacionalização em português, inglês e espanhol. '
+          'Configurei ambientes e builds por adquirente via flavors e '
+          'dart-define. Otimizei o CI/CD no Azure DevOps com análise estática, '
+          'lint customizado e Git Hooks. Publiquei e mantive os aplicativos na '
+          'Google Play, na App Store e em diferentes modelos de SmartPOS.',
+      'en': 'Acted as technical reference for a 3-developer mobile team. Led a '
+          'comparative evaluation of Flutter, React Native, Ionic and Xamarin, '
+          'resulting in the adoption of Flutter. Defined the architecture, '
+          'libraries and technical standards of the mobile platform, aligned '
+          'with other teams across the organization. Built the Minha Comanda '
+          'Eletrônica and Minha Governança Hoteleira apps for Android, iOS and '
+          'SmartPOS, using Flutter, Dart, BLoC/Cubit, layered architecture, '
+          'the Repository Pattern and dependency injection with GetIt. '
+          'Implemented Offline First features with connectivity detection and '
+          'later order synchronization, using Hive, SQLite and '
+          'SharedPreferences. Integrated REST APIs with Dio and real-time '
+          'communication via SignalR for payment notifications. Built a shared '
+          'library of components and tokens for the corporate Design System, '
+          'reused across the applications. Created a Flutter library to '
+          'integrate with different SmartPOS models, abstracting away hardware '
+          'specifics via Platform Channels and MethodChannel. Integrated the '
+          'Cielo, Adyen, Getnet, PagSeguro, Rede and SafraPay acquirers, with '
+          'Pix, TEF, NFC reading and printing of receipts and reports. '
+          'Implemented monitoring with Datadog and internationalization in '
+          'Portuguese, English and Spanish. Configured per-acquirer '
+          'environments and builds via flavors and dart-define. Optimized '
+          'CI/CD on Azure DevOps with static analysis, a custom lint and Git '
+          'Hooks. Published and maintained the apps on Google Play, the App '
+          'Store and different SmartPOS models.',
     },
   ),
   CvExperienceItem(
@@ -345,35 +333,23 @@ const cvExperienceList = [
       'en': 'Mid-Level Front-End Developer',
     },
     description: {
-      'pt': 'Funcionalidades, correções e melhorias em uma SPA Angular '
-          'de grande porte, com RxJS, NgRx, Reactive Forms e lazy '
-          'loading de módulos. APIs REST e autenticação JWT com '
-          'serviços, HTTP Interceptors e injeção de dependência. '
-          'Interfaces responsivas com HTML5, SCSS e componentes de '
-          'Design System (PO UI e PrimeNG), documentados no '
-          'Storybook. Testes unitários com Jasmine, Karma e Jest e '
-          'testes E2E com Cypress, aplicando Clean Code e SOLID. '
-          'CI/CD no Azure DevOps com cache de dependências e execução '
-          'incremental (Nx affected) de lint, testes e build, '
-          'reduzindo o tempo dos pipelines. ESLint, Prettier, '
-          'Conventional Commits, Git Hooks e SonarQube; pair '
-          'programming e code review em time ágil (Scrum). Uso do '
-          'GitHub Copilot e de IA no desenvolvimento, na refatoração '
-          'e na manutenção de código.',
-      'en': 'Features, fixes and improvements in a large Angular SPA, '
-          'with RxJS, NgRx, Reactive Forms and lazy-loaded modules. '
-          'REST APIs and JWT authentication with services, HTTP '
-          'Interceptors and dependency injection. Responsive '
-          'interfaces with HTML5, SCSS and Design System components '
-          '(PO UI and PrimeNG), documented in Storybook. Unit tests '
-          'with Jasmine, Karma and Jest and E2E tests with Cypress, '
-          'applying Clean Code and SOLID. CI/CD on Azure DevOps with '
-          'dependency caching and incremental runs (Nx affected) of '
-          'lint, tests and build, reducing pipeline time. ESLint, '
-          'Prettier, Conventional Commits, Git Hooks and SonarQube; '
-          'pair programming and code review on an agile (Scrum) team. '
-          'Use of GitHub Copilot and AI in development, refactoring '
-          'and code maintenance.',
+      'pt': 'Desenvolvi e mantive funcionalidades em uma SPA Angular de grande '
+          'porte, utilizando RxJS, NgRx, Reactive Forms e lazy loading. '
+          'Integrei APIs REST com autenticação JWT e componentes dos Design '
+          'Systems PO UI e PrimeNG. Implementei testes unitários e E2E com '
+          'Jasmine, Karma, Jest e Cypress. Otimizei pipelines de CI/CD no '
+          'Azure DevOps com cache de dependências e execução incremental de '
+          'tarefas via Nx. Apliquei boas práticas de desenvolvimento, análise '
+          'estática, pair programming e code review, com apoio do GitHub '
+          'Copilot.',
+      'en': 'Built and maintained features in a large Angular SPA, using RxJS, '
+          'NgRx, Reactive Forms and lazy loading. Integrated REST APIs with '
+          'JWT authentication and components from the PO UI and PrimeNG Design '
+          'Systems. Implemented unit and E2E tests with Jasmine, Karma, Jest '
+          'and Cypress. Optimized CI/CD pipelines on Azure DevOps with '
+          'dependency caching and incremental task execution via Nx. Applied '
+          'development best practices, static analysis, pair programming and '
+          'code review, supported by GitHub Copilot.',
     },
   ),
   CvExperienceItem(
@@ -384,43 +360,34 @@ const cvExperienceList = [
       'en': 'Software Developer - Flutter | Freelance',
     },
     description: {
-      'pt': 'Condução autônoma do app cross-platform de gestão '
-          'financeira e fiscal para MEIs, da arquitetura e do MVP até '
-          'a segunda versão, com Flutter/Dart e publicação na Google '
-          'Play e App Store. Arquitetura modular feature-first, '
-          'separando UI, estado (BLoC/Cubit) e serviços, com injeção '
-          'de dependências via Provider, inversão de dependência e '
-          'Value Objects. APIs REST (http e JSON) com autenticação '
-          'JWT e refresh token; persistência local com '
-          'SharedPreferences. Upload do certificado digital A1 '
-          '(.pfx/.p12) no onboarding para emissão de NF-e e NFS-e, '
-          'com seleção de arquivo e permissões de armazenamento. '
-          'Design System próprio com design tokens e componentes '
-          'baseados no Material Design. GoRouter com deep linking e '
-          'ambientes via --dart-define. Firebase: Crashlytics, Remote '
-          'Config (feature flags) e push notifications com FCM e '
-          'notificações locais. CI/CD com GitHub Actions e Fastlane '
-          '(Match), automatizando o build e a distribuição iOS no '
-          'TestFlight a partir de tags e versionamento semântico.',
-      'en': 'Independently led the cross-platform financial and tax '
-          'management app for MEIs (Brazilian micro-entrepreneurs), '
-          'from architecture and MVP to the second version, with '
-          'Flutter/Dart and publishing on Google Play and the App '
-          'Store. Modular feature-first architecture, separating UI, '
-          'state (BLoC/Cubit) and services, with dependency injection '
-          'via Provider, dependency inversion and Value Objects. REST '
-          'APIs (http and JSON) with JWT authentication and refresh '
-          'token; local persistence with SharedPreferences. Upload of '
-          'the A1 digital certificate (.pfx/.p12) during onboarding '
-          'to issue NF-e and NFS-e invoices, with file picking and '
-          'storage permissions. In-house Design System with design '
-          'tokens and components based on Material Design. GoRouter '
-          'with deep linking and environments via --dart-define. '
-          'Firebase: Crashlytics, Remote Config (feature flags) and '
-          'push notifications with FCM and local notifications. CI/CD '
-          'with GitHub Actions and Fastlane (Match), automating the '
-          'iOS build and TestFlight distribution from tags and '
-          'semantic versioning.',
+      'pt': 'Desenvolvi de forma autônoma uma aplicação mobile para gestão '
+          'financeira e fiscal de MEIs, da definição da arquitetura e do MVP '
+          'até a segunda versão, publicada na Google Play e na App Store. '
+          'Estruturei o app de forma modular feature-first, utilizando '
+          'Flutter, Dart, BLoC/Cubit, Provider e princípios de inversão de '
+          'dependência. Integrei APIs REST com autenticação JWT, refresh token '
+          'e persistência local. Implementei o fluxo de onboarding para upload '
+          'de certificados digitais A1 (.pfx/.p12), utilizados na emissão de '
+          'NF-e e NFS-e. Criei um Design System próprio, com tokens e '
+          'componentes reutilizáveis baseados no Material Design. Implementei '
+          'a navegação com GoRouter e deep linking e o gerenciamento de '
+          'ambientes via dart-define. Automatizei os builds e a distribuição '
+          'iOS com GitHub Actions e Fastlane, incluindo publicação no '
+          'TestFlight.',
+      'en': 'Independently built a mobile app for the financial and tax '
+          'management of MEIs (Brazilian micro-entrepreneurs), from defining '
+          'the architecture and the MVP to the second version, published on '
+          'Google Play and the App Store. Structured the app as modular '
+          'feature-first, using Flutter, Dart, BLoC/Cubit, Provider and '
+          'dependency inversion principles. Integrated REST APIs with JWT '
+          'authentication, refresh token and local persistence. Implemented '
+          'the onboarding flow for uploading A1 digital certificates '
+          '(.pfx/.p12), used to issue NF-e and NFS-e invoices. Created an '
+          'in-house Design System, with tokens and reusable components based '
+          'on Material Design. Implemented navigation with GoRouter and deep '
+          'linking, and environment management via dart-define. Automated iOS '
+          'builds and distribution with GitHub Actions and Fastlane, including '
+          'publishing to TestFlight.',
     },
   ),
   CvExperienceItem(
@@ -431,30 +398,22 @@ const cvExperienceList = [
       'en': 'Front-End Developer - React | Freelance',
     },
     description: {
-      'pt': 'Condução autônoma da aplicação React: arquitetura, MVP, '
-          'estrutura e padrões técnicos. Interfaces com React, '
-          'Next.js e TypeScript (HTML5, CSS3, SCSS e CSS Modules), em '
-          'Component-Based e Modular Architecture organizada por área '
-          'do sistema. Design System próprio com 24 Reusable '
-          'Components (Table, Modal, Tabs, Pagination e Toast). '
-          'Estado com Redux Toolkit e Context API; REST API com Axios '
-          'e autenticação JWT, com Separation of Concerns. Back-end '
-          'em Node.js com NestJS, TypeORM, PostgreSQL e Swagger. '
-          'ESLint, Prettier e fluxo de Git com branches de dev, '
-          'staging e produção. CI/CD com GitHub Actions, Docker e '
-          'deploy em Kubernetes (GKE).',
-      'en': 'Independently led the React application: architecture, '
-          'MVP, structure and technical standards. Interfaces with '
-          'React, Next.js and TypeScript (HTML5, CSS3, SCSS and CSS '
-          'Modules), in a Component-Based and Modular Architecture '
-          'organized by system area. In-house Design System with 24 '
-          'Reusable Components (Table, Modal, Tabs, Pagination and '
-          'Toast). State with Redux Toolkit and Context API; REST API '
-          'with Axios and JWT authentication, with Separation of '
-          'Concerns. Node.js back end with NestJS, TypeORM, '
-          'PostgreSQL and Swagger. ESLint, Prettier and a Git flow '
-          'with dev, staging and production branches. CI/CD with '
-          'GitHub Actions, Docker and deployment to Kubernetes (GKE).',
+      'pt': 'Desenvolvi de forma autônoma uma aplicação web, da arquitetura à '
+          'implementação do MVP, utilizando React, Next.js e TypeScript. '
+          'Estruturei uma arquitetura modular e um Design System próprio com '
+          '24 componentes reutilizáveis. Gerenciei o estado com Redux Toolkit '
+          'e Context API e integrei APIs REST com Axios e autenticação JWT. '
+          'Desenvolvi o back-end com Node.js, NestJS, TypeORM e PostgreSQL. '
+          'Configurei CI/CD com GitHub Actions e Docker, com deploy em '
+          'Kubernetes (GKE).',
+      'en': 'Independently built a web application, from the architecture to the '
+          'MVP implementation, using React, Next.js and TypeScript. Structured '
+          'a modular architecture and an in-house Design System with 24 '
+          'reusable components. Managed state with Redux Toolkit and Context '
+          'API and integrated REST APIs with Axios and JWT authentication. '
+          'Developed the back end with Node.js, NestJS, TypeORM and '
+          'PostgreSQL. Set up CI/CD with GitHub Actions and Docker, deploying '
+          'to Kubernetes (GKE).',
     },
   ),
   CvExperienceItem(
@@ -465,14 +424,29 @@ const cvExperienceList = [
       'en': 'Front-End Developer',
     },
     description: {
-      'pt': 'Evolução e manutenção de aplicações AngularJS, com novas '
-          'funcionalidades e melhorias contínuas. Introdução de React '
-          'com TypeScript em arquitetura de Micro Frontends. '
-          'Interfaces personalizadas para diferentes clientes.',
-      'en': 'Evolved and maintained AngularJS applications, with new '
-          'features and continuous improvements. Introduced React '
-          'with TypeScript into a Micro Frontends architecture. '
-          'Custom interfaces for different clients.',
+      'pt': 'Desenvolvi e mantive aplicações web com AngularJS, entregando novas '
+          'funcionalidades e melhorias contínuas. Introduzi React com '
+          'TypeScript em uma arquitetura de Micro Frontends, contribuindo para '
+          'a evolução da estrutura front-end.',
+      'en': 'Built and maintained web applications with AngularJS, delivering '
+          'new features and continuous improvements. Introduced React with '
+          'TypeScript into a Micro Frontends architecture, contributing to the '
+          'evolution of the front-end structure.',
+    },
+  ),
+  CvExperienceItem(
+    company: 'Realiplasticos',
+    period: 'Ago/2016 - Mar/2020',
+    role: {
+      'pt': 'Designer',
+      'en': 'Designer',
+    },
+    description: {
+      'pt': 'Desenvolvi e mantive o site institucional em PHP, com melhorias de '
+          'interface e conteúdo e otimização para mecanismos de busca (SEO).',
+      'en':
+          'Built and maintained the company website in PHP, with interface and '
+              'content improvements and search engine optimization (SEO).',
     },
   ),
   CvExperienceItem(
@@ -483,27 +457,17 @@ const cvExperienceList = [
       'en': 'Full Stack Developer',
     },
     description: {
-      'pt': 'Atuação autônoma em sistemas web e apps mobile híbridos '
-          'com PhoneGap, AngularJS, SQLite, PHP e MySQL, da '
-          'implementação à publicação na Google Play e App Store. '
-          'Segunda versão de app mobile com PhoneGap e AngularJS, '
-          'incluindo a definição da arquitetura. APIs em PHP com '
-          'CodeIgniter para o app mobile. App desktop em C# para '
-          'monitoramento pulmonar por tomografia por impedância '
-          'elétrica (EIT), integrado via USB a uma cinta torácica, '
-          'com leituras em tempo real das áreas ventiladas e '
-          'histórico; implementação de testes unitários e de novos '
-          'parâmetros com polimorfismo.',
-      'en': 'Independently built web systems and hybrid mobile apps '
-          'with PhoneGap, AngularJS, SQLite, PHP and MySQL, from '
-          'implementation to publishing on Google Play and the App '
-          'Store. Second version of a mobile app with PhoneGap and '
-          'AngularJS, including defining the architecture. PHP APIs '
-          'with CodeIgniter for the mobile app. C# desktop app for '
-          'lung monitoring with Electrical Impedance Tomography '
-          '(EIT), connected over USB to a chest belt, with real-time '
-          'readings of the ventilated areas and history; implemented '
-          'unit tests and new parameters with polymorphism.',
+      'pt': 'Desenvolvi sistemas web e aplicativos mobile híbridos, incluindo '
+          'APIs e publicação nas lojas, utilizando PhoneGap, AngularJS, PHP, '
+          'MySQL e SQLite. Desenvolvi uma aplicação desktop em C# integrada a '
+          'um dispositivo de monitoramento pulmonar por tomografia por '
+          'impedância elétrica (EIT), com leitura de dados em tempo real e '
+          'testes unitários.',
+      'en': 'Built web systems and hybrid mobile apps, including APIs and '
+          'publishing to the app stores, using PhoneGap, AngularJS, PHP, MySQL '
+          'and SQLite. Built a C# desktop application integrated with a lung '
+          'monitoring device using Electrical Impedance Tomography (EIT), with '
+          'real-time data reading and unit tests.',
     },
   ),
 ];
