@@ -23,10 +23,15 @@ const _origin = 'https://ronipaschoal.com.br';
 // Same copy as `metaTitleCv` / `metaDescriptionCv` in lib/l10n/app_pt.arb,
 // which the app sets once it's running (the generated localizations need
 // Flutter, so this plain Dart tool can't read them).
-const _cvTitle = 'Currículo - Roni Paschoal, Desenvolvedor Flutter';
-const _cvDescription = 'Currículo de Roni Paschoal: experiência, formação, '
-    'competências e projetos em Flutter para apps Android e iOS, com '
-    'download em PDF.';
+const _cvTitle = 'Currículo - Roni Paschoal, Desenvolvedor Flutter Sênior';
+const _cvDescription = 'Currículo de desenvolvedor Flutter sênior: apps '
+    'Android, iOS e SmartPOS, BLoC/Cubit, Offline First, testes e CI/CD. '
+    'TOTVS e Mercado Pago. PDF.';
+
+// The shorter copy shown in link previews (Open Graph / Twitter), which
+// already display the title, so it doesn't repeat it.
+const _cvShareDescription = 'Experiência, competências e projetos em '
+    'Flutter, Android, iOS e SmartPOS. Download do currículo em PDF.';
 
 void main(List<String> args) {
   if (args.length != 1) {
@@ -84,10 +89,9 @@ String buildCvPage(String indexHtml) {
     ('name', 'description', _cvDescription),
     ('property', 'og:url', '$_origin/cv'),
     ('property', 'og:title', _cvTitle),
-    ('property', 'og:description', _cvDescription),
-    ('property', 'og:image:alt', _cvTitle),
+    ('property', 'og:description', _cvShareDescription),
     ('name', 'twitter:title', _cvTitle),
-    ('name', 'twitter:description', _cvDescription),
+    ('name', 'twitter:description', _cvShareDescription),
   ]) {
     replace(meta(key, name), attr.convert(value), name);
   }
@@ -98,8 +102,10 @@ String buildSeoContent() {
   const e = HtmlEscape(HtmlEscapeMode.element);
   const attr = HtmlEscape(HtmlEscapeMode.attribute);
   final out = StringBuffer()
-    ..writeln('<h1>Roni Paschoal</h1>')
-    ..writeln('<p>${e.convert(cvRoleFor(_language))} · Santo André, SP</p>')
+    // The role goes in the h1 too: it's the page's strongest heading, and
+    // the name alone carries none of the terms people search for.
+    ..writeln('<h1>Roni Paschoal — ${e.convert(cvRoleFor(_language))}</h1>')
+    ..writeln('<p>Santo André, SP</p>')
     ..writeln('<nav>')
     ..writeln('<a href="/">Início</a>')
     ..writeln('<a href="/cv">Currículo</a>')
@@ -126,7 +132,7 @@ String buildSeoContent() {
   }
   out.writeln('</section>');
 
-  out.writeln('<section><h2>Projetos</h2>');
+  out.writeln('<section><h2>Projetos em Flutter</h2>');
   for (final item in cvProjectList) {
     out.writeln('<article><h3><a href="${attr.convert(item.url)}">'
         '${e.convert(item.title)}</a></h3>');
@@ -138,6 +144,15 @@ String buildSeoContent() {
   out.writeln('<section><h2>Competências</h2><ul>');
   for (final key in cvSkillGroupOrder) {
     out.writeln('<li>${e.convert(cvSkillGroups[key]!.join(', '))}</li>');
+  }
+  out.writeln('</ul></section>');
+
+  out.writeln('<section><h2>Idiomas</h2><ul>');
+  for (final item in cvLanguageList) {
+    final usage = item.usage?.resolve(_language);
+    out.writeln('<li>${e.convert(item.languageFor(_language))}: '
+        '${e.convert(item.level.resolve(_language))}'
+        '${usage == null ? '' : ' (${e.convert(usage)})'}</li>');
   }
   out.writeln('</ul></section>');
 

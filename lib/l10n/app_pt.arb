@@ -101,8 +101,8 @@
     "commandToggleTheme": "Alternar tema claro/escuro",
     "commandChangeLanguage": "Switch to English",
     "commandOpenCv": "Abrir currículo",
-    "metaTitleHome": "Roni Paschoal - Desenvolvedor de Software Mobile Flutter",
-    "metaDescriptionHome": "Desenvolvedor de software com mais de 8 anos de experiência, especializado em Flutter para apps mobile Android e iOS. Pós-graduado em Dispositivos Móveis pelo IFSP.",
-    "metaTitleCv": "Currículo - Roni Paschoal, Desenvolvedor Flutter",
-    "metaDescriptionCv": "Currículo de Roni Paschoal: experiência, formação, competências e projetos em Flutter para apps Android e iOS, com download em PDF."
+    "metaTitleHome": "Roni Paschoal - Desenvolvedor Mobile Flutter Sênior",
+    "metaDescriptionHome": "Desenvolvedor mobile Flutter sênior, 8+ anos em software e 5+ em mobile multiplataforma. Apps Android, iOS e SmartPOS, do MVP às lojas. Disponível para remoto.",
+    "metaTitleCv": "Currículo - Roni Paschoal, Desenvolvedor Flutter Sênior",
+    "metaDescriptionCv": "Currículo de desenvolvedor Flutter sênior: apps Android, iOS e SmartPOS, BLoC/Cubit, Offline First, testes e CI/CD. TOTVS e Mercado Pago. PDF."
 }

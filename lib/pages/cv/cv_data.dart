@@ -50,8 +50,9 @@ String cvRoleFor(String languageCode, {String focus = cvDefaultFocus}) {
 String cvObjectiveFor(String languageCode, {String focus = cvDefaultFocus}) {
   focus = cvFocusTitle(focus);
   return switch (languageCode) {
-    'en' => 'To work as a $focus Mobile Developer.',
-    _ => 'Atuar como Desenvolvedor Mobile $focus.',
+    'en' => 'To work as a $focus Mobile Developer, available for remote work.',
+    _ => 'Atuar como Desenvolvedor Mobile $focus, com disponibilidade para '
+        'trabalho remoto.',
   };
 }
 
