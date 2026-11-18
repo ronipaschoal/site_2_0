@@ -12,6 +12,7 @@ sealed class CvRoute {
       path: cv,
       pageBuilder: (context, state) => RoutesHelper.transitionPage(
         RpPageMeta(
+          path: cv,
           title: (l10n) => l10n.metaTitleCv,
           description: (l10n) => l10n.metaDescriptionCv,
           child: CvScreen(

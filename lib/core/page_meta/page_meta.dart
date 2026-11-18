@@ -4,7 +4,7 @@ import 'package:ronip/l10n/app_localizations.dart';
 
 import 'page_meta_stub.dart' if (dart.library.js_interop) 'page_meta_web.dart';
 
-/// Per-route `<title>` and description, in the current locale.
+/// Per-route `<title>`, description and canonical URL, in the current locale.
 ///
 /// `web/index.html` ships the home page's metadata, and every route is
 /// served by that same file, so without this `/cv` would keep the home
@@ -12,8 +12,9 @@ import 'page_meta_stub.dart' if (dart.library.js_interop) 'page_meta_web.dart';
 ///
 /// The title goes through the same call as Flutter's [Title] widget, which
 /// writes `document.title` on the web (and the task switcher label on
-/// Android). The description and its Open Graph / Twitter copies are
-/// updated in the DOM with `package:web`; a no-op on Android and iOS.
+/// Android). The description, its Open Graph / Twitter copies, the
+/// canonical link and `og:url` are updated in the DOM with `package:web`;
+/// a no-op on Android and iOS.
 ///
 /// Link previews (WhatsApp, LinkedIn, Facebook…) don't run JavaScript, so
 /// they always show the static tags from `web/index.html`; this only reaches
@@ -21,11 +22,18 @@ import 'page_meta_stub.dart' if (dart.library.js_interop) 'page_meta_web.dart';
 class RpPageMeta extends StatelessWidget {
   const RpPageMeta({
     super.key,
+    required this.path,
     required this.title,
     required this.description,
     required this.child,
   });
 
+  /// The site's single canonical origin, as in `web/index.html`.
+  static const String origin = 'https://ronipaschoal.com.br';
+
+  /// The route's path (e.g. `/cv`), without query string, so `/cv?focus=…`
+  /// and www/http copies all name the same canonical URL.
+  final String path;
   final String Function(AppLocalizations l10n) title;
   final String Function(AppLocalizations l10n) description;
   final Widget child;
@@ -51,7 +59,11 @@ class RpPageMeta extends StatelessWidget {
           primaryColor: background.withAlpha(0xFF).toARGB32(),
         ),
       );
-      setPageDescription(description(l10n), title: pageTitle);
+      setPageDescription(
+        description(l10n),
+        title: pageTitle,
+        url: '$origin$path',
+      );
     }
 
     return child;

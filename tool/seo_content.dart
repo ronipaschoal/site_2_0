@@ -3,7 +3,8 @@
 // Flutter. Content comes from cv_data.dart, so it never drifts from the app.
 //
 // It also writes cv.html next to it: the same page with the résumé's own
-// title, description and Open Graph tags, served at `/cv` by web/.htaccess.
+// title, description, canonical URL and Open Graph tags, served at `/cv` by
+// web/.htaccess.
 // Link previews (LinkedIn, WhatsApp…) don't run JavaScript, so this is the
 // only way a shared `/cv` link gets its own preview.
 //
@@ -54,8 +55,8 @@ void main(List<String> args) {
   stdout.writeln('Résumé page written to ${cvFile.path}.');
 }
 
-/// [indexHtml] with the résumé's title, description, URL and Open Graph /
-/// Twitter tags. Throws a [StateError] if any of those tags is missing, so
+/// [indexHtml] with the résumé's title, description, canonical URL and
+/// Open Graph / Twitter tags. Throws a [StateError] if any of those tags is missing, so
 /// an edit to web/index.html can't silently ship the home page's preview.
 String buildCvPage(String indexHtml) {
   const attr = HtmlEscape(HtmlEscapeMode.attribute);
@@ -74,6 +75,11 @@ String buildCvPage(String indexHtml) {
       RegExp('(<meta\\s+$key="${RegExp.escape(name)}"\\s+content=")[^"]*(")');
 
   replace(RegExp('(<title>)[^<]*(</title>)'), e.convert(_cvTitle), '<title>');
+  replace(
+    RegExp('(<link\\s+rel="canonical"\\s+href=")[^"]*(")'),
+    attr.convert('$_origin/cv'),
+    'canonical',
+  );
   for (final (key, name, value) in [
     ('name', 'description', _cvDescription),
     ('property', 'og:url', '$_origin/cv'),

@@ -31,3 +31,7 @@ RewriteRule ^ index.html [L]
 AddType application/wasm .wasm
 AddType text/javascript .mjs
 AddType image/webp .webp
+
+# Every page is UTF-8 (index.html and cv.html also declare it in a meta tag);
+# saying so in the Content-Type header too means crawlers never have to guess.
+AddDefaultCharset UTF-8

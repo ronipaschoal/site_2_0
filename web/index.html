@@ -13,6 +13,10 @@
   <meta name="author" content="Roni Paschoal">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#07080f">
+  <!-- Static so crawlers that don't run JavaScript see it. Matches og:url;
+       tool/seo_content.dart swaps both for cv.html, and RpPageMeta keeps
+       them in sync per route once the app runs. -->
+  <link rel="canonical" href="https://ronipaschoal.com.br/">
 
   <!-- Open Graph / Twitter: the preview shown when the link is shared -->
   <meta property="og:type" content="profile">
@@ -51,17 +55,6 @@
     if (location.hash.startsWith('#/')) {
       history.replaceState(null, '', location.hash.slice(1));
     }
-
-    // Every route is served by this same file, so the canonical URL is set
-    // per request rather than hard-coded to the home page. The origin is
-    // fixed, so www/http copies (also redirected in .htaccess) never claim
-    // to be canonical themselves.
-    (function () {
-      var canonical = document.createElement('link');
-      canonical.rel = 'canonical';
-      canonical.href = 'https://ronipaschoal.com.br' + location.pathname;
-      document.head.appendChild(canonical);
-    })();
   </script>
 
   <script type="application/ld+json">
