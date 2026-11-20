@@ -43,8 +43,8 @@
     "cvDownloadModern": "Modern · 2 columns",
     "cvDownloadClassic": "Classic · 1 column",
     "solutionPhilosophy": "I believe a good solution goes beyond simply working. It takes finding the balance between technical quality, simplicity, and user experience, creating products that are consistent, intuitive, and enjoyable to use.",
-    "heroHeadline": "I use Flutter to turn ideas into consistent products, combining technical quality and user experience.",
-    "statusOpenToWork": "Open to Flutter opportunities",
+    "heroHeadline": "I use technology to turn ideas into consistent products, combining technical quality and user experience.",
+    "statusOpenToWork": "Open to cross-platform mobile opportunities",
     "statusWorking": "Building with Flutter",
     "yearsOfExperience": "{years} years of experience",
     "commandHint": "to navigate",
@@ -73,8 +73,8 @@
     "commandToggleTheme": "Toggle light/dark theme",
     "commandChangeLanguage": "Mudar para português",
     "commandOpenCv": "Open résumé",
-    "metaTitleHome": "Roni Paschoal - Flutter Mobile Software Developer",
-    "metaDescriptionHome": "Software developer with over 8 years of experience, specialized in Flutter for Android and iOS mobile apps. Postgraduate degree in Mobile Devices from IFSP.",
-    "metaTitleCv": "Résumé - Roni Paschoal, Flutter Developer",
-    "metaDescriptionCv": "Roni Paschoal's résumé: experience, education, skills and projects in Flutter for Android and iOS apps, with a PDF download."
+    "metaTitleHome": "Roni Paschoal - Senior Flutter Developer, Mobile Engineer",
+    "metaDescriptionHome": "Senior Flutter developer and mobile engineer in Brazil, open to remote work: 8+ years in software, 5+ in cross-platform mobile. Android, iOS and SmartPOS apps.",
+    "metaTitleCv": "Résumé - Roni Paschoal, Senior Flutter Developer",
+    "metaDescriptionCv": "Senior Flutter developer résumé: Android, iOS and SmartPOS apps, BLoC/Cubit, Offline First, testing and CI/CD. TOTVS and Mercado Pago. PDF download."
 }

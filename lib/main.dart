@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           previous.brightness != current.brightness,
       builder: (context, state) {
         return MaterialApp.router(
-          title: 'Roni Paschoal - Desenvolvedor de Software Mobile Flutter',
+          title: 'Roni Paschoal - Desenvolvedor Mobile Flutter Sênior',
           locale: state.locale,
           debugShowCheckedModeBanner: false,
           routerConfig: RpRoutes.router,

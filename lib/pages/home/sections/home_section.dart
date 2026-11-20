@@ -156,7 +156,7 @@ class _HomeSectionState extends State<HomeSection>
   }
 }
 
-/// "● Open to Flutter opportunities" with a softly pulsing dot.
+/// "● Open to cross-platform mobile opportunities" with a softly pulsing dot.
 class _StatusPill extends StatefulWidget {
   const _StatusPill();
 

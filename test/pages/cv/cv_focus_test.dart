@@ -20,7 +20,10 @@ void main() {
 
   test('the default focus keeps the Flutter copy', () {
     expect(cvRoleFor('pt'), 'Desenvolvedor de Software Mobile Flutter');
-    expect(cvObjectiveFor('en'), 'To work as a Flutter Mobile Developer.');
+    expect(
+      cvObjectiveFor('en'),
+      'To work as a Flutter Mobile Developer, available for remote work.',
+    );
     expect(cvStackLineFor(), 'Flutter · Dart · Android · iOS');
   });
 
@@ -45,7 +48,9 @@ void main() {
     );
     expect(find.text('Híbrido · Android · iOS'), findsOneWidget);
     expect(
-      find.text('Atuar como Desenvolvedor Mobile Híbrido.'),
+      find.text(
+        'Atuar como Desenvolvedor Mobile Híbrido, com disponibilidade para trabalho remoto.',
+      ),
       findsOneWidget,
     );
   });

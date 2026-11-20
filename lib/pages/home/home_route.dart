@@ -13,6 +13,7 @@ sealed class HomeRoute {
       path: home,
       pageBuilder: (context, __) => RoutesHelper.transitionPage(
         RpPageMeta(
+          path: home,
           title: (l10n) => l10n.metaTitleHome,
           description: (l10n) => l10n.metaDescriptionHome,
           child: BlocProvider(
