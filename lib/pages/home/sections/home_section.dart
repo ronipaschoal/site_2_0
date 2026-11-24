@@ -84,10 +84,13 @@ class _HomeSectionState extends State<HomeSection>
                     ),
                     _RiseIn(
                       animation: _stage(0.3, 0.75),
-                      // The page's single <h1>.
+                      // The page's single <h1>. It reads the role too, like
+                      // the static <h1> crawlers get before Flutter runs
+                      // (tool/seo_content.dart); the name alone carries none
+                      // of the terms people search for.
                       child: A11yHeading(
                         level: 1,
-                        label: 'Roni Paschoal',
+                        label: l10n.heroHeading,
                         child: SelectableText(
                           'Roni Paschoal',
                           textAlign: TextAlign.center,

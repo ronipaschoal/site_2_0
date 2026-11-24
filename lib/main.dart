@@ -29,9 +29,24 @@ Future<void> main() async {
   final initialBrightness = await AppCubit.loadSavedBrightness() ??
       WidgetsBinding.instance.platformDispatcher.platformBrightness;
 
+  // The URL decides the language (`/en/…` is English; see RpLocalePaths).
+  // The first frame already uses it, read straight from the browser's URL
+  // (on Android and iOS this is a file path, so Portuguese), and every
+  // later navigation — including back/forward — keeps it in sync.
+  final router = RpRoutes.router;
+  final appCubit = AppCubit(
+    initialBrightness: initialBrightness,
+    initialLocale: RpRoutes.localeFor(Uri.base.path),
+  );
+  router.routerDelegate.addListener(
+    () => appCubit.changeLocale(
+      RpRoutes.localeFor(router.routerDelegate.currentConfiguration.uri.path),
+    ),
+  );
+
   runApp(
-    BlocProvider(
-      create: (context) => AppCubit(initialBrightness: initialBrightness),
+    BlocProvider.value(
+      value: appCubit,
       child: const MyApp(),
     ),
   );

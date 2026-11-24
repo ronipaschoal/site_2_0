@@ -13,10 +13,15 @@
   <meta name="author" content="Roni Paschoal">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#07080f">
-  <!-- Static so crawlers that don't run JavaScript see it. Matches og:url;
-       tool/seo_content.dart swaps both for cv.html, and RpPageMeta keeps
-       them in sync per route once the app runs. -->
+  <!-- Static so crawlers that don't run JavaScript see them. These are the
+       Portuguese home page's values: tool/seo_content.dart rewrites them
+       (with the title, descriptions, og:* and lang) for cv.html, en.html
+       and en-cv.html, and RpPageMeta keeps them in sync per route once the
+       app runs. The canonical URL matches og:url. -->
   <link rel="canonical" href="https://ronipaschoal.com.br/">
+  <link rel="alternate" hreflang="pt-BR" href="https://ronipaschoal.com.br/">
+  <link rel="alternate" hreflang="en" href="https://ronipaschoal.com.br/en">
+  <link rel="alternate" hreflang="x-default" href="https://ronipaschoal.com.br/">
 
   <!-- Open Graph / Twitter: the preview shown when the link is shared -->
   <meta property="og:type" content="profile">
@@ -57,40 +62,9 @@
     }
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Roni Paschoal",
-    "jobTitle": ["Desenvolvedor Mobile Flutter Sênior", "Senior Flutter Developer"],
-    "description": "Desenvolvedor mobile Flutter sênior, com 8+ anos em software e 5+ em mobile híbrido: apps Android, iOS e SmartPOS.",
-    "url": "https://ronipaschoal.com.br/",
-    "image": "https://ronipaschoal.com.br/og-image.png",
-    "email": "mailto:ronipaschoal@gmail.com",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Santo André",
-      "addressRegion": "SP",
-      "addressCountry": "BR"
-    },
-    "alumniOf": [
-      { "@type": "CollegeOrUniversity", "name": "Universidade de São Paulo (USP)" },
-      { "@type": "CollegeOrUniversity", "name": "Instituto Federal de São Paulo (IFSP)" }
-    ],
-    "knowsAbout": [
-      "Flutter", "Dart", "Desenvolvimento mobile multiplataforma",
-      "Desenvolvimento mobile híbrido", "Android", "iOS", "React Native",
-      "BLoC/Cubit", "Clean Architecture", "MVVM", "Offline First", "Testes automatizados",
-      "CI/CD", "Publicação na App Store e Google Play", "Firebase", "SmartPOS",
-      "Integração com meios de pagamento", "APIs REST", "React", "TypeScript", "Node.js", "Go"
-    ],
-    "knowsLanguage": ["pt-BR", "en"],
-    "sameAs": [
-      "https://www.linkedin.com/in/roni-paschoal/",
-      "https://github.com/ronipaschoal"
-    ]
-  }
-  </script>
+  <!-- Person JSON-LD in the page's language, written at build time by
+       tool/seo_content.dart. -->
+  <!-- seo-json-ld -->
 </head>
 
 <body style="background-color: #07080f;">

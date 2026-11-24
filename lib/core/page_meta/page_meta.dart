@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ronip/app/locale_paths.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 
 import 'page_meta_stub.dart' if (dart.library.js_interop) 'page_meta_web.dart';
@@ -13,8 +14,8 @@ import 'page_meta_stub.dart' if (dart.library.js_interop) 'page_meta_web.dart';
 /// The title goes through the same call as Flutter's [Title] widget, which
 /// writes `document.title` on the web (and the task switcher label on
 /// Android). The description, its Open Graph / Twitter copies, the
-/// canonical link and `og:url` are updated in the DOM with `package:web`;
-/// a no-op on Android and iOS.
+/// canonical link, `og:url`, `og:locale` and the hreflang alternates are
+/// updated in the DOM with `package:web`; a no-op on Android and iOS.
 ///
 /// Link previews (WhatsApp, LinkedIn, Facebook…) don't run JavaScript, so
 /// they always show the static tags from `web/index.html`; this only reaches
@@ -31,12 +32,31 @@ class RpPageMeta extends StatelessWidget {
   /// The site's single canonical origin, as in `web/index.html`.
   static const String origin = 'https://ronipaschoal.com.br';
 
-  /// The route's path (e.g. `/cv`), without query string, so `/cv?focus=…`
-  /// and www/http copies all name the same canonical URL.
+  /// The Open Graph `og:locale` for each language code.
+  static const Map<String, String> ogLocales = {
+    RpLocalePaths.portuguese: 'pt_BR',
+    RpLocalePaths.english: 'en_US',
+  };
+
+  /// The route's path (e.g. `/cv`, `/en/cv`), without query string, so
+  /// `/cv?focus=…` and www/http copies all name the same canonical URL.
   final String path;
   final String Function(AppLocalizations l10n) title;
   final String Function(AppLocalizations l10n) description;
   final Widget child;
+
+  /// The hreflang alternates of the page at [path] (in either language):
+  /// each hreflang value, plus `x-default`, mapped to its absolute URL.
+  static Map<String, String> alternates(String path) {
+    final basePath = RpLocalePaths.basePath(path);
+    String url(String language) =>
+        '$origin${RpLocalePaths.localize(basePath, language)}';
+    return {
+      for (final language in RpLocalePaths.languages)
+        RpLocalePaths.hreflang[language]!: url(language),
+      'x-default': url(RpLocalePaths.defaultLanguage),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +83,8 @@ class RpPageMeta extends StatelessWidget {
         description(l10n),
         title: pageTitle,
         url: '$origin$path',
+        ogLocale: ogLocales[RpLocalePaths.languageOf(path)]!,
+        alternates: alternates(path),
       );
     }
 

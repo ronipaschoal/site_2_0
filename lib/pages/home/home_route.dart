@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ronip/app/routes_helper.dart';
@@ -8,12 +9,14 @@ import 'package:ronip/pages/home/home_screen.dart';
 sealed class HomeRoute {
   static const String home = '/';
 
-  static GoRoute route() {
+  /// The home page at [path]: [home] or its English version (`/en`).
+  static GoRoute route(String path) {
     return GoRoute(
-      path: home,
+      path: path,
       pageBuilder: (context, __) => RoutesHelper.transitionPage(
+        key: const ValueKey(home),
         RpPageMeta(
-          path: home,
+          path: path,
           title: (l10n) => l10n.metaTitleHome,
           description: (l10n) => l10n.metaDescriptionHome,
           child: BlocProvider(

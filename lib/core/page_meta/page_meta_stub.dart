@@ -3,4 +3,6 @@ void setPageDescription(
   String description, {
   required String title,
   required String url,
+  required String ogLocale,
+  required Map<String, String> alternates,
 }) {}
