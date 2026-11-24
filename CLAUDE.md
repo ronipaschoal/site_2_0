@@ -32,7 +32,7 @@ CI (`.github/workflows/main.yaml`) runs analyze → tests → wasm build → SEO
 
 There's no backend, so there's no repository/data layer. Content is static Dart, organized by route.
 
-- **Routing**: `lib/app/routes.dart` combines one `GoRoute` per page folder (`pages/<page>/<page>_route.dart`): `/` and `/cv`. The app uses path URLs (`usePathUrlStrategy`), and `web/.htaccess` rewrites unknown paths to `index.html`. That file also sets the `.wasm`/`.mjs` MIME types. Any new route must also be added to `web/sitemap.xml`.
+- **Routing**: `lib/app/routes.dart` combines one `GoRoute` per page folder (`pages/<page>/<page>_route.dart`): `/` and `/cv`, plus their English versions `/en` and `/en/cv` (see `lib/app/locale_paths.dart`). The URL decides the locale: `main()` reads it for the first frame and a router listener keeps `AppCubit` in sync, so the language button navigates (`RpRoutes.switchLanguage`) instead of changing state. Both language versions of a page share a page key, so switching updates it in place. The app uses path URLs (`usePathUrlStrategy`), and `web/.htaccess` rewrites unknown paths to `index.html`. That file also sets the `.wasm`/`.mjs` MIME types. Any new route must also be added to `web/sitemap.xml` (with its hreflang alternates; `test/app/locale_routing_test.dart` checks this against the tool's page list).
 - **State**: there are only two Cubits. `AppCubit` (`lib/cubits/app/`) holds the locale and brightness, and persists brightness with `shared_preferences`. `main()` loads the saved brightness *before* `runApp` so the first frame already uses the right theme. `HomeCubit` holds the active nav section and is driven by `HomeScreen._onScroll`. Everything else is local `ScrollController`/`AnimationController` state.
 - **Theme**: read colors with `context.rpColors` (a `ThemeExtension` in `lib/core/theme.dart`), never through globals. `RpTheme.brandColor` is only for large text and decoration. Small text and focus rings use `accentTextColor`, which is tuned for WCAG AA.
 - **Localization has two separate mechanisms**:
@@ -42,7 +42,7 @@ There's no backend, so there's no repository/data layer. Content is static Dart,
   - the on-screen résumé (`cv_content_widget.dart`);
   - the two PDF layouts (`cv_pdf_builder.dart` for modern, `cv_pdf_classic_builder.dart` for classic);
   - the home "About" timeline;
-  - `tool/seo_content.dart`, which writes it as hidden HTML into the `<!-- seo-content -->` slot of `web/index.html` for crawlers. It also writes `cv.html`, a copy with the résumé's own title/description/OG tags that `web/.htaccess` serves at `/cv`, because link previews don't run JS. Its CV title and description mirror `metaTitleCv`/`metaDescriptionCv` in the ARB files; keep them in sync.
+  - `tool/seo_content.dart`, which turns the built `index.html` into four static entry pages (`index.html`, `cv.html`, `en.html`, `en-cv.html`, served by `web/.htaccess` at `/`, `/cv`, `/en`, `/en/cv`), because crawlers and link previews may not run JS. Each gets its own `lang`, title, description, canonical, hreflang, OG tags, Person JSON-LD (`<!-- seo-json-ld -->` slot) and the résumé as hidden HTML (`<!-- seo-content -->` slot). Titles, descriptions, the `<h1>` and section headings are read from the ARB files; only SEO-only copy (share descriptions, JSON-LD) lives in the tool.
 - **Per-route metadata**: wrap each route's page in `RpPageMeta` (`lib/core/page_meta/`), which sets `document.title` and the description/OG tags via `package:web` for the current locale.
 
   Change content only in `cv_data.dart`.

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ronip/app/routes.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
 import 'package:ronip/pages/cv/cv_content_widget.dart';
 import 'package:ronip/pages/cv/cv_data.dart';
 import 'package:ronip/pages/cv/cv_download_button.dart';
-import 'package:ronip/pages/home/home_route.dart';
 import 'package:ronip/core/theme.dart';
 import 'package:ronip/widgets/flutter_banner_widget.dart';
 import 'package:ronip/widgets/locale_button_widget.dart';
@@ -57,7 +57,8 @@ class _CvScreenState extends State<CvScreen> {
                 color: context.rpColors.textHighlightColor,
               ),
               tooltip: AppLocalizations.of(context)!.cvBackToHome,
-              onPressed: () => context.go(HomeRoute.home),
+              onPressed: () =>
+                  context.go(RpRoutes.localized(context, RpRoutes.home)),
             ),
             title: SelectableText(
               AppLocalizations.of(context)!.cvHeading,
@@ -68,7 +69,10 @@ class _CvScreenState extends State<CvScreen> {
             ),
             actions: [
               CvDownloadButton(focus: widget.focus),
-              LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
+              LocaleButtonWidget(
+                changeLocale: (locale) =>
+                    RpRoutes.switchLanguage(context, locale),
+              ),
               ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
               RpTheme.spacerMedium,
             ],

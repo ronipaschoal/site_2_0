@@ -4,10 +4,10 @@ class AppState {
   final Locale locale;
   final Brightness brightness;
 
-  /// Always starts in Portuguese rather than following the browser, so
-  /// search engines (which usually crawl as en-US) index the same language
-  /// as the page's `lang`, meta tags and static content. English stays one
-  /// tap away on the language button.
+  /// Defaults to Portuguese rather than following the browser: the URL
+  /// picks the language (`/` is Portuguese, `/en` English), so search
+  /// engines (which usually crawl as en-US) index each URL in the same
+  /// language as its `lang`, meta tags and static content.
   AppState({
     Locale? locale,
     this.brightness = Brightness.dark,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ronip/app/routes.dart';
 import 'package:ronip/core/hyperlink_helper.dart';
 import 'package:ronip/core/profile.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
@@ -103,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       drawerKey: _drawerKey,
     ),
     LocaleButtonWidget(
-      changeLocale: _appCubit.changeLocale,
+      changeLocale: (locale) => RpRoutes.switchLanguage(context, locale),
     ),
     ThemeButtonWidget(
       toggleTheme: _appCubit.toggleTheme,
@@ -200,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         label: l10n.commandChangeLanguage,
         icon: Icons.translate,
         keywords: 'language idioma english portugues',
-        run: () => _appCubit.changeLocale(nextLocale.locale),
+        run: () => RpRoutes.switchLanguage(context, nextLocale.locale),
       ),
     ]);
   }

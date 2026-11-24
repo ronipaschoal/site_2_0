@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 sealed class RoutesHelper {
-  static CustomTransitionPage transitionPage(Widget page) {
+  /// [key] is shared by a page's language versions (`/` and `/en`), so
+  /// switching language updates the page in place — no slide transition,
+  /// and its state (scroll position, an open dialog) is kept.
+  static CustomTransitionPage transitionPage(
+    Widget page, {
+    required LocalKey key,
+  }) {
     return CustomTransitionPage(
+      key: key,
       child: page,
       transitionsBuilder: (_, animation, __, child) {
         return SlideTransition(

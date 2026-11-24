@@ -6,12 +6,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-  AppCubit({Brightness initialBrightness = Brightness.dark})
-      : super(AppState(brightness: initialBrightness));
+  AppCubit({
+    Brightness initialBrightness = Brightness.dark,
+    Locale? initialLocale,
+  }) : super(AppState(brightness: initialBrightness, locale: initialLocale));
 
   static const _brightnessPrefKey = 'theme_brightness';
 
+  /// Called by the router listener in `main()`: the URL decides the locale
+  /// (`/en/…` is English). The UI switches language by navigating instead;
+  /// see `RpRoutes.switchLanguage`.
   void changeLocale(Locale locale) {
+    // The router also reports the initial route, mid-build; emitting the
+    // same locale there would rebuild the app during that build.
+    if (locale == state.locale) return;
     emit(state.copyWith(locale: locale));
   }
 

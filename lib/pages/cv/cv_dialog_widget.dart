@@ -2,6 +2,7 @@ import 'package:a11y_kit/a11y_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ronip/app/routes.dart';
 import 'package:ronip/cubits/app/app_cubit.dart';
 import 'package:ronip/core/media_query_helper.dart';
 import 'package:ronip/l10n/app_localizations.dart';
@@ -95,7 +96,10 @@ class _CvDialogWidgetState extends State<CvDialogWidget> {
             leading: closeButton,
             actions: [
               downloadButton,
-              LocaleButtonWidget(changeLocale: _appCubit.changeLocale),
+              LocaleButtonWidget(
+                changeLocale: (locale) =>
+                    RpRoutes.switchLanguage(context, locale),
+              ),
               ThemeButtonWidget(toggleTheme: _appCubit.toggleTheme),
               RpTheme.spacerMedium,
             ],

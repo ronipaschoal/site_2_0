@@ -10,13 +10,26 @@ RewriteCond %{HTTPS} off
 RewriteCond %{HTTP:X-Forwarded-Proto} !=https
 RewriteRule ^ https://ronipaschoal.com.br%{REQUEST_URI} [L,R=301]
 
-# `/cv` gets cv.html, the same app page with the résumé's own title,
-# description and Open Graph tags (written by tool/seo_content.dart), so a
-# shared `/cv` link has its own preview. Asking for cv.html itself redirects
-# to `/cv`, so the page has a single URL.
+# Each route has its own static entry page, written by tool/seo_content.dart
+# with that page's language, title, description, canonical URL, hreflang and
+# Open Graph tags, so crawlers and link previews (which don't run JS) see the
+# right ones:
+#   /       → index.html    /en     → en.html
+#   /cv     → cv.html       /en/cv  → en-cv.html
+# Flat files rather than an `en/` folder, which Apache would redirect to
+# `/en/`. Asking for a .html name (or `/en/`) redirects to the clean URL, so
+# every page has a single URL.
 RewriteCond %{THE_REQUEST} \s/cv\.html[\s?]
 RewriteRule ^ /cv [L,R=301]
+RewriteCond %{THE_REQUEST} \s/en\.html[\s?]
+RewriteRule ^ /en [L,R=301]
+RewriteCond %{THE_REQUEST} \s/en-cv\.html[\s?]
+RewriteRule ^ /en/cv [L,R=301]
+RewriteRule ^en/$ /en [L,R=301]
+RewriteRule ^en/cv/$ /en/cv [L,R=301]
 RewriteRule ^cv$ cv.html [L]
+RewriteRule ^en$ en.html [L]
+RewriteRule ^en/cv$ en-cv.html [L]
 
 # Flutter uses path URLs (`/cv`), which only exist inside the app: serve
 # index.html for any path that isn't a real file or folder, so deep links
