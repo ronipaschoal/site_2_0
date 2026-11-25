@@ -4,6 +4,7 @@ import 'package:ronip/app/locale_paths.dart';
 import 'package:ronip/models/locale_model.dart';
 import 'package:ronip/pages/cv/cv_route.dart';
 import 'package:ronip/pages/home/home_route.dart';
+import 'package:ronip/pages/not_found/not_found_route.dart';
 
 sealed class RpRoutes {
   static const String home = HomeRoute.home;
@@ -18,6 +19,9 @@ sealed class RpRoutes {
         CvRoute.route(RpLocalePaths.localize(cv, language)),
       ],
     ],
+    // Unknown paths get a friendly 404 with a link home, never go_router's
+    // exception screen.
+    errorPageBuilder: (context, state) => NotFoundRoute.page(state),
   );
 
   /// The locale a URL [path] is served in.

@@ -39,6 +39,12 @@ jobs:
       - name: Add SEO Content to index.html
         run: dart run tool/seo_content.dart build/web/index.html
 
+      # After the SEO step, which writes the other entry pages: versions the
+      # URLs that load the app, so browsers never mix this build with
+      # cached files from the previous one.
+      - name: Version App Entry URLs
+        run: dart run tool/cache_bust.dart build/web
+
       - name: Upload Web Build Files
         uses: actions/upload-artifact@v7
         with:

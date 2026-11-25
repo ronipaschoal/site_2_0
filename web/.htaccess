@@ -27,16 +27,28 @@ RewriteCond %{THE_REQUEST} \s/en-cv\.html[\s?]
 RewriteRule ^ /en/cv [L,R=301]
 RewriteRule ^en/$ /en [L,R=301]
 RewriteRule ^en/cv/$ /en/cv [L,R=301]
+RewriteRule ^cv/$ /cv [L,R=301]
 RewriteRule ^cv$ cv.html [L]
 RewriteRule ^en$ en.html [L]
 RewriteRule ^en/cv$ en-cv.html [L]
 
-# Flutter uses path URLs (`/cv`), which only exist inside the app: serve
-# index.html for any path that isn't a real file or folder, so deep links
-# and reloads work.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [L]
+# Any other path that isn't a real file is a real 404 (so search engines
+# don't index it as a copy of the home page), but its body is still the app,
+# whose router shows the "page not found" screen with a way back home. A
+# local ErrorDocument keeps the 404 status. `/en/…` paths get the English
+# version of that screen.
+ErrorDocument 404 /index.html
+
+# Every response is revalidated before reuse ("no-cache" still caches, it
+# just asks the server first, which answers 304 if nothing changed). Flutter
+# entry files keep the same names in every build, so without this browsers
+# guess a freshness lifetime from Last-Modified and may run an old
+# main.dart.js against new pages. tool/cache_bust.dart also versions their
+# URLs for copies cached before this header existed.
+FileETag MTime Size
+<IfModule mod_headers.c>
+  Header always set Cache-Control "no-cache"
+</IfModule>
 
 # The WebAssembly build (`flutter build web --wasm`) fails to start unless
 # .wasm is served as application/wasm and .mjs as JavaScript; spelled out
